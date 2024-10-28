@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import * as stylex from '@stylexjs/stylex';
 
 export default function Home() {
   return (
@@ -13,7 +14,7 @@ export default function Home() {
           priority
         />
         <ol className={'list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]'}>
-          <li className={'mb-2'}>
+          <li {...stylex.props(testStyles.test)}>
             Get started by editing{' '}
             <code className={'bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold'}>
               src/app/page.tsx
@@ -99,3 +100,10 @@ export default function Home() {
     </div>
   );
 }
+
+const testStyles = stylex.create({
+  test: {
+    color: 'blue',
+    background: 'pink',
+  }
+}); 
