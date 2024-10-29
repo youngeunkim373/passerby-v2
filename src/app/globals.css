@@ -14,6 +14,27 @@
   }
 }
 
+html {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body, 
+header {
+  min-width: 320px; /* 최소 너비 설정 */
+  width: 100%; 
+  overflow-x: auto;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'NanumGothic', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
 body {
   color: var(--foreground);
   background: var(--background);
