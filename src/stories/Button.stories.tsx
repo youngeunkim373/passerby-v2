@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from '@storybook/react';
 
-import { Button, Props as ButtonProps } from '@/components/Button';
+import { Button, Props as ButtonProps } from '@/components/general/Button';
 
 export default {
   component: Button,
