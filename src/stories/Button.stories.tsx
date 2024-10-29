@@ -4,7 +4,7 @@ import { Button, Props as ButtonProps } from '@/components/Button';
 
 export default {
   component: Button,
-  title: 'Components/Button/Button',
+  title: 'Components/General/Button',
   argTypes: {
     className: { control: false }
   }
