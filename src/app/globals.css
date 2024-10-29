@@ -73,3 +73,12 @@ body {
     src: url("/assets/fonts/NanumGothicExtraBold.otf") format('otf'),
          url("/assets/fonts/NanumGothicExtraBold.ttf") format('truetype');
   }
+
+/* ------------ custom class ----------- */
+.w-max {
+  @apply w-full max-w-5xl mx-auto px-4 md:px-8 flex justify-between items-center;
+}
+
+.h-header {
+  @apply h-[72px];
+}
