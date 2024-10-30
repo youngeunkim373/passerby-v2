@@ -2,7 +2,6 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-import { ChevronDown } from '@/assets/icons/Chevron';
 import { Close } from '@/assets/icons/Close';
 import { Hamburger } from '@/assets/icons/Bar';
 import BubbleLogo from '@/assets/images/bubble-logo.svg';
@@ -77,21 +76,3 @@ const style = {
   user: 'flex gap-4 md:gap-8 my-auto ml-0 lg:ml-20',
   mobile: 'w-[28px] h-[28px] my-auto lg:hidden',
 };
-
-/* ---------- MenuButton ---------- */
-interface MenuButtonProps {
-  title: string
-}
-
-function MenuButton({ title }: MenuButtonProps) {
-
-  return (
-    <Button 
-      variant={'link'} 
-      color={'black'}
-      className={'flex items-center font-semibold px-0'}>
-      {title}
-      <ChevronDown className={'size-3.5 ml-1 mt-0.5'} />
-    </Button>
-  );
-}
