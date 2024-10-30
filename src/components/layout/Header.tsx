@@ -6,7 +6,7 @@ import { ChevronDown } from '@/assets/icons/Chevron';
 import { Close } from '@/assets/icons/Close';
 import { Hamburger } from '@/assets/icons/Bar';
 import BubbleLogo from '@/assets/images/bubble-logo.svg';
-import { Button } from '@/components/general/Button';
+import { Button } from '@/components/buttons/Button';
 import { items } from '@/constants/menu';
 import useVisible from '@/hooks/useVisible';
 
