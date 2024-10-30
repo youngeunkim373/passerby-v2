@@ -1,10 +1,10 @@
 import { Meta, StoryFn } from '@storybook/react';
 
-import { Button, Props as ButtonProps } from '@/components/Button';
+import { Button, Props as ButtonProps } from '@/components/buttons/Button';
 
 export default {
   component: Button,
-  title: 'Components/General/Button',
+  title: 'Components/Buttons/Button',
   argTypes: {
     className: { control: false }
   }

@@ -1,0 +1,81 @@
+'use client';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
+import { Close } from '@/assets/icons/Close';
+import { Hamburger } from '@/assets/icons/Bar';
+import BubbleLogo from '@/assets/images/bubble-logo.svg';
+import { Button } from '@/components/buttons/Button';
+import { MenuButton } from '@/components/buttons/MenuButton';
+import { items } from '@/constants/menu';
+import { useDrawerContext } from '@/contexts/DrawerContext';
+
+/* ---------- Header ---------- */
+export function Header() {
+  const router = useRouter();
+  const { drawerOpenStatus, show, hide } = useDrawerContext();
+
+  const handleOpenMenu = () => show('menu');
+
+  return (
+    <header className={style.header}>
+      <nav className={style.nav}>
+        {/* ----------- Logo area ----------- */}
+        <Button 
+          variant={'link'} 
+          onClick={() => router.push('/')}
+          className={style.logo}>
+          <Image 
+            src={BubbleLogo}
+            alt={'logo'}
+            width={56}
+            className={'min-w-[56px]'} />
+        </Button>
+
+        {/* ----------- Menu area ----------- */}
+        <div className={style.menu}>
+          {items.map((item) => (
+            <MenuButton key={item.title} title={item.title} />
+          ))}
+        </div>
+
+        {/* ----------- User area ----------- */}
+        <div className={style.user}>
+          <Button 
+            variant={'link'}
+            size={'small'}
+            color={'black'}
+            onClick={() => router.push('/signin')}>
+              로그인
+          </Button>
+          <Button 
+            variant={'solid'} 
+            size={'small'}
+            color={'black'}
+            className={'rounded-r-full rounded-s-full'}>
+              회원가입
+          </Button>
+            
+          {/* ----------- Mobile area ----------- */}
+          <Button 
+            variant={'link'}
+            size={'small'}
+            color={'black'}
+            className={style.mobile}
+            onClick={drawerOpenStatus.menu ? hide : handleOpenMenu}>
+            {drawerOpenStatus.menu ? <Close className={'size-4'} /> : <Hamburger className={'size-7'} />}
+          </Button>
+        </div>
+      </nav>
+    </header>
+  );
+}
+
+const style = { 
+  header: 'w-full h-header bg-white flex justify-center items-center fixed top-0 z-50',
+  nav: 'w-max h-header',
+  logo: 'px-0 py-1 pt-2 mr-0 lg:mr-20',
+  menu: 'hidden lg:flex lg:flex-1 lg:gap-12 lg:justify-start',
+  user: 'flex gap-4 md:gap-8 my-auto ml-0 lg:ml-20',
+  mobile: 'w-[28px] h-[28px] my-auto lg:hidden',
+};
