@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 
 import '@/app/globals.css';
+import { Drawers } from '@/components/drawers/Drawers';
 import { Header } from '@/components/layout/Header';
+import { DrawerContextProvider } from '@/contexts/DrawerContext';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,8 +18,11 @@ export default function RootLayout({
   return (
     <html lang={'en'}>
       <body>
-        <Header />
-        {children}
+        <DrawerContextProvider>
+          <Header />
+          {children}
+          <Drawers />
+        </DrawerContextProvider>
       </body>
     </html>
   );
