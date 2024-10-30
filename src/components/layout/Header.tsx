@@ -1,18 +1,21 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import { Close } from '@/assets/icons/Close';
 import { Hamburger } from '@/assets/icons/Bar';
 import BubbleLogo from '@/assets/images/bubble-logo.svg';
 import { Button } from '@/components/buttons/Button';
+import { MenuButton } from '@/components/buttons/MenuButton';
 import { items } from '@/constants/menu';
-import useVisible from '@/hooks/useVisible';
+import { useDrawerContext } from '@/contexts/DrawerContext';
 
 /* ---------- Header ---------- */
 export function Header() {
   const router = useRouter();
-  const { isVisible, open, close } = useVisible();
+  const { drawerOpenStatus, show, hide } = useDrawerContext();
+
+  const handleOpenMenu = () => show('menu');
 
   return (
     <header className={style.header}>
@@ -52,15 +55,15 @@ export function Header() {
             className={'rounded-r-full rounded-s-full'}>
               회원가입
           </Button>
-          
+            
           {/* ----------- Mobile area ----------- */}
           <Button 
             variant={'link'}
             size={'small'}
             color={'black'}
             className={style.mobile}
-            onClick={isVisible ? open : close}>
-            {isVisible ? <Close className={'size-4'} /> : <Hamburger className={'size-7'} />}
+            onClick={drawerOpenStatus.menu ? hide : handleOpenMenu}>
+            {drawerOpenStatus.menu ? <Close className={'size-4'} /> : <Hamburger className={'size-7'} />}
           </Button>
         </div>
       </nav>
@@ -68,8 +71,8 @@ export function Header() {
   );
 }
 
-const style = {
-  header: 'w-full h-header bg-white bg-opacity-80 backdrop-blur-50 flex justify-center items-center fixed top-0 z-90',
+const style = { 
+  header: 'w-full h-header bg-white flex justify-center items-center fixed top-0 z-50',
   nav: 'w-max h-header',
   logo: 'px-0 py-1 pt-2 mr-0 lg:mr-20',
   menu: 'hidden lg:flex lg:flex-1 lg:gap-12 lg:justify-start',
