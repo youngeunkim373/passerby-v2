@@ -57,7 +57,44 @@ const config: Config = {
         dark: '#f97316',
       },
     },
-    extend: {}
+    extend: {
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        fadeOut: {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
+        scaleUp: {
+          '0%': { 
+            transform: 'scale(.8) translateY(1000px)',
+            opacity: '0',
+          },
+          '100%': { 
+            transform: 'scale(1) translateY(0px)',
+            opacity: '1',
+          },
+        },
+        scaleDown: {
+          '0%': {
+            transform: 'scale(1) translateY(0px)',
+            opacity: '1',
+          },
+          '100%': {
+            transform: 'scale(.8) translateY(1000px)',
+            opacity: '0',
+          },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
+        fadeOut: 'fadeOut .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
+        scaleUp: 'scaleUp .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
+        scaleDown: 'scaleDown .5s forwards',
+      },
+    },
   },
   plugins: [],
 };
