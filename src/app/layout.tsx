@@ -4,6 +4,7 @@ import '@/app/globals.css';
 import { Drawers } from '@/components/drawers/Drawers';
 import { Header } from '@/components/layout/Header';
 import { DrawerContextProvider } from '@/contexts/DrawerContext';
+import { ModalContextProvider } from '@/contexts/ModalContext';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -19,9 +20,11 @@ export default function RootLayout({
     <html lang={'en'}>
       <body>
         <DrawerContextProvider>
-          <Header />
-          {children}
-          <Drawers />
+          <ModalContextProvider>
+            <Header />
+            {children}
+            <Drawers />
+          </ModalContextProvider>
         </DrawerContextProvider>
       </body>
     </html>
