@@ -1,5 +1,7 @@
 import type { Preview } from "@storybook/react";
 import '@/app/globals.css';
+import { Global } from "./Global";
+
 
 const preview: Preview = {
   parameters: {
@@ -10,6 +12,9 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [
+    Global
+  ]
 };
 
 export default preview;
