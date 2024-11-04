@@ -7,15 +7,28 @@ import { Hamburger } from '@/assets/icons/Bar';
 import BubbleLogo from '@/assets/images/bubble-logo.svg';
 import { Button } from '@/components/buttons/Button';
 import { MenuButton } from '@/components/buttons/MenuButton';
+import { Drawer } from '@/components/layout/Drawer';
 import { items } from '@/constants/menu';
 import { useDrawerContext } from '@/contexts/DrawerContext';
 
 /* ---------- Header ---------- */
 export function Header() {
   const router = useRouter();
-  const { drawerOpenStatus, show, hide } = useDrawerContext();
+  const { isVisible, show, hide } = useDrawerContext();
 
-  const handleOpenMenu = () => show('menu');
+  const handleOpenMenu = () => [
+    show(
+      <Drawer 
+        direction={'top'}>
+        <div className={'flex flex-col gap-8 absolute top-[72px]'}>
+          {/* TODO 메뉴 정하고 디자인 다시 하기 */}
+          {items.map((item) => (
+            <MenuButton key={item.title} title={item.title} onClick={hide} />
+          ))}
+        </div>
+      </Drawer>
+    )
+  ];
 
   return (
     <header className={style.header}>
@@ -35,7 +48,9 @@ export function Header() {
         {/* ----------- Menu area ----------- */}
         <div className={style.menu}>
           {items.map((item) => (
-            <MenuButton key={item.title} title={item.title} />
+            <MenuButton 
+              key={item.title} 
+              title={item.title} />
           ))}
         </div>
 
@@ -62,8 +77,8 @@ export function Header() {
             size={'small'}
             color={'black'}
             className={style.mobile}
-            onClick={drawerOpenStatus.menu ? hide : handleOpenMenu}>
-            {drawerOpenStatus.menu ? <Close className={'size-4'} /> : <Hamburger className={'size-7'} />}
+            onClick={isVisible ? hide : handleOpenMenu}>
+            {isVisible ? <Close className={'size-4'} /> : <Hamburger className={'size-7'} />}
           </Button>
         </div>
       </nav>

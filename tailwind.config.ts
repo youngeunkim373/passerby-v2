@@ -87,12 +87,69 @@ const config: Config = {
             opacity: '0',
           },
         },
+        slideOutUp: {
+          '0%': { 
+            transform: 'translateY(0%)',
+          },
+          '100%': { 
+            transform: 'translateY(-100%)',
+          },
+        },
+        slideInDown: {
+          '0%': { 
+            transform: 'translateY(-100%)',
+          },
+          '100%': { 
+            transform: 'translateY(0%)',
+          },
+        },
+        slideOutLeft: {
+          '0%': { 
+            transform: 'translateX(0%)',
+          },
+          '100%': { 
+            transform: 'translateX(-100%)',
+          },
+        },
+        slideInRight: {
+          '0%': { 
+            transform: 'translateX(-100%)',
+          },
+          '100%': { 
+            transform: 'translateX(0%)',
+          },
+        },
+        slideOutRight: {
+          '0%': { 
+            transform: 'translateX(0%)',
+          },
+          '100%': { 
+            transform: 'translateX(100%)',
+          },
+        },
+        slideInLeft: {
+          '0%': { 
+            transform: 'translateX(100%)',
+          },
+          '100%': { 
+            transform: 'translateX(0%)',
+          },
+        },
+
+        // left: `${isExisting ? '-translate-x-full' : 'translate-x-0'}`,
+        // right: `${isExisting ? 'translate-x-full' : 'translate-x-0'}`,
       },
       animation: {
         fadeIn: 'fadeIn .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
         fadeOut: 'fadeOut .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
         scaleUp: 'scaleUp .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
         scaleDown: 'scaleDown .5s forwards',
+        'slide-out-up': 'slideOutUp .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
+        'slide-in-down': 'slideInDown .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
+        'slide-out-left': 'slideOutLeft .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
+        'slide-in-right': 'slideInRight .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
+        'slide-out-right': 'slideOutRight .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
+        'slide-in-left': 'slideInLeft .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
       },
     },
   },

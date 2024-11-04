@@ -1,30 +1,30 @@
-'use client';
 import { PropsWithChildren } from 'react';
 
-import { VisibleSet } from '@/hooks/useVisible';
+import { Presence } from '@/components/common/Presence';
+import { useDrawerContext } from '@/contexts/DrawerContext';
 
 export type DrawerDirection = 'top' | 'left' | 'right';
 
-export interface Props extends Pick<VisibleSet, 'isVisible'>, PropsWithChildren {
-  id: string;
+export interface Props extends PropsWithChildren {
   direction?: DrawerDirection;
   className?: string;
 }
 
-export function Drawer({ id, children, direction = 'right', isVisible, className = '' }: Props) {
+export function Drawer({ children, className = '', direction = 'right' }: Props) {
+  const { isVisible } = useDrawerContext();
   const style = getStyle({ isVisible });
 
   return (
-    <div 
-      id={id}
-      className={`
-        ${style.wrapper}
-        ${style.direction.common} 
-        ${style.direction[direction]} 
-        ${className}
-      `}>
-      <div className={style.content}>{children}</div>
-    </div>
+    <Presence present={isVisible}>
+      <div 
+        className={`
+          ${style.wrapper}
+          ${style.direction[direction]} 
+          ${className}
+        `}>
+        <div className={style.content}>{children}</div>
+      </div>
+    </Presence>
   );
 }
 
@@ -32,9 +32,8 @@ const getStyle = ({ isVisible }: { isVisible: boolean }) => ({
   wrapper: 'w-full h-full bg-white fixed inset-y-0 z-40 overflow-y-auto',
   content: 'w-max',
   direction: {
-    common: 'transition-transform ease-in-out duration-500',
-    top: `${isVisible ? 'translate-y-0' : '-translate-y-full'}`,
-    left: `${isVisible ? 'translate-x-0' : '-translate-x-full'}`,
-    right: `${isVisible ? 'translate-x-0' : 'translate-x-full'}`,
+    top: `${isVisible ? 'animate-slide-in-down' : 'animate-slide-out-up'}`,
+    left: `${isVisible ? 'animate-slide-in-right' : 'animate-slide-out-left'}`,
+    right: `${isVisible ? 'animate-slide-in-left' : 'animate-slide-out-right'}`,
   },
 });

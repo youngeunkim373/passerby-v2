@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import '@/app/globals.css';
-import { Drawers } from '@/components/drawers/Drawers';
+
 import { Header } from '@/components/layout/Header';
 import { DrawerContextProvider } from '@/contexts/DrawerContext';
 import { ModalContextProvider } from '@/contexts/ModalContext';
@@ -23,7 +23,6 @@ export default function RootLayout({
           <ModalContextProvider>
             <Header />
             {children}
-            <Drawers />
           </ModalContextProvider>
         </DrawerContextProvider>
       </body>
