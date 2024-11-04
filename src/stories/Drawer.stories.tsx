@@ -1,21 +1,35 @@
 import { Meta, StoryFn } from '@storybook/react';
 
 import { Button } from '@/components/buttons/Button';
-import { Drawer, Props as DrawerProps } from '@/components/layout/Drawer';
-import useVisible from '@/hooks/useVisible';
+import { Drawer, Props } from '@/components/layout/Drawer';
+import { useDrawerContext } from '@/contexts/DrawerContext';
 
 export default {
   component: Drawer,
   title: 'Components/Layout/Drawer',
   argTypes: {
+    children: { control: false },
     className: { control: false },
-    content: { control: false },
-    isVisible: { control: false },
   }
 } as Meta<typeof Drawer>;
 
-const Template: StoryFn<Omit<DrawerProps, 'content' | 'isVisible'>> = ({ direction }) => {
-  const { isVisible, open, close } = useVisible();
+const Template: StoryFn<Props> = (args) => {
+  const { show, hide } = useDrawerContext();
+
+  const handleOpenDrawer= () => {
+    show(
+      <Drawer {...args} className={'flex justify-center items-center ml-[-16px]'}>
+        <Button 
+          variant={'solid'} 
+          color={'red'}
+          size={'large'}
+          onClick={hide}
+          className={'mx-auto'}>
+          Close
+        </Button>
+      </Drawer>
+    );
+  };
 
   return (
     <div className={'w-screen h-screen flex justify-center items-center bg-black ml-[-16px] mt-[-16px]'}>
@@ -23,25 +37,9 @@ const Template: StoryFn<Omit<DrawerProps, 'content' | 'isVisible'>> = ({ directi
         variant={'solid'} 
         color={'blue'}
         size={'large'}
-        onClick={open}>
-        Show
+        onClick={handleOpenDrawer}>
+          Open
       </Button>
-
-      <Drawer 
-        id={'storybook'}
-        direction={direction}
-        isVisible={isVisible}>
-        <div className={'w-screen h-screen flex justify-center items-center'}>
-          <Button 
-            variant={'solid'}
-            color={'red'}
-            size={'large'}
-            onClick={close}
-            className={'mx-auto'}>
-            Hide
-          </Button>
-        </div>
-      </Drawer>
     </div>
   );
 };

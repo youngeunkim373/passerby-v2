@@ -6,17 +6,20 @@ const ModalContext = createContext<ReturnType<typeof useModal>>(null);
 
 const useModal = () => {
   const [ content, setContent ] = useState<ReactNode | null>(null);
+  const [ isVisible, setVisible ] = useState(false);
 
   const show = (currentContent: ReactNode) => {
     setContent(currentContent);
+    setVisible(true);
   };
 
   const hide = () => {
-    setContent(null);
+    setVisible(false);
   };
 
   return {
     content,
+    isVisible,
     show,
     hide,
   };

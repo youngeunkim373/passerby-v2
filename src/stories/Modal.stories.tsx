@@ -15,11 +15,11 @@ export default {
 } as Meta<typeof Modal>;
 
 const Template: StoryFn<Omit<Props, 'content' | 'isVisible'>> = () => {
-  const { show, hide } = useModalContext();
+  const { show } = useModalContext();
 
   const handleOpenModal= () => {
     show(
-      <Modal close={hide}>
+      <Modal>
         Test1
       </Modal>
     );
