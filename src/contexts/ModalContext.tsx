@@ -1,7 +1,7 @@
 'use client';
 import { createContext, PropsWithChildren, ReactNode, useContext, useState } from 'react';
 
-// @ts-ignore
+// @ts-expect-error: known issue
 const ModalContext = createContext<ReturnType<typeof useModal>>(null);
 
 const useModal = () => {
