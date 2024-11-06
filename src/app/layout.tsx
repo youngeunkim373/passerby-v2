@@ -23,7 +23,9 @@ export default function RootLayout({
         <DrawerContextProvider>
           <ModalContextProvider>
             <Header />
-            {children}
+            <main>
+              {children}
+            </main>
             <Footer />
           </ModalContextProvider>
         </DrawerContextProvider>
