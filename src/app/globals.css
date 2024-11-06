@@ -20,7 +20,8 @@ html {
 }
 
 body, 
-header {
+header,
+footer {
   min-width: 320px; /* 최소 너비 설정 */
   width: 100%; 
   overflow-x: auto;
