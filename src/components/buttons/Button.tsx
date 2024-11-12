@@ -49,9 +49,9 @@ const buttonConfig: ButtonConfig = {
         black: 'bg-gray-800 hover:bg-gray-700',
       },
       size: {
-        small: 'px-4 py-1 text-sm',
-        default: 'px-6 py-2 text-base',
-        large: 'px-8 py-3 text-lg',
+        small: 'px-4 h-[32px] text-sm',
+        default: 'px-6 h-[44px] text-base',
+        large: 'px-8 h-[56px] text-lg',
       },
     },
     outlined: {
@@ -64,9 +64,9 @@ const buttonConfig: ButtonConfig = {
         black: 'border-gray-700 text-gray-800 hover:border-main hover:text-main',
       },
       size: {
-        small: 'px-[15px] py-[3px] text-sm',
-        default: 'px-[23px] py-[7px] text-base',
-        large: 'px-[31px] py-[12px] text-lg',
+        small: 'px-4 h-[32px] text-sm',
+        default: 'px-6 h-[44px] text-base',
+        large: 'px-8 h-[56px] text-lg',
       },
     },
     text: {
@@ -78,9 +78,9 @@ const buttonConfig: ButtonConfig = {
         black: 'text-gray800 hover:bg-gray-100',
       },
       size: {
-        small: 'px-4 py-1 text-sm',
-        default: 'px-6 py-2 text-base',
-        large: 'px-8 py-3 text-lg',
+        small: 'px-4 h-[32px] text-sm',
+        default: 'px-6 h-[44px] text-base',
+        large: 'px-8 h-[56px] text-lg',
       },
     },
     link: {
@@ -92,9 +92,9 @@ const buttonConfig: ButtonConfig = {
         black: 'text-gray-800 hover:text-main',
       },
       size: {
-        small: 'px-0 py-1 text-sm',
-        default: 'px-0 py-2 text-base',
-        large: 'px-0 py-3 text-lg',
+        small: 'px-0 h-[32px] text-sm',
+        default: 'px-0 h-[44px] text-base',
+        large: 'px-0 h-[56px] text-lg',
       },
     },
   }
