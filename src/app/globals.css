@@ -68,33 +68,33 @@ body {
   @font-face {
     font-family: 'NanumGothic';
     font-weight: 300;
-    font-display: fallback;
-    src: url("/assets/fonts/NanumGothicLight.otf") format('otf'),
-         url("/assets/fonts/NanumGothicLight.ttf") format('truetype');
+    font-display: swap;
+    src: url("/fonts/NanumGothicLight.otf") format('otf'),
+         url("/fonts/NanumGothicLight.ttf")  format('ttf');
   }
 
   @font-face {
     font-family: 'NanumGothic';
     font-weight: 400;
-    font-display: fallback;
-    src: url("/assets/fonts/NanumGothic.otf") format('otf'),
-         url("/assets/fonts/NanumGothic.ttf") format('truetype');
+    font-display: swap;
+    src: url("/fonts/NanumGothic.otf") format('otf'),
+         url("/fonts/NanumGothic.ttf")  format('ttf');
   }
 
   @font-face {
     font-family: 'NanumGothic';
     font-weight: 700;
-    font-display: fallback;
-    src: url("/assets/fonts/NanumGothicBold.otf") format('otf'),
-         url("/assets/fonts/NanumGothicBold.ttf") format('truetype');
+    font-display: swap;
+    src: url("/fonts/NanumGothicBold.otf") format('otf'),
+         url("/fonts/NanumGothicBold.ttf")  format('ttf');
   }
 
   @font-face {
     font-family: 'NanumGothic';
     font-weight: 900;
-    font-display: fallback;
-    src: url("/assets/fonts/NanumGothicExtraBold.otf") format('otf'),
-         url("/assets/fonts/NanumGothicExtraBold.ttf") format('truetype');
+    font-display: swap;
+    src: url("/fonts/NanumGothicExtraBold.otf") format('otf'),
+         url("/fonts/NanumGothicExtraBold.ttf")  format('ttf');
   }
 
 /* ------------ custom class ----------- */
