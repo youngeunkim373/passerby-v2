@@ -1,13 +1,15 @@
-import {  PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 
+import { Close } from '@/assets/icons/Close';
 import { Presence } from '@/components/common/Presence';
 import { useModalContext } from '@/contexts/ModalContext';
 
 export interface Props extends PropsWithChildren {
   className?: string;
+  closable?: boolean;
 }
 
-export function Modal({ children, className = '' }: Props) {
+export function Modal({ children, className = '', closable = true }: Props) {
   const { isVisible, hide } = useModalContext();
 
   return (
@@ -28,7 +30,12 @@ export function Modal({ children, className = '' }: Props) {
               ${className}
               ${isVisible ? 'animate-scale-up' : 'animate-scale-down'}
             `} 
-            onClick={(e) => e.stopPropagation()} >
+            onClick={(e) => e.stopPropagation()}>
+            {closable && (
+              <Close 
+                onClick={hide}
+                className={style.modal.close} />
+            )}
             <div className={style.modal.content}>
               {children}
             </div>
@@ -44,7 +51,14 @@ const style = {
   backdrop: 'fixed inset-0 bg-gray-700 bg-opacity-75',
   modal: {
     layer: 'fixed inset-0 z-10 overflow-y-auto flex items-center justify-center p-4 md:p-8',
-    box: 'w-full sm:max-w-lg relative flex items-center bg-white justify-center rounded-lg shadow-xl p-4 md:p-6',
+    box: `
+      relative 
+      flex justify-center items-center
+      w-auto min-w-[300px] min-h-[160px]
+      bg-white rounded-lg shadow-xl 
+      p-4
+    `,
     content: 'text-left',
+    close: 'size-5 p-1 absolute top-4 right-4 text-gray-400 cursor-pointer',
   },
 };
