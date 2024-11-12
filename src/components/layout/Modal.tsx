@@ -47,16 +47,16 @@ export function Modal({ children, className = '', closable = true }: Props) {
 }
 
 const style = {
-  wrapper: 'relative z-50',
+  wrapper: 'w-max relative z-50',
   backdrop: 'fixed inset-0 bg-gray-700 bg-opacity-75',
   modal: {
-    layer: 'fixed inset-0 z-10 overflow-y-auto flex items-center justify-center p-4 md:p-8',
+    layer: 'w-max fixed inset-0 z-10 overflow-y-auto flex items-center justify-center p-4 md:p-8',
     box: `
-      relative 
+      relative
       flex justify-center items-center
       w-auto min-w-[300px] min-h-[160px]
       bg-white rounded-lg shadow-xl 
-      p-4
+      mx-auto p-4
     `,
     content: 'text-left',
     close: 'size-5 p-1 absolute top-4 right-4 text-gray-400 cursor-pointer',
