@@ -14,12 +14,12 @@ export default {
   }
 } as Meta<typeof Modal>;
 
-const Template: StoryFn<Omit<Props, 'content' | 'isVisible'>> = () => {
+const Template: StoryFn<Omit<Props, 'content' | 'isVisible'>> = (args) => {
   const { show } = useModalContext();
 
   const handleOpenModal= () => {
     show(
-      <Modal>
+      <Modal {...args}>
         Test1
       </Modal>
     );
@@ -41,3 +41,7 @@ const Template: StoryFn<Omit<Props, 'content' | 'isVisible'>> = () => {
 };
 
 export const Default = Template.bind({});
+
+Default.args = {
+  closable: true,
+};
