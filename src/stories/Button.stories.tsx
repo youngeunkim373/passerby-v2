@@ -21,4 +21,5 @@ Default.args = {
   size: 'default',
   variant: 'outlined',
   children: 'Button',
+  disabled: false,
 };

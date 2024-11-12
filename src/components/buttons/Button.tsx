@@ -42,11 +42,11 @@ const buttonConfig: ButtonConfig = {
     solid: {
       shape: 'shadow-sm text-white',
       color: {
-        main: 'bg-main hover:bg-main-light',
-        red: 'bg-red hover:bg-red-light',
-        blue: 'bg-blue hover:bg-blue-light',
-        orange: 'bg-orange hover:bg-orange-light',
-        black: 'bg-gray-800 hover:bg-gray-700',
+        main: 'bg-main hover:bg-main-light disabled:bg-main-light',
+        red: 'bg-red hover:bg-red-light disabled:bg-red-light',
+        blue: 'bg-blue hover:bg-blue-light disabled:bg-blue-light',
+        orange: 'bg-orange hover:bg-orange-light disabled:bg-orange-light',
+        black: 'bg-gray-800 hover:bg-gray-700  disabled:bg-gray-500',
       },
       size: {
         small: 'px-4 h-[32px] text-sm',
@@ -57,11 +57,11 @@ const buttonConfig: ButtonConfig = {
     outlined: {
       shape: 'bg-transparent border box-border shadow-sm',
       color: {
-        main: 'border-main text-main hover:border-main-light hover:text-main-light',
-        red: 'border-red text-red hover:border-red-light hover:text-red-light',
-        blue: 'border-blue text-blue hover:border-blue-light hover:text-blue-light',
-        orange: 'border-orange text-orange hover:border-orange-light hover:text-orange-light',
-        black: 'border-gray-700 text-gray-800 hover:border-main hover:text-main',
+        main: 'border-main text-main hover:border-main-light hover:text-main-light disabled:border-main-light disabled:text-main-light',
+        red: 'border-red text-red hover:border-red-light hover:text-red-light disabled:border-red-light disabled:text-red-light',
+        blue: 'border-blue text-blue hover:border-blue-light hover:text-blue-light disabled:border-blue-light disabled:text-blue-light',
+        orange: 'border-orange text-orange hover:border-orange-light hover:text-orange-light disabled:border-orange-light disabled:text-orange-light',
+        black: 'border-gray-700 text-gray-800 hover:border-main hover:text-main disabled:border-gray-500 disabled:text-gray-500',
       },
       size: {
         small: 'px-4 h-[32px] text-sm',
@@ -71,11 +71,11 @@ const buttonConfig: ButtonConfig = {
     },
     text: {
       color: {
-        main: 'bg-transparent text-main hover:bg-main-pale',
-        red: 'text-red hover:bg-red-pale',
-        blue: 'text-blue hover:bg-blue-pale',
-        orange: 'text-orange hover:bg-orange-pale',
-        black: 'text-gray800 hover:bg-gray-100',
+        main: 'bg-transparent text-main hover:bg-main-pale disabled:text-main-light disabled:bg-transparent',
+        red: 'text-red hover:bg-red-pale disabled:text-red-light disabled:bg-transparent',
+        blue: 'text-blue hover:bg-blue-pale disabled:text-blue-light disabled:bg-transparent',
+        orange: 'text-orange hover:bg-orange-pale disabled:text-orange-light disabled:bg-transparent',
+        black: 'text-gray800 hover:bg-gray-100 disabled:text-gray-500 disabled:bg-transparent',
       },
       size: {
         small: 'px-4 h-[32px] text-sm',
@@ -85,11 +85,11 @@ const buttonConfig: ButtonConfig = {
     },
     link: {
       color: {
-        main: 'bg-transparent text-main hover:text-main-light',
-        red: 'text-red hover:text-red-light',
-        blue: 'text-blue hover:text-blue-light',
-        orange: 'text-orange hover:text-orange-light',
-        black: 'text-gray-800 hover:text-main',
+        main: 'bg-transparent text-main hover:text-main-light disabled:text-main-light',
+        red: 'text-red hover:text-red-light disabled:text-red-light',
+        blue: 'text-blue hover:text-blue-light disabled:text-blue-light',
+        orange: 'text-orange hover:text-orange-light disabled:text-orange-light',
+        black: 'text-gray-800 hover:text-main disabled:text-gray-500',
       },
       size: {
         small: 'px-0 h-[32px] text-sm',
