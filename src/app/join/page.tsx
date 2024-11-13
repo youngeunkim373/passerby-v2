@@ -11,6 +11,7 @@ import { FormItemProps } from '@/components/form/FormItem';
 import { FormSelect } from '@/components/form/FormSelect';
 import { Input } from '@/components/form/Input';
 import { ageRange, Regions } from '@/constants/user';
+import { Suspense } from 'react';
 
 export default function Join() {
   const { 
@@ -142,26 +143,29 @@ export default function Join() {
   ];
 
   return (
-    <div className={style.wrapper}>
-      <Image 
-        src={BubbleLogo} 
-        alt={'logo'} 
-        width={110} />
-      <Form
-        items={formItems}
-        onSubmit={join}
-        button={(
-          <Button 
-            type={'submit'} 
-            variant={'solid'}
-            disabled={emailVerification !== 'confirmed'}
-            className={'w-full'}>
-            {emailVerification === 'confirmed' ? '회원가입' : '본인 인증 필요'}
-          </Button>
-        )}
-        errors={errors}
-        className={style.form} />
-    </div>
+    <Suspense>
+      <div className={style.wrapper}>
+        <Image 
+          src={BubbleLogo} 
+          alt={'logo'} 
+          width={110} />
+        <Form
+          items={formItems}
+          onSubmit={join}
+          button={(
+            <Button 
+              type={'submit'} 
+              variant={'solid'}
+              disabled={emailVerification !== 'confirmed'}
+              className={'w-full'}>
+              {emailVerification === 'confirmed' ? '회원가입' : '본인 인증 필요'}
+            </Button>
+          )}
+          errors={errors}
+          className={style.form} />
+      </div>
+    </Suspense>
+
   );
 }
 
