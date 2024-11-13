@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { EmailTemplateIds } from '@/app/_data/sent_emails.interface';
 import { User } from '@/app/_data/users.interface';
 import users from '@/app/_data/users.json';
-import { saveSendEmailHistory } from '@/app/api/common/saveSendEmailHistory/route';
+import { saveSendEmailHistory } from '@/app/api/common/saveSendEmailHistory';
 import { joinEmailVerificationTemplate } from '@/constants/emailTemplate';
 import { sendEmail } from '@/utils/email';
 import { CustomError } from '@/utils/error';
