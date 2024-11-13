@@ -2,26 +2,24 @@
 import { Meta, StoryFn } from '@storybook/react';
 
 import { Button } from '@/components/buttons/Button';
-import { Modal, Props } from '@/components/layout/Modal';
+import { Props, SuccessModal } from '@/components/modals/SuccessModal';
 import { ModalContextProvider, useModalContext } from '@/contexts/ModalContext';
 
 export default {
-  component: Modal,
-  title: 'Components/Layout/Modal',
+  component: SuccessModal,
+  title: 'Components/Modals/SuccessModal',
   argTypes: {
     children: { control: false },
     className: { control: false },
   }
-} as Meta<typeof Modal>;
+} as Meta<typeof SuccessModal>;
 
 const Template: StoryFn<Omit<Props, 'content' | 'isVisible'>> = (args) => {
   const { show } = useModalContext();
 
   const handleOpenModal= () => {
     show(
-      <Modal {...args}>
-        Test1
-      </Modal>
+      <SuccessModal {...args} />
     );
   };
 
@@ -43,6 +41,7 @@ const Template: StoryFn<Omit<Props, 'content' | 'isVisible'>> = (args) => {
 export const Default = Template.bind({});
 
 Default.args = {
-  duration: 0,
-  closable: true,
+  button: 'Confirm',
+  duration: 5000,
+  message: 'Completed successfully',
 };

@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 
 import { Close } from '@/assets/icons/Close';
 import { Presence } from '@/components/common/Presence';
@@ -7,10 +7,33 @@ import { useModalContext } from '@/contexts/ModalContext';
 export interface Props extends PropsWithChildren {
   className?: string;
   closable?: boolean;
+  duration?: number;
+  onConfirm? : () => void;
 }
 
-export function Modal({ children, className = '', closable = true }: Props) {
+export function Modal({ 
+  children, 
+  className = '', 
+  closable = true, 
+  duration, 
+  onConfirm,
+}: Props) {
   const { isVisible, hide } = useModalContext();
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if(isVisible && duration) {
+      timer = setTimeout(() => {
+        if(onConfirm) onConfirm();
+        hide();
+      }, duration);
+    }
+
+    return () => {
+      if(timer) clearTimeout(timer);
+    };
+  }, [ isVisible, duration, hide, onConfirm ]);
 
   return (
     <Presence present={isVisible}>
@@ -54,11 +77,11 @@ const style = {
     box: `
       relative
       flex justify-center items-center
-      w-auto min-w-[300px] min-h-[160px]
+      w-auto min-w-[288px] min-h-[160px]
       bg-white rounded-lg shadow-xl 
       mx-auto p-4
     `,
-    content: 'text-left',
+    content: 'w-full text-left',
     close: 'size-5 p-1 absolute top-4 right-4 text-gray-400 cursor-pointer',
   },
 };
