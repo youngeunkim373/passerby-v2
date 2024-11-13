@@ -5,7 +5,7 @@ import { Button } from '@/components/buttons/Button';
 import { Modal, Props as ModalProps } from '@/components/layout/Modal';
 import { useModalContext } from '@/contexts/ModalContext';
 
-interface Props extends Omit<ModalProps, 'closable'> {
+export interface Props extends Omit<ModalProps, 'closable'> {
   button?: string;
   message?: string | ReactNode;
   statusCode?: number;
