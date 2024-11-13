@@ -67,7 +67,8 @@ export function Header() {
             variant={'solid'} 
             size={'small'}
             color={'black'}
-            className={'rounded-r-full rounded-s-full'}>
+            className={'rounded-r-full rounded-s-full'}
+            onClick={() => router.push('/join')}>
               회원가입
           </Button>
             
