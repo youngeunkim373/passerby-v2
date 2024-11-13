@@ -2,26 +2,24 @@
 import { Meta, StoryFn } from '@storybook/react';
 
 import { Button } from '@/components/buttons/Button';
-import { Modal, Props } from '@/components/layout/Modal';
+import { ErrorModal, Props } from '@/components/modals/ErrorModal';
 import { ModalContextProvider, useModalContext } from '@/contexts/ModalContext';
 
 export default {
-  component: Modal,
-  title: 'Components/Layout/Modal',
+  component: ErrorModal,
+  title: 'Components/Modals/ErrorModal',
   argTypes: {
     children: { control: false },
     className: { control: false },
   }
-} as Meta<typeof Modal>;
+} as Meta<typeof ErrorModal>;
 
 const Template: StoryFn<Omit<Props, 'content' | 'isVisible'>> = (args) => {
   const { show } = useModalContext();
 
   const handleOpenModal= () => {
     show(
-      <Modal {...args}>
-        Test1
-      </Modal>
+      <ErrorModal {...args} />
     );
   };
 
@@ -43,6 +41,8 @@ const Template: StoryFn<Omit<Props, 'content' | 'isVisible'>> = (args) => {
 export const Default = Template.bind({});
 
 Default.args = {
-  duration: 0,
-  closable: true,
+  button: 'Confirm',
+  duration: 5000,
+  message: 'Oops! The page you\'re looking for is not found',
+  statusCode: 404,
 };
