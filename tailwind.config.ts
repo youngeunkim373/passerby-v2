@@ -135,9 +135,38 @@ const config: Config = {
             transform: 'translateX(0%)',
           },
         },
-
-        // left: `${isExisting ? '-translate-x-full' : 'translate-x-0'}`,
-        // right: `${isExisting ? 'translate-x-full' : 'translate-x-0'}`,
+        moveUpFromBottom: {
+          '0%': { 
+            transform: 'translateY(-8px)',
+          },
+          '100%': { 
+            transform: 'translateY(0)',
+          },
+        },
+        moveDownToBottom: {
+          '0%': { 
+            transform: 'translateY(0)',
+          },
+          '100%': { 
+            transform: 'translateY(-8px)',
+          },
+        },
+        moveDownFromTop: {
+          '0%': { 
+            transform: 'translateY(8px)',
+          },
+          '100%': { 
+            transform: 'translateY(0)',
+          },
+        },
+        moveUpToTop: {
+          '0%': { 
+            transform: 'translateY(0)',
+          },
+          '100%': { 
+            transform: 'translateY(8px)',
+          },
+        },
       },
       animation: {
         'fade-in': 'fadeIn .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
@@ -150,6 +179,10 @@ const config: Config = {
         'slide-in-right': 'slideInRight .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
         'slide-out-right': 'slideOutRight .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
         'slide-in-left': 'slideInLeft .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
+        'move-up-from-bottom': 'moveUpFromBottom .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
+        'move-down-to-bottom': 'moveDownToBottom .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
+        'move-down-from-top': 'moveDownFromTop .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
+        'move-up-to-top': 'moveUpToTop .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
       },
     },
   },
