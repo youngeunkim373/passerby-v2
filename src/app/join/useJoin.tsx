@@ -9,6 +9,8 @@ import { Button } from '@/components/buttons/Button';
 import { InputState } from '@/components/form/Input';
 import { SelectState } from '@/components/form/Select';
 import { Modal } from '@/components/layout/Modal';
+import { ErrorModal } from '@/components/modals/ErrorModal';
+import { SuccessModal } from '@/components/modals/SuccessModal';
 import { useModalContext } from '@/contexts/ModalContext';
 import { CustomError } from '@/utils/error';
 import { emailRegex, nicknameRegex, passwordRegex } from '@/utils/regex';
@@ -90,11 +92,34 @@ export const useJoin = () => {
   const joinUser = async () => {
     try {
       await join({ email, password, nickname, age, sex, region });
-      // TODO 가입 완료 알림 UI 필요 -> SetTimeout으로 로그인 페이지로 이동
-      router.push('/');
-    } catch (error) {
-      console.error(error);
-      // TODO 에러 처리 UI 필요
+      
+      show(
+        <SuccessModal 
+          message={'회원가입을 완료하였습니다!'} 
+          button={'로그인하기'} 
+          duration={5000} 
+          onConfirm={() => router.push('/login')} />
+      );
+    } catch (err) {
+      console.error(err);
+
+      if(err instanceof CustomError) {
+        return show(
+          <ErrorModal 
+            statusCode={err.statusCode}
+            message={err.message} />
+        );
+      }
+
+      show(
+        <ErrorModal 
+          message={
+            <>
+              회원가입 도중 알 수 없는 오류가 발생했습니다.<br />
+              잠시 후 다시 시도해주세요.
+            </>
+          } />
+      );
     }
   };
 
@@ -103,22 +128,42 @@ export const useJoin = () => {
       await sendVerificationEmailApi({ email, password, passwordCheck, nickname, age, sex, region });
       setEmailVerification('sent');
     } catch(err) {
-      // TODO 에러 처리 UI 필요 
-      if(err instanceof CustomError && err.statusCode === 409) {
-        show(
-          <Modal>
-            <div>
-              <ExclamationMarkSolidCircle className={'size-10 text-red mx-auto mb-4'} />
-              <p className={'text-center'}>이미 회원가입이 완료된 이메일입니다.</p>
-              <p className={'text-center'}>로그인 창으로 이동하시겠습니까?</p>
-              <div className={'flex justify-center gap-4 mt-8'}>
-                <Button onClick={hide}>취소</Button>
-                <Button className={'w-full'} variant={'solid'}>로그인하러 가기</Button>
+      if(err instanceof CustomError) {
+        if(err.statusCode === 409) {
+          return show(
+            <Modal>
+              <div>
+                <ExclamationMarkSolidCircle className={'size-10 text-main mx-auto mb-4'} />
+                <p className={'text-center'}>이미 회원가입이 완료된 이메일입니다.</p>
+                <p className={'text-center'}>로그인 창으로 이동하시겠습니까?</p>
+                <div className={'flex justify-center gap-4 mt-8'}>
+                  <Button onClick={hide}>취소</Button>
+                  <Button 
+                    className={'w-full'} 
+                    variant={'solid'}
+                    onClick={() => router.push('/login')}>로그인하러 가기</Button>
+                </div>
               </div>
-            </div>
-          </Modal>
+            </Modal>
+          );
+        }
+
+        return show(
+          <ErrorModal 
+            statusCode={err.statusCode}
+            message={err.message} />
         );
       }
+
+      show(
+        <ErrorModal 
+          message={
+            <>
+              본인 인증 메일 전송 중 알 수 없는 오류가 발생했습니다.<br />
+              잠시 후 다시 시도해주세요.
+            </>
+          } />
+      );
     }
   };
 
