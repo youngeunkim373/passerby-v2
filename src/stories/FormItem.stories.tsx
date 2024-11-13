@@ -4,6 +4,8 @@ import { FieldValues, useForm } from 'react-hook-form';
 import { Form } from '@/components/form/Form';
 import { FormItem } from '@/components/form/FormItem';
 import { Input } from '@/components/form/Input';
+import { FormSelect } from '@/components/form/FormSelect';
+import { options } from '@/stories/constants';
 
 export default {
   component: FormItem,
@@ -41,10 +43,14 @@ const errorOptions = {
       message: 'The maximum value is 90000',
     },
   },
+  select: {
+    required: 'Select a value',
+  }
 };
 
 const Template: StoryFn<FieldValues> = () => {
   const { 
+    control,
     formState: { errors, isValid },
     register,  
   } = useForm({ mode: 'all' });
@@ -64,6 +70,21 @@ const Template: StoryFn<FieldValues> = () => {
           placeholder={'Enter any text'}
           state={inputState}
           {...register('input', errorOptions['input'])} />
+      ),
+      isRequired: true,
+      helper: 'there are required, pattern, min/max length and min/max validations',
+    },
+    {
+      name: 'select',
+      label: 'Example 2 - Select',
+      children: (
+        <FormSelect 
+          control={control}
+          placeholder={'Select your country'}
+          options={options}
+          state={inputState}
+          allowClear={true}
+          {...register('select', errorOptions['select'])} />
       ),
       isRequired: true,
       helper: 'there are required, pattern, min/max length and min/max validations',
