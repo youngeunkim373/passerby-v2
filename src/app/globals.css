@@ -64,6 +64,10 @@ body {
   font-family: 'NanumGothic', sans-serif;
 }
 
+input:focus {
+  outline: none;
+}
+
 /* ------------ fonts ----------- */
   @font-face {
     font-family: 'NanumGothic';
