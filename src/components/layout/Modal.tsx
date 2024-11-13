@@ -25,7 +25,7 @@ export function Modal({
 
     if(isVisible && duration) {
       timer = setTimeout(() => {
-        onConfirm && onConfirm();
+        if(onConfirm) onConfirm();
         hide();
       }, duration);
     }
@@ -33,7 +33,7 @@ export function Modal({
     return () => {
       if(timer) clearTimeout(timer);
     };
-  }, [ isVisible ]);
+  }, [ isVisible, duration, hide, onConfirm ]);
 
   return (
     <Presence present={isVisible}>

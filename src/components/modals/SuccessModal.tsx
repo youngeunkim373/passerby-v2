@@ -14,7 +14,7 @@ export function SuccessModal({ button, message, ...modalProps }: Props) {
   const { hide } = useModalContext();
 
   const handleConfirm = () => {
-    modalProps.onConfirm && modalProps.onConfirm();
+    if(modalProps.onConfirm) modalProps.onConfirm();
     hide();
   };
 
