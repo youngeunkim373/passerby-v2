@@ -15,10 +15,13 @@ import { ageRange, Regions } from '@/constants/user';
 export default function Join() {
   const { 
     control,
+    emailVerification,
     errors, 
+    formValues,
     register, 
     valueStates, 
     join, 
+    sendVerificationEmail,
   } = useJoin();
 
   const formItems: FormItemProps[] = [
@@ -26,12 +29,23 @@ export default function Join() {
       name: 'email',
       label: '이메일',
       isRequired: true,
+      helper: emailVerification === 'sent' && '이메일을 전송하였습니다',
       children: (
-        <Input
-          prefix={<User />}
-          placeholder={'이메일을 입력해주세요'} 
-          state={valueStates.email}
-          {...register.email} />
+        <div className={style.item.email.wrapper}>
+          <Input
+            prefix={<User />}
+            placeholder={'이메일을 입력해주세요'} 
+            state={valueStates.email}
+            {...register.email} />
+          <Button 
+            type={'button'}
+            size={'small'} 
+            disabled={!formValues.email || !!errors.email}
+            className={style.item.email.button}
+            onClick={sendVerificationEmail}>
+             본인 인증
+          </Button>
+        </div>
       ),
     },
     {
@@ -140,8 +154,9 @@ export default function Join() {
           <Button 
             type={'submit'} 
             variant={'solid'}
+            disabled={emailVerification !== 'confirmed'}
             className={'w-full'}>
-            회원가입
+            {emailVerification === 'confirmed' ? '회원가입' : '본인 인증 필요'}
           </Button>
         )}
         errors={errors}

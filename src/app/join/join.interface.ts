@@ -11,3 +11,7 @@ export interface JoinRequestDTO {
   sex: SexType;
   region: Regions;
 }
+
+export interface SendVerificationEmailDTO extends JoinRequestDTO {
+  passwordCheck: string;
+}

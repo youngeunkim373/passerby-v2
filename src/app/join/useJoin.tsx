@@ -2,15 +2,26 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 import { JoinRequestDTO } from '@/app/join/join.interface';
-import { join } from '@/app/join/join.service';
+import { join, sendVerificationEmail as sendVerificationEmailApi } from '@/app/join/join.service';
+import { ExclamationMarkSolidCircle } from '@/assets/icons/ExclamationMark';
+import { Button } from '@/components/buttons/Button';
 import { InputState } from '@/components/form/Input';
 import { SelectState } from '@/components/form/Select';
+import { Modal } from '@/components/layout/Modal';
+import { useModalContext } from '@/contexts/ModalContext';
+import { CustomError } from '@/utils/error';
 import { emailRegex, nicknameRegex, passwordRegex } from '@/utils/regex';
+import { useState } from 'react';
 
 type JoinFormDTO = JoinRequestDTO & { passwordCheck: string };
+type EmailVerificationState = 'unsent' | 'sent' | 'confirmed';
 
 export const useJoin = () => {
   const router = useRouter();
+  const { show, hide } = useModalContext();
+
+  const [ emailVerification, setEmailVerification ] = useState<EmailVerificationState>('unsent');
+
   const {
     clearErrors,
     handleSubmit,
@@ -77,6 +88,30 @@ export const useJoin = () => {
     }
   };
 
+  const sendVerificationEmail = async () => {
+    try {
+      await sendVerificationEmailApi({ email, password, passwordCheck, nickname, age, sex, region });
+      setEmailVerification('sent');
+    } catch(err) {
+      // TODO 에러 처리 UI 필요 
+      if(err instanceof CustomError && err.statusCode === 409) {
+        show(
+          <Modal>
+            <div>
+              <ExclamationMarkSolidCircle className={'size-10 text-red mx-auto mb-4'} />
+              <p className={'text-center'}>이미 회원가입이 완료된 이메일입니다.</p>
+              <p className={'text-center'}>로그인 창으로 이동하시겠습니까?</p>
+              <div className={'flex justify-center gap-4 mt-8'}>
+                <Button onClick={hide}>취소</Button>
+                <Button className={'w-full'} variant={'solid'}>로그인하러 가기</Button>
+              </div>
+            </div>
+          </Modal>
+        );
+      }
+    }
+  };
+
   const watchPassword = (password: JoinFormDTO['password']) => {
     if(password !== passwordCheck) {
       return setError('passwordCheck', { 
@@ -100,6 +135,9 @@ export const useJoin = () => {
   return {
     control,
     errors,
+    formValidation,
+    formValues: { email, password, nickname, age, sex, region,passwordCheck },
+    emailVerification,
     valueStates: {
       email: getValidState('email', email),
       password: getValidState('password', password), 
@@ -122,6 +160,7 @@ export const useJoin = () => {
       region: register('region', formValidation.region),
     },
     join: handleSubmit(joinUser),
+    sendVerificationEmail,
   };
 };
 
