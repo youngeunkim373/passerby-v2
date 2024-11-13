@@ -23,7 +23,7 @@ export default function RootLayout({
         <DrawerContextProvider>
           <ModalContextProvider>
             <Header />
-            <main>
+            <main className={'w-max'}>
               {children}
             </main>
             <Footer />
