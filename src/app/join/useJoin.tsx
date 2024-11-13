@@ -1,4 +1,5 @@
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { JoinRequestDTO } from '@/app/join/join.interface';
@@ -11,13 +12,21 @@ import { Modal } from '@/components/layout/Modal';
 import { useModalContext } from '@/contexts/ModalContext';
 import { CustomError } from '@/utils/error';
 import { emailRegex, nicknameRegex, passwordRegex } from '@/utils/regex';
-import { useState } from 'react';
+import { validateToken } from '@/utils/token';
+import { decryptUrlToObject } from '@/utils/url';
 
 type JoinFormDTO = JoinRequestDTO & { passwordCheck: string };
 type EmailVerificationState = 'unsent' | 'sent' | 'confirmed';
 
 export const useJoin = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const { content, token } = Object.fromEntries(searchParams.entries()) as {
+    content?: string;
+    token?: string;
+  };
+
   const { show, hide } = useModalContext();
 
   const [ emailVerification, setEmailVerification ] = useState<EmailVerificationState>('unsent');
@@ -26,6 +35,7 @@ export const useJoin = () => {
     clearErrors,
     handleSubmit,
     register,
+    reset,
     setError,
     watch,
     control,
@@ -131,6 +141,40 @@ export const useJoin = () => {
       ? 'error' 
       : (fieldValue ? 'success' : 'normal');
   };
+
+  useEffect(() => {
+    // 유저가 입력했던 값 다시 입력
+    if(content) {
+      const decryptedUserInfo = decryptUrlToObject(content) as JoinFormDTO;
+      reset(decryptedUserInfo);
+    }
+    
+    // token 유효시간 체크
+    const checkTokenExpiration = async () =>  {
+      if(!token) return;
+
+      try {
+        validateToken(token);
+        setEmailVerification('confirmed');
+      } catch(e) {
+        console.log('An error occurs while checking verification token: '+ e);
+  
+        if(e instanceof CustomError) {
+          const throwFormError = (message: string) => {
+            setError('email', { type: 'manual', message });
+          };
+  
+          if(e.statusCode === 403) {
+            return throwFormError('이메일 본인 인증 유효시간이 지났습니다. 다시 본인 인증을 진행해주세요');
+          }
+  
+          throwFormError(e.message);
+        }
+      }
+    };
+
+    checkTokenExpiration();
+  }, []);
 
   return {
     control,
