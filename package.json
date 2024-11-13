@@ -17,7 +17,8 @@
     "@stylexjs/stylex": "^0.8.0",
     "next": "14.2.14",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-hook-form": "^7.53.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.9.0",
