@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 import { JoinRequestDTO } from '@/app/join/join.interface';
+import { join } from '@/app/join/join.service';
 import { InputState } from '@/components/form/Input';
 import { SelectState } from '@/components/form/Select';
 import { emailRegex, nicknameRegex, passwordRegex } from '@/utils/regex';
@@ -64,9 +65,16 @@ export const useJoin = () => {
     sex: { required: '성별을 선택해주세요' },
     region: { required: '거주하는 시/도를 선택해주세요' },
   };
-  
+
   const joinUser = async () => {
-    router.push('/');
+    try {
+      await join({ email, password, nickname, age, sex, region });
+      // TODO 가입 완료 알림 UI 필요 -> SetTimeout으로 로그인 페이지로 이동
+      router.push('/');
+    } catch (error) {
+      console.error(error);
+      // TODO 에러 처리 UI 필요
+    }
   };
 
   const watchPassword = (password: JoinFormDTO['password']) => {
