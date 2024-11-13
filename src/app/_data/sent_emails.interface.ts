@@ -9,5 +9,6 @@ export interface SentEmail {
   to: string;
   result: 'SUCCESS' | 'FAIL';
   sentAt: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   content?: Record<string, any>;
 }
