@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useJoin } from '@/app/join/useJoin';
 import { Locker } from '@/assets/icons/Locker';
 import { User } from '@/assets/icons/User';
-import BubbleLogo from '@/assets/images/bubble-logo.svg';
 import { Button } from '@/components/buttons/Button';
 import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
@@ -15,6 +14,7 @@ import { ageRange, Regions } from '@/constants/user';
 export function JoinForm() {
   const { 
     control,
+    emailHelper,
     emailVerification,
     errors, 
     formValues,
@@ -29,7 +29,7 @@ export function JoinForm() {
       name: 'email',
       label: '이메일',
       isRequired: true,
-      helper: emailVerification === 'sent' && '이메일을 전송하였습니다',
+      helper: emailHelper,
       children: (
         <div className={style.item.email.wrapper}>
           <Input
@@ -144,9 +144,10 @@ export function JoinForm() {
   return (
     <div className={style.wrapper}>
       <Image 
-        src={BubbleLogo} 
+        src={'/images/bubble-logo.svg'} 
         alt={'logo'} 
-        width={110} />
+        width={110}
+        height={97.2} />
       <Form
         items={formItems}
         onSubmit={join}

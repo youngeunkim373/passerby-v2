@@ -1,8 +1,7 @@
-import Image from 'next/image';
 import { Meta, StoryFn } from '@storybook/react';
+import Image from 'next/image';
 
 import { Input, Props as InputProps } from '@/components/form/Input';
-import Logo from '@/assets/images/bubble-logo.svg';
 
 export default {
   component: Input,
@@ -22,7 +21,13 @@ export default {
 const options = {
   fix: {
     'string': '$',
-    'icon': <Image src={Logo} alt={'logo'} width={24} />,
+    'icon': (
+      <Image 
+        src={'/images/bubble-logo.svg'} 
+        alt={'logo'} 
+        width={24}
+        height={21.2} />
+    ),
     'none': null,
   }
 };
