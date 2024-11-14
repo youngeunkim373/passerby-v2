@@ -1,9 +1,8 @@
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import firestore from 'firestore';
 import { NextResponse } from 'next/server';
-import * as fs from 'fs';
-import * as path from 'path';
 import { ulid } from 'ulid';
 
-import users from '@/app/_data/users.json';
 import { User } from '@/app/_data/users.interface';
 import { CustomError } from '@/utils/error';
 
@@ -11,20 +10,18 @@ export async function POST(req: Request) {
   try {
     const { email, password, age, sex, region } = await req.json();
 
-    const isExisting = (users as User[]).find((user) => {
-      return user.email === email && user.status === 'ACTIVE';
-    });
+    // TODO 이 함수 따로 빼기
+    const usersRef = collection(firestore, 'users');
+    const q = query(usersRef, where('status', '==', 'ACTIVE'));
+    const activeUsersSnapshot = await getDocs(q);
 
-    if(isExisting) {
+    if(!activeUsersSnapshot.empty) {
       throw new CustomError(409, '이미 등록된 이메일입니다');
     }
 
-    const filePath = path.join(process.cwd() + '/src/app/_data', 'users.json');
     const now = new Date().valueOf();
 
-    const newUsers: User[] = users as User[];
-
-    const newUser: User = {
+    const newData: User = {
       id: ulid(),
       email,
       password,
@@ -36,13 +33,15 @@ export async function POST(req: Request) {
       updatedAt: now,
     };
 
-    newUsers.push(newUser);
-
-    fs.writeFile(filePath, JSON.stringify(newUsers), 'utf8', (err) => {
-      if (err) {
-        throw new CustomError(500, '회원가입 정보가 올바르지 않습니다.');
-      }
-    });
+    try {
+      await addDoc(
+        collection(firestore, 'users'),
+        newData,
+      );
+    } catch (error) {
+      console.error('Firestore에 저장 중 오류가 발생했습니다:', error);
+      throw new CustomError(500, '회원가입 정보가 올바르지 않습니다.');
+    }
 
     return NextResponse.json({ status: 200 });
   } catch (e: unknown) {
