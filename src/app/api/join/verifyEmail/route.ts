@@ -1,9 +1,8 @@
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import firestore from 'firestore';
 import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
 
 import { EmailTemplateIds } from '@/app/_data/sent_email_history.interface';
+import { getActiveUsers } from '@/app/api/common/getActiveUsers';
 import { saveSendEmailHistory } from '@/app/api/common/saveSendEmailHistory';
 import { joinEmailVerificationTemplate } from '@/constants/emailTemplate';
 import { sendEmail } from '@/utils/email';
@@ -23,12 +22,9 @@ export async function POST(req: Request) {
     const { email: reqEmail, ...otherValues } = await req.json();
     email = reqEmail;
 
-    // TODO 이 함수 따로 빼기
-    const usersRef = collection(firestore, 'users');
-    const q = query(usersRef, where('status', '==', 'ACTIVE'));
-    const activeUsersSnapshot = await getDocs(q);
+    const activeUsers = await getActiveUsers(email);
 
-    if(!activeUsersSnapshot.empty) {
+    if(activeUsers.length > 0) {
       throw new CustomError(409, '이미 등록된 이메일입니다');
     }
 
