@@ -1,9 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
 
-import { EmailTemplateIds } from '@/app/_data/sent_emails.interface';
-import { User } from '@/app/_data/users.interface';
-import users from '@/app/_data/users.json';
+import { EmailTemplateIds } from '@/app/_data/sent_email_history.interface';
+import { getActiveUser } from '@/app/api/common/getActiveUser';
 import { saveSendEmailHistory } from '@/app/api/common/saveSendEmailHistory';
 import { joinEmailVerificationTemplate } from '@/constants/emailTemplate';
 import { sendEmail } from '@/utils/email';
@@ -23,12 +22,9 @@ export async function POST(req: Request) {
     const { email: reqEmail, ...otherValues } = await req.json();
     email = reqEmail;
 
-    // 기등록 유저인지 확인
-    const isExisting = (users as User[]).find((user) => {
-      return user.email === email && user.status === 'ACTIVE';
-    });
+    const activeUsers = await getActiveUser(email);
 
-    if(isExisting) {
+    if(activeUsers.length > 0) {
       throw new CustomError(409, '이미 등록된 이메일입니다');
     }
 

@@ -2,7 +2,7 @@ export enum EmailTemplateIds {
   VERIFICATION = 'VERIFICATION',
 }
 
-export interface SentEmail {
+export interface SentEmailHistory {
   id: string;
   templateId: EmailTemplateIds;
   from: string;
