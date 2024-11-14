@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useJoin } from '@/app/join/useJoin';
 import { Locker } from '@/assets/icons/Locker';
 import { User } from '@/assets/icons/User';
-import BubbleLogo from '@/assets/images/bubble-logo.svg';
 import { Button } from '@/components/buttons/Button';
 import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
@@ -144,9 +143,10 @@ export function JoinForm() {
   return (
     <div className={style.wrapper}>
       <Image 
-        src={BubbleLogo} 
+        src={'/images/bubble-logo.svg'} 
         alt={'logo'} 
-        width={110} />
+        width={110}
+        height={97.2} />
       <Form
         items={formItems}
         onSubmit={join}

@@ -2,9 +2,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import { Close } from '@/assets/icons/Close';
 import { Hamburger } from '@/assets/icons/Bar';
-import BubbleLogo from '@/assets/images/bubble-logo.svg';
+import { Close } from '@/assets/icons/Close';
 import { Button } from '@/components/buttons/Button';
 import { MenuButton } from '@/components/buttons/MenuButton';
 import { Drawer } from '@/components/layout/Drawer';
@@ -39,9 +38,10 @@ export function Header() {
           onClick={() => router.push('/')}
           className={style.logo}>
           <Image 
-            src={BubbleLogo}
+            src={'/images/bubble-logo.svg'}
             alt={'logo'}
             width={56}
+            height={49.5}
             className={'min-w-[56px]'} />
         </Button>
 
