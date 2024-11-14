@@ -29,7 +29,7 @@ export const joinEmailVerificationTemplate = ({ verificationUrl }: JoinIdentityV
           <table
             cellpadding="0"
             width="600px"
-            cellspacing="50"
+            cellspacing="40"
             style="border: 1px solid #eaeaea"
           >
             <tbody>
@@ -37,9 +37,11 @@ export const joinEmailVerificationTemplate = ({ verificationUrl }: JoinIdentityV
                 <td>
                   <a href="${process.env.NEXT_PUBLIC_BASE_URL}">
                     <img
-                      src="${process.env.NEXT_PUBLIC_BASE_URL}/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbubble-logo.3bc10685.png&w=128&q=75"
-                      width="200"
+                      src="https://firebasestorage.googleapis.com/v0/b/passersby-67eaa.firebasestorage.app/o/static%2Fbubble-logo.png?alt=media&token=c1bdaf96-8814-48f7-899d-1b976966d1fe"
+                      width="87.5"
+                      height="77"
                       alt="Logo"
+                      loading="lazy"
                     />
                   </a>
                 </td>
@@ -52,6 +54,7 @@ export const joinEmailVerificationTemplate = ({ verificationUrl }: JoinIdentityV
                       font-size: 30px;
                       font-weight: 400;
                       font-style: normal;
+                      margin: 0;
                     "
                   >
                     길 가는 사람들 본인인증 메일
