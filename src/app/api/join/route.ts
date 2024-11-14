@@ -4,14 +4,14 @@ import { NextResponse } from 'next/server';
 import { ulid } from 'ulid';
 
 import { User } from '@/app/_data/users.interface';
-import { getActiveUsers } from '@/app/api/common/getActiveUsers';
+import { getActiveUser } from '@/app/api/common/getActiveUser';
 import { CustomError } from '@/utils/error';
 
 export async function POST(req: Request) {
   try {
     const { email, password, age, sex, region } = await req.json();
 
-    const activeUsers = await getActiveUsers(email);
+    const activeUsers = await getActiveUser(email);
 
     if(activeUsers.length > 0) {
       throw new CustomError(409, '이미 등록된 이메일입니다');

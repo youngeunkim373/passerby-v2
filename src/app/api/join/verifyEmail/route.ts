@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
 
 import { EmailTemplateIds } from '@/app/_data/sent_email_history.interface';
-import { getActiveUsers } from '@/app/api/common/getActiveUsers';
+import { getActiveUser } from '@/app/api/common/getActiveUser';
 import { saveSendEmailHistory } from '@/app/api/common/saveSendEmailHistory';
 import { joinEmailVerificationTemplate } from '@/constants/emailTemplate';
 import { sendEmail } from '@/utils/email';
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     const { email: reqEmail, ...otherValues } = await req.json();
     email = reqEmail;
 
-    const activeUsers = await getActiveUsers(email);
+    const activeUsers = await getActiveUser(email);
 
     if(activeUsers.length > 0) {
       throw new CustomError(409, '이미 등록된 이메일입니다');
