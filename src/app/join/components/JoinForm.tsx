@@ -14,6 +14,7 @@ import { ageRange, Regions } from '@/constants/user';
 export function JoinForm() {
   const { 
     control,
+    emailHelper,
     emailVerification,
     errors, 
     formValues,
@@ -28,7 +29,7 @@ export function JoinForm() {
       name: 'email',
       label: '이메일',
       isRequired: true,
-      helper: emailVerification === 'sent' && '이메일을 전송하였습니다',
+      helper: emailHelper,
       children: (
         <div className={style.item.email.wrapper}>
           <Input

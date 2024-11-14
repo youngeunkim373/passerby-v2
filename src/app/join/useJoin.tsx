@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { JoinRequestDTO } from '@/app/join/join.interface';
 import { join, sendVerificationEmail as sendVerificationEmailApi } from '@/app/join/join.service';
 import { ExclamationMarkSolidCircle } from '@/assets/icons/ExclamationMark';
+import { GradationLoading } from '@/assets/icons/Loading';
 import { Button } from '@/components/buttons/Button';
 import { InputState } from '@/components/form/Input';
 import { SelectState } from '@/components/form/Select';
@@ -18,7 +19,7 @@ import { validateToken } from '@/utils/token';
 import { decryptUrlToObject } from '@/utils/url';
 
 type JoinFormDTO = JoinRequestDTO & { passwordCheck: string };
-type EmailVerificationState = 'unsent' | 'sent' | 'confirmed';
+type EmailVerificationState = 'unsent' | 'isSending' | 'sent' | 'confirmed';
 
 export const useJoin = () => {
   const router = useRouter();
@@ -89,6 +90,12 @@ export const useJoin = () => {
     region: { required: '거주하는 시/도를 선택해주세요' },
   };
 
+  const emailHelper = 
+  emailVerification === 'isSending' ? <GradationLoading className={'size-4'} /> :
+    emailVerification === 'sent' ? '이메일을 전송했습니다':
+      emailVerification === 'confirmed' ? <span className={'text-blue'}>이메일 본인 인증을 완료했습니다</span> :
+        '이메일 본인 인증을 진행해주세요';
+
   const joinUser = async () => {
     try {
       await join({ email, password, nickname, age, sex, region });
@@ -125,6 +132,7 @@ export const useJoin = () => {
 
   const sendVerificationEmail = async () => {
     try {
+      setEmailVerification('isSending');
       await sendVerificationEmailApi({ email, password, passwordCheck, nickname, age, sex, region });
       setEmailVerification('sent');
     } catch(err) {
@@ -223,6 +231,7 @@ export const useJoin = () => {
 
   return {
     control,
+    emailHelper,
     errors,
     formValidation,
     formValues: { email, password, nickname, age, sex, region,passwordCheck },
