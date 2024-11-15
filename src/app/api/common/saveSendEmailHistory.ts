@@ -22,7 +22,7 @@ export const saveSendEmailHistory = async ({
     to,
     result,
     sentAt: now,
-    content,
+    content: content ?? null,
   };
 
   try {
