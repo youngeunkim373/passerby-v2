@@ -10,5 +10,5 @@ export interface SentEmailHistory {
   result: 'SUCCESS' | 'FAIL';
   sentAt: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  content?: Record<string, any>;
+  content?: Record<string, any> | null;
 }

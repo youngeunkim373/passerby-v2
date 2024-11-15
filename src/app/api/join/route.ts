@@ -11,16 +11,14 @@ export async function POST(req: Request) {
   try {
     const { email, password, age, sex, region } = await req.json();
 
+    // 기등록 유저 체크
     const activeUsers = await getActiveUser(email);
 
     if(activeUsers.length > 0) {
       throw new CustomError(409, '이미 등록된 이메일입니다');
     }
 
-    if(activeUsers.length > 0) {
-      throw new CustomError(409, '이미 등록된 이메일입니다');
-    }
-
+    // 신규 유저 등록
     const now = new Date().valueOf();
 
     const newData: User = {

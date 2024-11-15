@@ -22,6 +22,7 @@ export async function POST(req: Request) {
     const { email: reqEmail, ...otherValues } = await req.json();
     email = reqEmail;
 
+    // 기등록 유저 체크
     const activeUsers = await getActiveUser(email);
 
     if(activeUsers.length > 0) {
