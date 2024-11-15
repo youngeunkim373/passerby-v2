@@ -60,7 +60,7 @@ export function Header() {
             variant={'link'}
             size={'small'}
             color={'black'}
-            onClick={() => router.push('/signin')}>
+            onClick={() => router.push('/login')}>
               로그인
           </Button>
           <Button 
