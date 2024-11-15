@@ -136,6 +136,8 @@ export const useJoin = () => {
       await sendVerificationEmailApi({ email, password, passwordCheck, nickname, age, sex, region });
       setEmailVerification('sent');
     } catch(err) {
+      setEmailVerification('unsent');
+
       if(err instanceof CustomError) {
         if(err.statusCode === 409) {
           return show(
