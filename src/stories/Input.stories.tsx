@@ -1,6 +1,7 @@
 import { Meta, StoryFn } from '@storybook/react';
-import Image from 'next/image';
 
+import { Mail } from '@/assets/icons/Mail';
+import { User } from '@/assets/icons/User';
 import { Input, Props as InputProps } from '@/components/form/Input';
 
 export default {
@@ -19,26 +20,26 @@ export default {
 } as Meta<typeof Input>;
 
 const options = {
-  fix: {
-    'string': '$',
-    'icon': (
-      <Image 
-        src={'/images/bubble-logo.svg'} 
-        alt={'logo'} 
-        width={24}
-        height={21.2} />
-    ),
-    'none': null,
-  }
+  prefix: {
+    string: 'Email',
+    icon: <User />,
+    none: null,
+  },
+  suffix: {
+    string: '@gmail.com',
+    icon: <Mail />,
+    none: null,
+  },
 };
 
-type FixType = keyof typeof options.fix;
+type PrefixType = keyof typeof options.prefix;
+type SuffixType = keyof typeof options.suffix;
 
 const Template: StoryFn<InputProps> = (args) => {
   const { prefix, readOnly, suffix, ...rest } = args;
 
-  const prefixSet: React.ReactNode = options.fix[prefix as FixType];
-  const suffixSet: React.ReactNode = options.fix[suffix as FixType];
+  const prefixSet: React.ReactNode = options.prefix[prefix as PrefixType];
+  const suffixSet: React.ReactNode = options.suffix[suffix as SuffixType];
 
   return (
     <div className={'flex h-screen justify-center items-center'}>
@@ -54,11 +55,13 @@ const Template: StoryFn<InputProps> = (args) => {
 export const Default = Template.bind({});
 
 Default.args = {
+  allowClear: true,
   disabled: false,
+  placeholder: 'Enter a value',
   prefix: 'icon',
   readOnly: false,
   size: 'default',
-  width: 300,
   state: 'normal',
-  suffix: '@gmail.com',
+  suffix: 'string',
+  width: 300,
 };
