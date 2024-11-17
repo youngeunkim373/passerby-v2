@@ -4,6 +4,7 @@ import '@/app/globals.css';
 
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { AuthContextProvider } from '@/contexts/AuthContext';
 import { DrawerContextProvider } from '@/contexts/DrawerContext';
 import { ModalContextProvider } from '@/contexts/ModalContext';
 
@@ -18,17 +19,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang={'en'}>
+    <html lang={'ko'}>
       <body>
-        <DrawerContextProvider>
-          <ModalContextProvider>
-            <Header />
-            <main className={'w-max'}>
-              {children}
-            </main>
-            <Footer />
-          </ModalContextProvider>
-        </DrawerContextProvider>
+        <AuthContextProvider>
+          <DrawerContextProvider>
+            <ModalContextProvider>
+              <Header />
+              <main className={'w-max'}>
+                {children}
+              </main>
+              <Footer />
+            </ModalContextProvider>
+          </DrawerContextProvider>
+        </AuthContextProvider>
       </body>
     </html>
   );
