@@ -20,19 +20,28 @@ export function Header() {
   const { isVisible, show, hide } = useDrawerContext();
   const { isLoggedIn, logout } = useAuthContext();
 
-  const handleOpenMenu = () => [
+  const handleClickMenu = () => {
+    // TODO Notification 컴포넌트 만들기
+    alert('아직 준비 중인 기능입니다.');  
+    hide();
+  };
+
+  const handleOpenMenu = () => {
     show(
       <Drawer 
         direction={'top'}>
         <div className={'flex flex-col gap-8 absolute top-[72px]'}>
           {/* TODO 메뉴 정하고 디자인 다시 하기 */}
           {items.map((item) => (
-            <MenuButton key={item.title} title={item.title} onClick={hide} />
+            <MenuButton 
+              key={item.title} 
+              title={item.title} 
+              onClick={handleClickMenu} />
           ))}
         </div>
       </Drawer>
-    )
-  ];
+    );
+  };
 
   return (
     <header className={style.header}>
@@ -55,7 +64,8 @@ export function Header() {
           {items.map((item) => (
             <MenuButton 
               key={item.title} 
-              title={item.title} />
+              title={item.title}
+              onClick={handleClickMenu} />
           ))}
         </div>
 
@@ -128,7 +138,9 @@ function LoggedInUserArea({ logout }: { logout: () => void }) {
       <Button 
         variant={'link'}
         size={'small'}
-        color={'black'}>
+        color={'black'}
+        // TODO Notification 컴포넌트 만들기
+        onClick={() => alert('아직 준비 중인 기능입니다.')}>
         <UserCircle className={'size-7'} />
       </Button>
     </>
