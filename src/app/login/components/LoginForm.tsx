@@ -2,16 +2,25 @@
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 
+import { LoginRequestDTO } from '@/app/login/login.interface';
 import { Locker } from '@/assets/icons/Locker';
 import { User } from '@/assets/icons/User';
 import { Button } from '@/components/buttons/Button';
 import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
 import { Input } from '@/components/form/Input';
+import { useAuthContext } from '@/contexts/AuthContext';
 import { emailRegex } from '@/utils/regex';
 
 export function LoginForm() {
-  const {  formState: { errors }, register } = useForm();
+  const { 
+    formState: { errors },
+    handleSubmit,
+    register, 
+    setError,
+  } = useForm<LoginRequestDTO>({ mode: 'onSubmit' });
+
+  const { login } = useAuthContext();
 
   const formValidation = {
     email: {
@@ -23,7 +32,7 @@ export function LoginForm() {
     },
     password: {
       required: '비밀번호를 입력해주세요',
-    }
+    },
   };
 
   const formItems: FormItemProps[] = [
@@ -59,7 +68,7 @@ export function LoginForm() {
         height={97.2} />
       <Form
         items={formItems}
-        onSubmit={console.log}
+        onSubmit={handleSubmit((data) => login({ ...data, setError }))}
         button={(
           <Button 
             type={'submit'} 
