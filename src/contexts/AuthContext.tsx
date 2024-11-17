@@ -1,11 +1,12 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { SubmitHandler, UseFormSetError } from 'react-hook-form';
 
 import { LoginRequestDTO, LoginResponseDTO } from '@/app/login/login.interface';
 import { CustomError } from '@/utils/error';
-import { removeLocalStorageItem, setLocalStorageItem } from '@/utils/webStorage';
+import { generateAccessToken, generateRefreshToken, validateToken } from '@/utils/token';
+import { getLocalStorageItem, removeLocalStorageItem, setLocalStorageItem } from '@/utils/webStorage';
 
 // @ts-expect-error: known issue
 const AuthContext = createContext<ReturnType<typeof useAuth>>(null);
@@ -38,7 +39,7 @@ export const useAuth = () => {
 
       extendSession({ 
         accessToken: response.data.accessToken, 
-        refreshToken: response.data.refreshToken
+        refreshToken: response.data.refreshToken,
       });
 
       setLoading(false);
@@ -73,7 +74,32 @@ export const useAuth = () => {
     setLocalStorageItem('accessToken', accessToken);
     setLocalStorageItem('refreshToken', refreshToken);
     setLoggedIn(true);
+
+    setTimeout(silentRefresh, (1800 - 30) * 1000); // 29.5분
   };
+
+  const silentRefresh = async () => {
+    try {
+      const storedRefreshToken = getLocalStorageItem('refreshToken');
+
+      if(storedRefreshToken) {
+        const decodedRefreshToken = validateToken(storedRefreshToken);
+
+        if(decodedRefreshToken) {
+          const accessToken = generateAccessToken(decodedRefreshToken.userId);
+          const refreshToken = generateRefreshToken(decodedRefreshToken.userId);
+          extendSession({ accessToken, refreshToken });
+        }
+      }
+    } catch (error) {
+      console.log('error', error);
+      logout();
+    }
+  };
+
+  useEffect(() => {
+    silentRefresh();
+  }, []);
 
   return { 
     isLoading,
