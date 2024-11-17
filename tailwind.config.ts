@@ -56,6 +56,12 @@ const config: Config = {
         DEFAULT: '#fb923c',
         dark: '#f97316',
       },
+      green: {
+        pale: '#f0fdf4',
+        light: '#86efac',
+        DEFAULT: '#16a34a',
+        dark: '#15803d',
+      },
     },
     extend: {
       keyframes: {
@@ -220,4 +226,8 @@ export type Colors =
   'blue' | 
   'blue-pale' | 
   'blue-light' | 
-  'blue-dark';
+  'blue-dark' |
+  'green' | 
+  'green-pale' | 
+  'green-light' | 
+  'green-dark';

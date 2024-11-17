@@ -172,6 +172,23 @@ export const Default = () => {
           color={'orange-dark'}
           hex={'#f97316'} />
       </RowFlexBox>
+
+      <Title>Green</Title>
+      <RowFlexBox>
+        <PaletteWell 
+          color={'green-pale'}
+          className={'text-black'}
+          hex={'#f0fdf4'} />
+        <PaletteWell 
+          color={'green-light'}
+          hex={'#86efac'} />
+        <PaletteWell 
+          color={'green'}
+          hex={'#16a34a'} />
+        <PaletteWell 
+          color={'green-dark'}
+          hex={'#15803d'} />
+      </RowFlexBox>
     </div>
   );
 };
