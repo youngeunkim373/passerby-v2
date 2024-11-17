@@ -16,10 +16,14 @@ interface LoginArgs extends LoginRequestDTO {
 
 export const useAuth = () => {
   const router = useRouter();
+
   const [ isLoggedIn, setLoggedIn ] = useState(false);
+  const [ isLoading, setLoading ] = useState(false);
 
   const login: SubmitHandler<LoginArgs> = async ({ email, password, setError }: LoginArgs) => { 
     try {
+      setLoading(true);
+
       const res = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -37,9 +41,12 @@ export const useAuth = () => {
         refreshToken: response.data.refreshToken
       });
 
+      setLoading(false);
       router.push('/');
     } catch (error) {
       console.error('Error fetching data:', error);
+
+      setLoading(false);
 
       if(error instanceof CustomError) {
         return setError('password', {
@@ -69,6 +76,7 @@ export const useAuth = () => {
   };
 
   return { 
+    isLoading,
     isLoggedIn,
     login,
     logout,

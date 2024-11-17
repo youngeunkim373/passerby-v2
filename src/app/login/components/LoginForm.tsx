@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 
 import { LoginRequestDTO } from '@/app/login/login.interface';
+import { SpinLoading } from '@/assets/icons/Loading';
 import { Locker } from '@/assets/icons/Locker';
 import { User } from '@/assets/icons/User';
 import { Button } from '@/components/buttons/Button';
@@ -20,7 +21,7 @@ export function LoginForm() {
     setError,
   } = useForm<LoginRequestDTO>({ mode: 'onSubmit' });
 
-  const { login } = useAuthContext();
+  const { isLoading, login } = useAuthContext();
 
   const formValidation = {
     email: {
@@ -73,8 +74,11 @@ export function LoginForm() {
           <Button 
             type={'submit'} 
             variant={'solid'}
-            className={'w-full'}>
+            className={'w-full relative'}>
             로그인
+            {isLoading && (
+              <SpinLoading fill={'white'} className={'absolute size-5 right-[100px]'} />
+            )}
           </Button>
         )}
         errors={errors}
