@@ -34,7 +34,6 @@ export function LoginForm() {
         <Input
           prefix={<User />}
           placeholder={'이메일을 입력해주세요'} 
-          // TODO Input에 allowClear prop 추가
           {...register('email', formValidation.email)} />
       ),
     },
