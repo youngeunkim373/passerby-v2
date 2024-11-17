@@ -7,27 +7,37 @@ import { Close } from '@/assets/icons/Close';
 import { UserCircle } from '@/assets/icons/User';
 import { Button } from '@/components/buttons/Button';
 import { MenuButton } from '@/components/buttons/MenuButton';
+import { Notification } from '@/components/common/Notification';
 import { Drawer } from '@/components/layout/Drawer';
 import { items } from '@/constants/menu';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { useDrawerContext } from '@/contexts/DrawerContext';
+import { useNotificationContext } from '@/contexts/NotificationContext';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 /* ---------- Header ---------- */
 export function Header() {
   const router = useRouter();
 
-  const { isVisible, show, hide } = useDrawerContext();
   const { isLoggedIn, logout } = useAuthContext();
+  const { isVisible, show: showDrawer, hide } = useDrawerContext();
+  const { show: showNotification } = useNotificationContext();
+
+  const notifyFeatureInProgress = () => {
+    showNotification(
+      <Notification 
+        title={'아직 준비 중인 기능입니다'} 
+        duration={1200} />
+    );
+  };
 
   const handleClickMenu = () => {
-    // TODO Notification 컴포넌트 만들기
-    alert('아직 준비 중인 기능입니다.');  
+    notifyFeatureInProgress();
     hide();
   };
 
   const handleOpenMenu = () => {
-    show(
+    showDrawer(
       <Drawer 
         direction={'top'}>
         <div className={'flex flex-col gap-8 absolute top-[72px]'}>
@@ -72,7 +82,7 @@ export function Header() {
         {/* ----------- User area ----------- */}
         <div className={style.user}>
           {isLoggedIn 
-            ? <LoggedInUserArea logout={logout} />
+            ? <LoggedInUserArea logout={logout} notifyFeatureInProgress={notifyFeatureInProgress} />
             : <LoggedOutUserArea router={router} />}
             
           {/* ----------- Mobile area ----------- */}
@@ -111,7 +121,7 @@ function LoggedOutUserArea({ router }: { router: AppRouterInstance }) {
         size={'small'}
         color={'black'}
         onClick={() => router.push('/login')}>
-              로그인
+        로그인
       </Button>
       <Button 
         variant={'solid'} 
@@ -125,7 +135,10 @@ function LoggedOutUserArea({ router }: { router: AppRouterInstance }) {
   );
 }
 
-function LoggedInUserArea({ logout }: { logout: () => void }) {
+function LoggedInUserArea({ logout, notifyFeatureInProgress }: { 
+  logout: () => void;
+  notifyFeatureInProgress: () => void; 
+}) {
   return (
     <>
       <Button 
@@ -140,7 +153,7 @@ function LoggedInUserArea({ logout }: { logout: () => void }) {
         size={'small'}
         color={'black'}
         // TODO Notification 컴포넌트 만들기
-        onClick={() => alert('아직 준비 중인 기능입니다.')}>
+        onClick={notifyFeatureInProgress}>
         <UserCircle className={'size-7'} />
       </Button>
     </>
