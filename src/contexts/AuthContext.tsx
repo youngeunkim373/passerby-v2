@@ -18,7 +18,7 @@ interface LoginArgs extends LoginRequestDTO {
 export const useAuth = () => {
   const router = useRouter();
 
-  const [ isLoggedIn, setLoggedIn ] = useState(false);
+  const [ isLoggedIn, setLoggedIn ] = useState<boolean | null>(null);
   const [ isLoading, setLoading ] = useState(false);
 
   const login: SubmitHandler<LoginArgs> = async ({ email, password, setError }: LoginArgs) => { 
@@ -82,14 +82,16 @@ export const useAuth = () => {
     try {
       const storedRefreshToken = getLocalStorageItem('refreshToken');
 
-      if(storedRefreshToken) {
-        const decodedRefreshToken = validateToken(storedRefreshToken);
+      if(!storedRefreshToken) {
+        return logout();
+      }
 
-        if(decodedRefreshToken) {
-          const accessToken = generateAccessToken(decodedRefreshToken.userId);
-          const refreshToken = generateRefreshToken(decodedRefreshToken.userId);
-          extendSession({ accessToken, refreshToken });
-        }
+      const decodedRefreshToken = validateToken(storedRefreshToken);
+
+      if(decodedRefreshToken) {
+        const accessToken = generateAccessToken(decodedRefreshToken.userId);
+        const refreshToken = generateRefreshToken(decodedRefreshToken.userId);
+        extendSession({ accessToken, refreshToken });
       }
     } catch (error) {
       console.log('error', error);
