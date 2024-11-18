@@ -181,11 +181,6 @@ const config: Config = {
             backgroundPosition: '1000px 0',
           },
         },
-        fullView: {
-          '100%': {
-            width: '100%',
-          }
-        },
       },
       animation: {
         'fade-in': 'fadeIn .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
