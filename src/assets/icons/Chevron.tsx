@@ -32,3 +32,24 @@ export function CheckSolid(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function Check(props: SVGProps<SVGSVGElement>) {
+  // TODO 기본 클래스 적용되도록 수정
+  const { className, ...restProps } = props;
+
+  return (
+    <svg 
+      xmlns={'http://www.w3.org/2000/svg'} 
+      fill={'none'} 
+      viewBox={'0 0 24 24'} 
+      strokeWidth={1.5} 
+      stroke={'currentColor'} 
+      className={'size-5 ' + className}
+      {...restProps}>
+      <path 
+        strokeLinecap={'round'} 
+        strokeLinejoin={'round'} 
+        d={'m4.5 12.75 6 6 9-13.5'} />
+    </svg>
+  );
+}

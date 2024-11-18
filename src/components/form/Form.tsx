@@ -26,10 +26,17 @@ export function Form<TFormValues extends FieldValues>({ button, errors, items, o
     }
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   return (
     <form
       action={'#'}
       method={'POST'}
+      onKeyDown={handleKeyDown}
       onSubmit={onSubmit}
       {...formProps}>
       {items.map((item) => (

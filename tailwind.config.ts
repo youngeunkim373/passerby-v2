@@ -56,6 +56,12 @@ const config: Config = {
         DEFAULT: '#fb923c',
         dark: '#f97316',
       },
+      green: {
+        pale: '#f0fdf4',
+        light: '#86efac',
+        DEFAULT: '#16a34a',
+        dark: '#15803d',
+      },
     },
     extend: {
       keyframes: {
@@ -167,6 +173,14 @@ const config: Config = {
             transform: 'translateY(8px)',
           },
         },
+        shimmer: {
+          '0%': {
+            backgroundPosition: '-1000px 0',
+          },
+          '100%':{
+            backgroundPosition: '1000px 0',
+          },
+        },
       },
       animation: {
         'fade-in': 'fadeIn .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
@@ -183,6 +197,7 @@ const config: Config = {
         'move-down-to-bottom': 'moveDownToBottom .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
         'move-down-from-top': 'moveDownFromTop .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
         'move-up-to-top': 'moveUpToTop .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards',
+        'shimmer': 'shimmer 3s infinite',
       },
     },
   },
@@ -220,4 +235,8 @@ export type Colors =
   'blue' | 
   'blue-pale' | 
   'blue-light' | 
-  'blue-dark';
+  'blue-dark' |
+  'green' | 
+  'green-pale' | 
+  'green-light' | 
+  'green-dark';

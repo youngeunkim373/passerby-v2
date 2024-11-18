@@ -31,3 +31,18 @@ export const validateToken = (token: string) => {
     }
   }
 };
+
+export function generateAccessToken(userId: string): string {
+  const randomUserId = new Date().getTime().toString();
+  const token = jwt.sign({ userId }, randomUserId, { expiresIn: '30m' });
+  return token;
+}
+
+export function generateRefreshToken(userId: string): string {
+  if (!secretKey) {
+    throw new Error('JWT secret is not defined in the environment variables');
+  }
+
+  const refreshToken = jwt.sign({ userId }, secretKey, { expiresIn: '24h' });
+  return refreshToken;
+}

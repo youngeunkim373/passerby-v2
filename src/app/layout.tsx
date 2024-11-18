@@ -2,10 +2,12 @@ import type { Metadata } from 'next';
 
 import '@/app/globals.css';
 
-import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { Header } from '@/components/layout/Header';
+import { AuthContextProvider } from '@/contexts/AuthContext';
 import { DrawerContextProvider } from '@/contexts/DrawerContext';
 import { ModalContextProvider } from '@/contexts/ModalContext';
+import { NotificationContextProvider } from '@/contexts/NotificationContext';
 
 export const metadata: Metadata = {
   title: '길 가던 사람들',
@@ -18,17 +20,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang={'en'}>
+    <html lang={'ko'}>
       <body>
-        <DrawerContextProvider>
-          <ModalContextProvider>
-            <Header />
-            <main className={'w-max'}>
-              {children}
-            </main>
-            <Footer />
-          </ModalContextProvider>
-        </DrawerContextProvider>
+        <AuthContextProvider>
+          <DrawerContextProvider>
+            <ModalContextProvider>
+              <NotificationContextProvider>
+                <Header />
+                <main className={'w-max'}>
+                  {children}
+                </main>
+                <Footer />
+              </NotificationContextProvider>
+            </ModalContextProvider>
+          </DrawerContextProvider>
+        </AuthContextProvider>
       </body>
     </html>
   );
