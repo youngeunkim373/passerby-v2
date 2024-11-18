@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import { Hamburger } from '@/assets/icons/Bar';
 import { Close } from '@/assets/icons/Close';
+import { SpinLoading } from '@/assets/icons/Loading';
 import { UserCircle } from '@/assets/icons/User';
 import { Button } from '@/components/buttons/Button';
 import { MenuButton } from '@/components/buttons/MenuButton';
@@ -81,9 +82,9 @@ export function Header() {
 
         {/* ----------- User area ----------- */}
         <div className={style.user}>
-          {isLoggedIn 
+          {isLoggedIn === true
             ? <LoggedInUserArea logout={logout} notifyFeatureInProgress={notifyFeatureInProgress} />
-            : <LoggedOutUserArea router={router} />}
+            : isLoggedIn === false ? <LoggedOutUserArea router={router} /> : <SpinLoading fill={'#64748b'} /> }
             
           {/* ----------- Mobile area ----------- */}
           <Button 
@@ -108,7 +109,7 @@ const style = {
     image:'min-w-[56px]',
   },
   menu: 'hidden lg:flex lg:flex-1 lg:gap-12 lg:justify-start',
-  user: 'flex gap-4 md:gap-8 my-auto ml-0 lg:ml-20',
+  user: 'flex items-center gap-4 md:gap-8 my-auto ml-0 lg:ml-20',
   mobile: 'w-[28px] h-[28px] my-auto lg:hidden',
 };
 
