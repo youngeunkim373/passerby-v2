@@ -109,7 +109,7 @@ export function SpinLoading({
         </stop>
       </radialGradient>
       <circle 
-        transformOrigin={'center'} 
+        style={{ transformOrigin: 'center' }}
         fill={'none'} 
         stroke={'url(#a12)'} 
         strokeWidth={'15'} 
@@ -131,7 +131,7 @@ export function SpinLoading({
         </animateTransform>
       </circle>
       <circle 
-        transformOrigin={'center'} 
+        style={{ transformOrigin: 'center' }}
         fill={'none'} 
         opacity={'.2'} 
         stroke={fill} 
