@@ -1,7 +1,7 @@
 import { SVGProps } from 'react';
 
 export function ChevronDown({ 
-  fill = 'currentColor', 
+  fill = 'none', 
   className = '', 
   ...restProps
 }: SVGProps<SVGSVGElement>) {
