@@ -14,7 +14,7 @@ export function GradationLoading({
       <circle 
         fill={fill} 
         stroke={fill} 
-        stroke-width={'9'} 
+        strokeWidth={'9'} 
         r={'15'} 
         cx={'40'} 
         cy={'100'}>
@@ -31,7 +31,7 @@ export function GradationLoading({
       <circle 
         fill={fill} 
         stroke={fill} 
-        stroke-width={'9'} 
+        strokeWidth={'9'} 
         r={'15'} 
         cx={'100'} 
         cy={'100'}>
@@ -48,7 +48,7 @@ export function GradationLoading({
       <circle 
         fill={fill} 
         stroke={fill} 
-        stroke-width={'9'} 
+        strokeWidth={'9'} 
         r={'15'} 
         cx={'160'} 
         cy={'100'}>
@@ -84,38 +84,38 @@ export function SpinLoading({
         fy={'.3125'} 
         gradientTransform={'scale(1.5)'}>
         <stop 
-          offset={'0'} 
-          stop-color={fill}>
+          offset={'0'}
+          stopColor={fill}>
         </stop>
         <stop 
           offset={'.3'} 
-          stop-color={fill} 
-          stop-opacity={'.9'}>
+          stopColor={fill} 
+          stopOpacity={'.9'}>
         </stop>
         <stop 
           offset={'.6'} 
-          stop-color={fill} 
-          stop-opacity={'.6'}>
+          stopColor={fill} 
+          stopOpacity={'.6'}>
         </stop>
         <stop 
           offset={'.8'} 
-          stop-color={fill} 
-          stop-opacity={'.3'}>
+          stopColor={fill} 
+          stopOpacity={'.3'}>
         </stop>
         <stop 
           offset={'1'} 
-          stop-color={fill} 
-          stop-opacity={'0'}>
+          stopColor={fill} 
+          stopOpacity={'0'}>
         </stop>
       </radialGradient>
       <circle 
-        transform-origin={'center'} 
+        transformOrigin={'center'} 
         fill={'none'} 
         stroke={'url(#a12)'} 
-        stroke-width={'15'} 
-        stroke-linecap={'round'} 
-        stroke-dasharray={'200 1000'} 
-        stroke-dashoffset={'0'} 
+        strokeWidth={'15'} 
+        strokeLinecap={'round'} 
+        strokeDasharray={'200 1000'} 
+        strokeDashoffset={'0'} 
         cx={'100'} 
         cy={'100'} 
         r={'70'}>
@@ -131,12 +131,12 @@ export function SpinLoading({
         </animateTransform>
       </circle>
       <circle 
-        transform-origin={'center'} 
+        transformOrigin={'center'} 
         fill={'none'} 
         opacity={'.2'} 
         stroke={fill} 
-        stroke-width={'15'} 
-        stroke-linecap={'round'} 
+        strokeWidth={'15'} 
+        strokeLinecap={'round'} 
         cx={'100'} 
         cy={'100'} 
         r={'70'}>
