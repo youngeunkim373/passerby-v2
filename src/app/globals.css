@@ -108,3 +108,12 @@ input:focus {
 .h-header {
   @apply h-[72px];
 }
+
+.ellipsis-1 {
+  @apply text-ellipsis overflow-hidden break-words line-clamp-1;
+}
+
+.ellipsis-4 {
+  @apply text-ellipsis overflow-hidden break-words line-clamp-4;
+}
+
