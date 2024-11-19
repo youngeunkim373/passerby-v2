@@ -1,15 +1,19 @@
 import { SVGProps } from 'react';
 
-export function GradationLoading(props: SVGProps<SVGSVGElement>) {
+export function GradationLoading({ 
+  fill = '#000000', 
+  className = '', 
+  ...restProps
+}: SVGProps<SVGSVGElement>) {
   return(
     <svg 
       xmlns={'http://www.w3.org/2000/svg'} 
       viewBox={'0 0 200 200'}
-      className={'size-5'}
-      {...props}>
+      className={`size-5 + ${className}`}
+      {...restProps}>
       <circle 
-        fill={'#000000'} 
-        stroke={'#000000'} 
+        fill={fill} 
+        stroke={fill} 
         stroke-width={'9'} 
         r={'15'} 
         cx={'40'} 
@@ -25,8 +29,8 @@ export function GradationLoading(props: SVGProps<SVGSVGElement>) {
         </animate>
       </circle>
       <circle 
-        fill={'#000000'} 
-        stroke={'#000000'} 
+        fill={fill} 
+        stroke={fill} 
         stroke-width={'9'} 
         r={'15'} 
         cx={'100'} 
@@ -42,8 +46,8 @@ export function GradationLoading(props: SVGProps<SVGSVGElement>) {
         </animate>
       </circle>
       <circle 
-        fill={'#000000'} 
-        stroke={'#000000'} 
+        fill={fill} 
+        stroke={fill} 
         stroke-width={'9'} 
         r={'15'} 
         cx={'160'} 
@@ -61,14 +65,16 @@ export function GradationLoading(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function SpinLoading(props: SVGProps<SVGSVGElement>) {
-  const { fill = '#000000', ...restProps } = props;
-
+export function SpinLoading({ 
+  fill = '#000000', 
+  className = '', 
+  ...restProps
+}: SVGProps<SVGSVGElement>) {
   return (
     <svg 
       xmlns={'http://www.w3.org/2000/svg'} 
       viewBox={'0 0 200 200'}
-      className={'size-5'}
+      className={`size-5 + ${className}`}
       {...restProps}>
       <radialGradient 
         id={'a12'} 

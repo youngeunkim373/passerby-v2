@@ -1,14 +1,19 @@
 import { SVGProps } from 'react';
 
-export function User(props: SVGProps<SVGSVGElement>) {
+export function User({ 
+  fill = 'none', 
+  className = '', 
+  ...restProps
+}: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns={'http://www.w3.org/2000/svg'} 
-      fill={'none'} viewBox={'0 0 24 24'} 
+      fill={fill} 
+      viewBox={'0 0 24 24'} 
       strokeWidth={1.5} 
       stroke={'currentColor'} 
-      className={'size-5'}
-      {...props}>
+      className={`size-5 + ${className}`}
+      {...restProps}>
       <path 
         strokeLinecap={'round'} 
         strokeLinejoin={'round'} 
@@ -17,16 +22,20 @@ export function User(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function UserCircle(props: SVGProps<SVGSVGElement>) {
+export function UserCircle({ 
+  fill = 'none', 
+  className = '', 
+  ...restProps
+}: SVGProps<SVGSVGElement>) {
   return (
     <svg 
       xmlns={'http://www.w3.org/2000/svg'} 
-      fill={'none'} 
+      fill={fill} 
       viewBox={'0 0 24 24'} 
       strokeWidth={1.5} 
       stroke={'currentColor'} 
-      className={'size-5'}
-      {...props}>
+      className={`size-5 + ${className}`}
+      {...restProps}>
       <path 
         strokeLinecap={'round'} 
         strokeLinejoin={'round'} 
