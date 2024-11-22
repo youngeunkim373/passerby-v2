@@ -105,6 +105,10 @@ input:focus {
   @apply w-full max-w-5xl mx-auto px-4 md:px-8 flex justify-between items-center;
 }
 
+.h-min {
+  @apply min-h-[calc(100vh-var(--headerHeight)-var(--footerHeight))];
+}
+
 .h-header {
   @apply h-[72px];
 }
