@@ -1,11 +1,16 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-import { BoardFilterDTO, GetBoardResponseDTO } from '@/app/board/board.interface';
+import { BoardFilterDTO, BoardSortBy, GetBoardResponseDTO } from '@/app/board/board.interface';
 import { getPosts } from '@/app/board/board.service';
 import { Pagination, usePagination } from '@/hooks/usePagination';
 
-export const useBoard = (defaultPagination?: Pagination<BoardFilterDTO>) => {
+interface Props {
+  defaultPagination?: Pagination<BoardFilterDTO>;
+  sortBy: BoardSortBy;
+}
+
+export const useBoard = ({ defaultPagination, sortBy }: Props) => {
   const [ isLoading, setLoading ] = useState<boolean | null>(null);
   const [ list, setList ] = useState<GetBoardResponseDTO['items']>([]);
   const [ totalCount, setTotaleCount ] = useState<number>(0);
@@ -18,7 +23,7 @@ export const useBoard = (defaultPagination?: Pagination<BoardFilterDTO>) => {
     try {
       setLoading(true);
 
-      const res = await getPosts(pagination); 
+      const res = await getPosts({ pagination, sortBy }); 
 
       setTotaleCount(res.totalCount);
       setList(res.items);  

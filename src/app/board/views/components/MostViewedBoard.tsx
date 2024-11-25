@@ -5,18 +5,18 @@ import { useBoard } from '@/app/board/useBoard';
 import { List } from '@/components/common/List';
 import { Pagination } from '@/components/common/Pagination';
 
-export function LatestBoard() {
+export function MostViewedBoard() {
   const { 
     isLoading, 
     list,
     pagination, 
     totalPage, 
     onPagination,
-  } = useBoard({ sortBy: BoardSortBy.POSTEDAT });
+  } = useBoard({ sortBy: BoardSortBy.VIEWS });
 
   return (
     <div className={style.wrapper}>
-      <LatestBoardSearch 
+      <LatestBoardSearch
         onPagination={onPagination} />
       <List 
         isLoading={isLoading} 

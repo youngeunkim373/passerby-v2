@@ -1,19 +1,21 @@
 'use client';
-import { BoardFilterDTO, GetBoardResponseDTO } from '@/app/board/board.interface';
+import { BoardFilterDTO, BoardSortBy, GetBoardResponseDTO } from '@/app/board/board.interface';
 import { Pagination } from '@/hooks/usePagination';
 import { CustomError } from '@/utils/error';
 
+interface Props {
+  pagination?: Pagination<BoardFilterDTO>;
+  sortBy: BoardSortBy;
+}
+
 // 게시글 조회
-export const getPosts = async ({
-  filter, 
-  page, 
-  size,
-}: Pagination<BoardFilterDTO>) => {
+export const getPosts = async ({ pagination, sortBy }: Props) => {
   const params = new URLSearchParams({ 
-    page: page.toString(),
-    size: size.toString(),
-    titleOrContent: filter?.titleOrContent ?? '',
-    category: filter?.category ?? '',
+    page: (pagination?.page ?? '').toString(),
+    size: (pagination?.size ?? '').toString(),
+    titleOrContent: pagination?.filter?.titleOrContent ?? '',
+    category: pagination?.filter?.category ?? '',
+    sortBy,
   });
 
   const url = `/api/board/getPosts?${params.toString()}`;
