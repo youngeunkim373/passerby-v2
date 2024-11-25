@@ -13,7 +13,7 @@ interface Props {
   onPagination: PaginationSet<BoardFilterDTO>['onPagination'];
 }
 
-export function LatestBoardSearch({ onPagination }: Props) {
+export function BoardSearch({ onPagination }: Props) {
   const { control, register, getValues } = useForm<BoardFilterDTO>();
 
   const handleSearch = () => {
