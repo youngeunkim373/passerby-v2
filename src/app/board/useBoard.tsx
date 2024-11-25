@@ -6,7 +6,7 @@ import { getPosts } from '@/app/board/board.service';
 import { Pagination, usePagination } from '@/hooks/usePagination';
 
 export const useBoard = (defaultPagination?: Pagination<BoardFilterDTO>) => {
-  const [ isLoading, setLoading ] = useState<boolean>(false);
+  const [ isLoading, setLoading ] = useState<boolean | null>(null);
   const [ list, setList ] = useState<GetBoardResponseDTO['items']>([]);
   const [ totalCount, setTotaleCount ] = useState<number>(0);
 

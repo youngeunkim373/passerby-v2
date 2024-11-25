@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
 import { Thumb } from '@/assets/icons/Thumb';
+import { EmptyState } from '@/components/common/EmptyState';
 import { CardSkeleton } from '@/components/skeletons/CardSkeleton';
 import { getTimeAgo } from '@/utils/time';
 
@@ -24,14 +25,23 @@ export function List({ isLoading = false, items }: Props) {
       {(isLoading === false && items.length > 0) && (
         items.map((item) => <Item key={item.objectID} item={item} />)
       )}
+
+      {/* 데이터 없을 때 화면 */}
+      {(isLoading === false && items.length === 0) && (
+        <div className={listStyle.content.wrapper}>
+          <EmptyState
+            title={'검색 결과가 없습니다'}
+            description={<>검색어가 바르게 입력되었는지<br />확인해 보세요</>} />
+        </div>
+      )}
     </ul>
   );
 }
 
 const listStyle = {
-  wrapper: 'w-full flex flex-col justify-center items-center divide-y divide-gray-100',
+  wrapper: 'w-full flex flex-col justify-start items-center flex-grow divide-y divide-gray-100',
   content: { 
-    wrapper: 'w-full flex flex-col gap-2 justify-center items-center',
+    wrapper: 'w-full flex flex-col gap-2 justify-center items-center flex-grow',
   },
 };
 
