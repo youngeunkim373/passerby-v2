@@ -3,23 +3,36 @@ import Image from 'next/image';
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
 import { Thumb } from '@/assets/icons/Thumb';
+import { CardSkeleton } from '@/components/skeletons/CardSkeleton';
 import { getTimeAgo } from '@/utils/time';
 
 /* ------------------ List ------------------ */
 interface Props {
+  isLoading?: boolean | null;
   items: Post[];
 }
 
-export function List({ items }: Props) {
+export function List({ isLoading = false, items }: Props) {
   return (
     <ul className={listStyle.wrapper}>
-      {items.map((item) => <Item key={item.objectID} item={item} />)}
+      {/* 로딩 화면 */}
+      {isLoading && (
+        [ ...Array(3) ].map((_, idx) => <CardSkeleton key={idx} />)
+      )}
+
+      {/* 데이터 있을 때 화면 */}
+      {(isLoading === false && items.length > 0) && (
+        items.map((item) => <Item key={item.objectID} item={item} />)
+      )}
     </ul>
   );
 }
 
 const listStyle = {
   wrapper: 'w-full flex flex-col justify-center items-center divide-y divide-gray-100',
+  content: { 
+    wrapper: 'w-full flex flex-col gap-2 justify-center items-center',
+  },
 };
 
 /* ------------------ Item ------------------ */
