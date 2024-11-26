@@ -8,6 +8,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const page = searchParams.get('page');
     const size = searchParams.get('size');
+    const titleOrContent = searchParams.get('titleOrContent') ?? '';
 
     if(!page || !size) {
       throw new CustomError(404, '잘못된 요청입니다');
@@ -18,9 +19,9 @@ export async function GET(req: Request) {
 
     const results = await searchClient
       .initIndex('posts_postedAt_desc')
-      .search('', {
-        hitsPerPage: parsedSize,
+      .search(titleOrContent, {
         page: parsedPage - 1,
+        hitsPerPage: parsedSize,
         typoTolerance: 'min',
       });
 

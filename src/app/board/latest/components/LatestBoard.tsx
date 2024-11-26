@@ -1,4 +1,5 @@
 'use client';
+import { LatestBoardSearch } from '@/app/board/latest/components/LatestBoardSearch';
 import { useBoard } from '@/app/board/useBoard';
 import { List } from '@/components/common/List';
 import { Pagination } from '@/components/common/Pagination';
@@ -14,7 +15,11 @@ export function LatestBoard() {
 
   return (
     <div className={style.wrapper}>
-      <List isLoading={isLoading} items={list} />
+      <LatestBoardSearch 
+        onPagination={onPagination} />
+      <List 
+        isLoading={isLoading} 
+        items={list} />
       <Pagination 
         pagination={pagination} 
         totalPage={totalPage}
