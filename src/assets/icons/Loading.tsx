@@ -66,7 +66,7 @@ export function GradationLoading({
 }
 
 export function SpinLoading({ 
-  fill = '#000000', 
+  fill = '#475569',
   className = '', 
   ...restProps
 }: SVGProps<SVGSVGElement>) {

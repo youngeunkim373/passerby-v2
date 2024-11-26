@@ -29,5 +29,5 @@ export function LatestBoard() {
 }
 
 const style = {
-  wrapper: 'w-full h-min flex flex-col gap-2 pt-8 pb-2 mb-auto sm:pt-10 sm:pb-4 bg-blue-pale grow-0',
+  wrapper: 'w-full h-min flex flex-col gap-2 pt-8 pb-2 mb-auto sm:pt-10 sm:pb-4 grow-0',
 };
