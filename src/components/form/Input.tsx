@@ -26,7 +26,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(({
   onClear,
   ...inputProps
 }, ref) => {
-  const [ value, setValue ] = useState(inputProps.value);
+  const [ value, setValue ] = useState(inputProps.value ?? '');
   const style = getStyle({ disabled, size, state });
 
   const optionWidth = typeof width === 'number' 
@@ -40,6 +40,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(({
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
+    if(inputProps.onChange) inputProps.onChange(e);
   };
 
   return (
