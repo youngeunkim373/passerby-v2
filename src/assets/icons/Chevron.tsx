@@ -12,12 +12,56 @@ export function ChevronDown({
       viewBox={'0 0 24 24'} 
       strokeWidth={1.5} 
       stroke={'currentColor'} 
-      className={`size-6 + ${className}`}
+      className={`size-6 ${className}`}
       {...restProps}>
       <path 
         strokeLinecap={'round'} 
         strokeLinejoin={'round'} 
         d={'m19.5 8.25-7.5 7.5-7.5-7.5'} />
+    </svg>
+  );
+}
+
+export function ChevronLeft({ 
+  fill = 'none', 
+  className = '', 
+  ...restProps
+}: SVGProps<SVGSVGElement>) {
+  return (
+    <svg 
+      xmlns={'http://www.w3.org/2000/svg'}
+      fill={fill} 
+      viewBox={'0 0 24 24'} 
+      strokeWidth={1.5} 
+      stroke={'currentColor'} 
+      className={`size-5 ${className}`}
+      {...restProps}>
+      <path 
+        strokeLinecap={'round'} 
+        strokeLinejoin={'round'} 
+        d={'M15.75 19.5 8.25 12l7.5-7.5'} />
+    </svg>
+  );
+}
+
+export function ChevronRight({ 
+  fill = 'none', 
+  className = '', 
+  ...restProps
+}: SVGProps<SVGSVGElement>) {
+  return (
+    <svg 
+      xmlns={'http://www.w3.org/2000/svg'} 
+      fill={fill}  
+      viewBox={'0 0 24 24'} 
+      strokeWidth={1.5} 
+      stroke={'currentColor'} 
+      className={`size-5 ${className}`}
+      {...restProps}>
+      <path 
+        strokeLinecap={'round'} 
+        strokeLinejoin={'round'} 
+        d={'m8.25 4.5 7.5 7.5-7.5 7.5'} />
     </svg>
   );
 }
@@ -32,7 +76,7 @@ export function CheckSolid({
       xmlns={'http://www.w3.org/2000/svg'} 
       viewBox={'0 0 24 24'} 
       fill={fill} 
-      className={`size-6 + ${className}`}
+      className={`size-6 ${className}`}
       {...restProps}>
       <path 
         fillRule={'evenodd'} 
@@ -54,7 +98,7 @@ export function Check({
       viewBox={'0 0 24 24'} 
       strokeWidth={1.5} 
       stroke={'currentColor'} 
-      className={`size-5 + ${className}`}
+      className={`size-5 ${className}`}
       {...restProps}>
       <path 
         strokeLinecap={'round'} 

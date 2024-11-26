@@ -32,8 +32,8 @@ export function Header() {
     );
   };
 
-  const handleClickMenu = () => {
-    notifyFeatureInProgress();
+  const handleClickMenu = (path: string) => {
+    router.push(path);
     hide();
   };
 
@@ -47,7 +47,7 @@ export function Header() {
             <MenuButton 
               key={item.title} 
               title={item.title} 
-              onClick={handleClickMenu} />
+              onClick={() => handleClickMenu(item.path)} />
           ))}
         </div>
       </Drawer>
@@ -76,7 +76,7 @@ export function Header() {
             <MenuButton 
               key={item.title} 
               title={item.title}
-              onClick={handleClickMenu} />
+              onClick={() => handleClickMenu(item.path)} />
           ))}
         </div>
 
