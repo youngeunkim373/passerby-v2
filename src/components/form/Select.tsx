@@ -114,11 +114,11 @@ export function Select({
     const handleResize = () => {
       if (selectRef.current) {
         const selectRect = selectRef.current.getBoundingClientRect();
-        const dropdownHeight = (selectRect.height * options.length);
         const spaceBelow = window.innerHeight - selectRect.bottom;
+        const spaceAbove = selectRect.top;
 
         // select 아래에 dropdown보다 큰 공간이 있으면 아래로 내림
-        setDropdownPosition(spaceBelow > dropdownHeight ? 'bottom' : 'top');
+        setDropdownPosition(spaceBelow > spaceAbove ? 'bottom' : 'top');
       }
     };
 
