@@ -10,7 +10,8 @@ export const useBoard = (defaultPagination?: Pagination<BoardFilterDTO>) => {
   const [ list, setList ] = useState<GetBoardResponseDTO['items']>([]);
   const [ totalCount, setTotaleCount ] = useState<number>(0);
 
-  const { pagination, onPagination } = usePagination<BoardFilterDTO>(defaultPagination);
+  const { pagination, onPagination, } = usePagination<BoardFilterDTO>(defaultPagination);
+  const { page, size, filter } = pagination;
 
   const getBoardList = async (pagination: Pagination<BoardFilterDTO>)
     : Promise<GetBoardResponseDTO[] | void > => {
@@ -28,9 +29,12 @@ export const useBoard = (defaultPagination?: Pagination<BoardFilterDTO>) => {
     }
   };
 
+  const titleOrContent = filter?.titleOrContent;
+  const category = filter?.category;
+
   useEffect(() => {
     getBoardList(pagination);
-  }, [ pagination.page, pagination.size ]);
+  }, [ page, size, titleOrContent, category ]);
 
   return {
     isLoading,

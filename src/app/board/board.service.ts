@@ -5,13 +5,21 @@ import { CustomError } from '@/utils/error';
 
 // 게시글 조회
 export const getPosts = async ({
-  // filter, 
+  filter, 
   page, 
   size,
 }: Pagination<BoardFilterDTO>) => {
+  const params = new URLSearchParams({ 
+    page: page.toString(),
+    size: size.toString(),
+    titleOrContent: filter?.titleOrContent ?? '',
+    category: filter?.category ?? '',
+  });
+
+  const url = `/api/board/getPosts?${params.toString()}`;
+
   try {
-    // TODO filter 추가
-    const res = await fetch(`/api/board/getPosts?page=${page}&size=${size}`, {
+    const res = await fetch(url, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });

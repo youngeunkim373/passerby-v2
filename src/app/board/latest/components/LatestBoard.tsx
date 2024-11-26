@@ -1,4 +1,5 @@
 'use client';
+import { LatestBoardSearch } from '@/app/board/latest/components/LatestBoardSearch';
 import { useBoard } from '@/app/board/useBoard';
 import { List } from '@/components/common/List';
 import { Pagination } from '@/components/common/Pagination';
@@ -14,7 +15,11 @@ export function LatestBoard() {
 
   return (
     <div className={style.wrapper}>
-      <List isLoading={isLoading} items={list} />
+      <LatestBoardSearch 
+        onPagination={onPagination} />
+      <List 
+        isLoading={isLoading} 
+        items={list} />
       <Pagination 
         pagination={pagination} 
         totalPage={totalPage}
@@ -24,5 +29,5 @@ export function LatestBoard() {
 }
 
 const style = {
-  wrapper: 'w-full h-min flex flex-col gap-2 pt-8 pb-2 mb-auto sm:pt-10 sm:pb-4 bg-blue-pale grow-0',
+  wrapper: 'w-full h-min flex flex-col gap-2 pt-8 pb-2 mb-auto sm:pt-10 sm:pb-4 grow-0',
 };

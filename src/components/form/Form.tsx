@@ -5,9 +5,9 @@ import { FormItem, FormItemProps } from '@/components/form/FormItem';
 
 export interface Props<TFormValues extends FieldValues> extends FormHTMLAttributes<HTMLFormElement> {
   button?: ReactNode;
-  errors: FieldErrors<TFormValues>;
+  errors?: FieldErrors<TFormValues>;
   items: FormItemProps[];
-  onSubmit: () => void;
+  onSubmit?: () => void;
 }
 
 export function Form<TFormValues extends FieldValues>({ button, errors, items, onSubmit, ...formProps }: Props<TFormValues>) {
@@ -42,7 +42,7 @@ export function Form<TFormValues extends FieldValues>({ button, errors, items, o
       {items.map((item) => (
         <FormItem 
           key={item.name} 
-          error={errors[item.name] as FieldError} 
+          error={errors && errors[item.name] as FieldError} 
           {...item}>
           {item.children}
         </FormItem>
