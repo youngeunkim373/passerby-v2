@@ -7,6 +7,7 @@ import { Presence } from '@/components/common/Presence';
 /* -------------------- Select --------------------- */ 
 // common
 type SelectSize = 'small' | 'default' | 'large';
+export type SelectState = 'normal' | 'error' | 'success';
 type WidthType = string | number;
 
 interface CommonProps {
@@ -15,9 +16,6 @@ interface CommonProps {
   placeholder?: string;
   allowClear?: boolean;
 } 
-
-// select
-export type SelectState = 'normal' | 'error' | 'success';
 
 export interface Props extends CommonProps {
   options: OptionProps[];
@@ -131,11 +129,11 @@ export function Select({
   }, [ isDropdownOpen ]);
 
   return (
-    <div ref={selectRef} className={style.wrapper}>
+    <div ref={selectRef} className={selectStyle.wrapper}>
       {/* ---------- Select area ----------- */}
       <div
         className={`
-          ${style.select}    
+          ${selectStyle.select}    
           ${selectConfig.state[state]}
         `} 
         style={{ width: optionWidth }}
@@ -146,7 +144,7 @@ export function Select({
           placeholder={placeholder}
           allowClear={allowClear}
           className={`
-            ${style.selectedOption}
+            ${selectStyle.selectedOption}
             ${selectedOption.id === null ? 'text-gray-400' : 'text-gray-900'}
           `}
           onClear={handleClear}
@@ -157,7 +155,7 @@ export function Select({
       <Presence present={isDropdownOpen}>
         <div
           className={`
-            ${style.dropdown}
+            ${selectStyle.dropdown}
             ${isDropdownOpen ? 'animate-fade-in' : 'animate-fade-out'}
             ${dropdownPosition === 'bottom' ? 'top-full mt-[1px]' : 'bottom-full mb-[1px]'}
           `}
@@ -189,11 +187,11 @@ const selectConfig = {
   }
 };
 
-const style = {
+const selectStyle = {
   wrapper: 'relative',
-  select: 'bg-white outline outline-1 rounded-lg',
-  dropdown: 'absolute flex flex-col z-10 py-1.5 bg-white divide-y divide-gray-100 rounded-lg shadow mt-[1px] z-50',
-  selectedOption: 'rounded-lg',
+  select: 'bg-white outline outline-1 rounded-md',
+  dropdown: 'absolute flex flex-col z-10 py-1.5 bg-white divide-y divide-gray-100 rounded-md shadow mt-[1px] z-50',
+  selectedOption: 'rounded-md',
 };
 
 /* -------------------- Option --------------------- */ 
@@ -218,7 +216,6 @@ function Option({
   onClick,
   onClear,
 }: OptionProps) {
-  const style = getOptionStyle({ size });
 
   return (
     <button 
@@ -226,12 +223,17 @@ function Option({
       type={'button'} 
       onClick={onClick}
       style={{ width }}>
-      <div className={`${style.wrapper} ${className}`}>
-        {prefix && <div className={style.prefix}>{prefix}</div>}
-        <span className={style.text}>{title ?? placeholder}</span>
+      <div 
+        className={`
+          ${optionStyle.wrapper} 
+          ${optionConfig.size[size]}
+          ${className}
+        `}>
+        {prefix && <div className={optionStyle.prefix}>{prefix}</div>}
+        <span className={optionStyle.text}>{title ?? placeholder}</span>
         {(allowClear && onClear) && (
-          <div className={style.clear.wrapper} onClick={onClear}>
-            <Close className={style.clear.close} />
+          <div className={optionStyle.clear.wrapper} onClick={onClear}>
+            <Close className={optionStyle.clear.close} />
           </div>
         )}
       </div>
@@ -247,17 +249,17 @@ const optionConfig = {
   },
 };
 
-const getOptionStyle = ({ size }: { size: SelectSize }) => ({
+const optionStyle = {
   wrapper: `
     relative
     flex justify-start items-center
-    ${optionConfig.size[size]} px-4
+    px-4
     hover:bg-gray-100
   `,
   prefix: 'max-w-[16px] max-h-[16px] mr-1.5',
-  text: 'truncate',
+  text: 'w-full text-start truncate',
   clear: {
-    wrapper: 'absolute right-[12px] p-1',
+    wrapper: 'relative left-[4px] p-1',
     close: 'size-3 text-gray-400 hover:text-gray-500',
   },
-}) as const;
+};
