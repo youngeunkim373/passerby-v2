@@ -29,9 +29,12 @@ export const useBoard = (defaultPagination?: Pagination<BoardFilterDTO>) => {
     }
   };
 
+  const titleOrContent = filter?.titleOrContent;
+  const category = filter?.category;
+
   useEffect(() => {
     getBoardList(pagination);
-  }, [ page, size, filter?.titleOrContent ]);
+  }, [ page, size, titleOrContent, category ]);
 
   return {
     isLoading,

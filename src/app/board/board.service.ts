@@ -13,6 +13,7 @@ export const getPosts = async ({
     page: page.toString(),
     size: size.toString(),
     titleOrContent: filter?.titleOrContent ?? '',
+    category: filter?.category ?? '',
   });
 
   const url = `/api/board/getPosts?${params.toString()}`;

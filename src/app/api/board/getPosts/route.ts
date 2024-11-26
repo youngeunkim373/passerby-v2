@@ -8,7 +8,8 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const page = searchParams.get('page');
     const size = searchParams.get('size');
-    const titleOrContent = searchParams.get('titleOrContent') ?? '';
+    const titleOrContent = searchParams.get('titleOrContent');
+    const category = searchParams.get('category');
 
     if(!page || !size) {
       throw new CustomError(404, '잘못된 요청입니다');
@@ -17,11 +18,17 @@ export async function GET(req: Request) {
     const parsedPage = parseInt(page, 10);
     const parsedSize = parseInt(size, 10);
 
+    const filters = [
+      ...(titleOrContent ? [ `(title:"${titleOrContent}" OR content:"${titleOrContent}")` ] : []),
+      ...(category ? [ `category:"${category}"` ] : []),
+    ].join(' AND ');
+
     const results = await searchClient
       .initIndex('posts_postedAt_desc')
-      .search(titleOrContent, {
-        page: parsedPage - 1,
+      .search('', {
+        filters,
         hitsPerPage: parsedSize,
+        page: parsedPage - 1,
         typoTolerance: 'min',
       });
 

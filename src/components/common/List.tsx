@@ -5,6 +5,7 @@ import { Eye } from '@/assets/icons/Eye';
 import { Thumb } from '@/assets/icons/Thumb';
 import { EmptyState } from '@/components/common/EmptyState';
 import { CardSkeleton } from '@/components/skeletons/CardSkeleton';
+import { CategoryLabelRecord } from '@/constants/post';
 import { getTimeAgo } from '@/utils/time';
 
 /* ------------------ List ------------------ */
@@ -62,7 +63,12 @@ function Item({ item }: ItemProps) {
 
       <div className={itemStyle.content.wrapper}>
         <div className={itemStyle.content.textArea.wrapper}>
-          <p className={itemStyle.content.textArea.title}>{item.title}</p>
+          <p className={itemStyle.content.textArea.title}>
+            <span className={itemStyle.content.textArea.category}>
+              [{item.category.map((ele) => CategoryLabelRecord[ele]).join(', ')}]
+            </span>
+            {item.title}
+          </p>
           <p className={itemStyle.content.textArea.description}>{item.content}</p>
         </div>
 
@@ -94,6 +100,7 @@ const itemStyle = {
     textArea: {
       wrapper: 'flex-auto',
       title: 'font-semibold text-gray-900 ellipsis-1',
+      category: 'font-normal text-gray-500 text-[12px] mr-2',
       description: `
         text-xs/5 text-gray-500 break-all
         text-ellipsis overflow-hidden break-words line-clamp-1 sm:line-clamp-4

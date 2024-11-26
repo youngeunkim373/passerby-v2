@@ -4,7 +4,9 @@ import { BoardFilterDTO } from '@/app/board/board.interface';
 import { SearchButton } from '@/components/buttons/SearchButton';
 import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
+import { FormSelect } from '@/components/form/FormSelect';
 import { Input } from '@/components/form/Input';
+import { Category } from '@/constants/post';
 import { PaginationSet } from '@/hooks/usePagination';
 
 interface Props {
@@ -12,11 +14,11 @@ interface Props {
 }
 
 export function LatestBoardSearch({ onPagination }: Props) {
-  const { register, getValues } = useForm<BoardFilterDTO>();
+  const { control, register, getValues } = useForm<BoardFilterDTO>();
 
   const handleSearch = () => {
-    const titleOrContent = getValues('titleOrContent');
-    onPagination({ filter: { titleOrContent } });
+    const filter = getValues();
+    onPagination({ filter });
   };
 
   const formItems: FormItemProps[] = [
@@ -30,6 +32,24 @@ export function LatestBoardSearch({ onPagination }: Props) {
           {...register('titleOrContent')} />
       ),
     },
+    {
+      name: 'category',
+      children: (
+        <FormSelect
+          control={control}
+          width={120}
+          placeholder={'분류 선택'}
+          allowClear={true}
+          options={
+            Object
+              .entries(Category)
+              .map(([ key, value ]) => ({ id: key, title: value }))
+          }
+          {...register('category', {
+            onChange: handleSearch,
+          })} />
+      ),
+    },
   ];
   
   return (
@@ -38,5 +58,5 @@ export function LatestBoardSearch({ onPagination }: Props) {
 }
 
 const style = {
-  form: 'max-w-[288px] ml-auto mb-2'
+  form: 'w-auto flex gap-2 ml-auto mb-2',
 };
