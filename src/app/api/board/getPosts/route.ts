@@ -1,6 +1,7 @@
 import { searchClient } from 'algolia';
 import { NextResponse } from 'next/server';
 
+import { BoardSortBy } from '@/app/board/board.interface';
 import { CustomError } from '@/utils/error';
 
 export async function GET(req: Request) {
@@ -10,6 +11,7 @@ export async function GET(req: Request) {
     const size = searchParams.get('size');
     const titleOrContent = searchParams.get('titleOrContent');
     const category = searchParams.get('category');
+    const sortBy = searchParams.get('sortBy');
 
     if(!page || !size) {
       throw new CustomError(404, '잘못된 요청입니다');
@@ -23,8 +25,12 @@ export async function GET(req: Request) {
       ...(category ? [ `category:"${category}"` ] : []),
     ].join(' AND ');
 
+    const initIndex = (sortBy && Object.values(BoardSortBy).includes(sortBy  as BoardSortBy)) 
+      ? sortBy 
+      : BoardSortBy.POSTEDAT;
+
     const results = await searchClient
-      .initIndex('posts_postedAt_desc')
+      .initIndex(initIndex)
       .search('', {
         filters,
         hitsPerPage: parsedSize,

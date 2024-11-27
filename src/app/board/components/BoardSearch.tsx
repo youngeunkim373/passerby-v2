@@ -6,19 +6,19 @@ import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
 import { FormSelect } from '@/components/form/FormSelect';
 import { Input } from '@/components/form/Input';
-import { Category } from '@/constants/post';
+import { Category, CategoryLabelRecord } from '@/constants/post';
 import { PaginationSet } from '@/hooks/usePagination';
 
 interface Props {
   onPagination: PaginationSet<BoardFilterDTO>['onPagination'];
 }
 
-export function LatestBoardSearch({ onPagination }: Props) {
+export function BoardSearch({ onPagination }: Props) {
   const { control, register, getValues } = useForm<BoardFilterDTO>();
 
   const handleSearch = () => {
     const filter = getValues();
-    onPagination({ filter });
+    onPagination({ filter, page: 1 });
   };
 
   const formItems: FormItemProps[] = [
@@ -43,7 +43,7 @@ export function LatestBoardSearch({ onPagination }: Props) {
           options={
             Object
               .entries(Category)
-              .map(([ key, value ]) => ({ id: key, title: value }))
+              .map(([ key, value ]) => ({ id: key, title: CategoryLabelRecord[value] }))
           }
           {...register('category', {
             onChange: handleSearch,

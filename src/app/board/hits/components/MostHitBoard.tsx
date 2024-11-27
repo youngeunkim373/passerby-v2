@@ -1,17 +1,16 @@
 'use client';
 import { BoardSortBy } from '@/app/board/board.interface';
-
 import { Board } from '@/app/board/components/Board';
 import { useBoard } from '@/app/board/useBoard';
 
-export function LatestBoard() {
+export function MostHitBoard() {
   const { 
     isLoading, 
     list,
     pagination, 
     totalPage, 
     onPagination,
-  } = useBoard({ sortBy: BoardSortBy.POSTEDAT });
+  } = useBoard({ sortBy: BoardSortBy.HITS });
 
   return (
     <Board 
@@ -22,3 +21,4 @@ export function LatestBoard() {
       onPagination={onPagination} />
   );
 }
+
