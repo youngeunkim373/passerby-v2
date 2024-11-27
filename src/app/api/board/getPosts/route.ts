@@ -21,7 +21,6 @@ export async function GET(req: Request) {
     const parsedSize = parseInt(size, 10);
 
     const filters = [
-      ...(titleOrContent ? [ `(title:"${titleOrContent}" OR content:"${titleOrContent}")` ] : []),
       ...(category ? [ `category:"${category}"` ] : []),
     ].join(' AND ');
 
@@ -31,11 +30,11 @@ export async function GET(req: Request) {
 
     const results = await searchClient
       .initIndex(initIndex)
-      .search('', {
+      .search(titleOrContent ?? '', {
         filters,
         hitsPerPage: parsedSize,
         page: parsedPage - 1,
-        typoTolerance: 'min',
+        typoTolerance: false,
       });
 
     return NextResponse.json({ 
