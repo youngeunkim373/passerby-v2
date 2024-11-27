@@ -1,12 +1,12 @@
 import { Suspense } from 'react';
 
-import { MostHitBoard } from '@/app/board/hits/components/MostHitBoard';
+import { MostViewedBoard } from '@/app/board/views/components/MostViewedBoard';
 
 export default function MostViewed() {
 
   return (
     <Suspense>
-      <MostHitBoard />
+      <MostViewedBoard />
     </Suspense>
   );
 }
