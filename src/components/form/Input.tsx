@@ -16,18 +16,18 @@ export interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'pref
 
 export const Input = forwardRef<HTMLInputElement, Props>(({ 
   allowClear = true,
+  defaultValue,
   disabled = false, 
   prefix, 
-  size, 
-  state, 
+  size = 'default', 
+  state = 'normal', 
   suffix, 
   type = 'text', 
   width,
   onClear,
   ...inputProps
 }, ref) => {
-  const [ value, setValue ] = useState(inputProps.value);
-  const style = getStyle({ disabled, size, state });
+  const [ value, setValue ] = useState(defaultValue ?? '');
 
   const optionWidth = typeof width === 'number' 
     ? `${width}px` 
@@ -40,12 +40,20 @@ export const Input = forwardRef<HTMLInputElement, Props>(({
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
+    if(inputProps.onChange) inputProps.onChange(e);
   };
 
   return (
-    <div className={style.wrapper} style={{ width: optionWidth }}>
+    <div 
+      className={`
+        ${style.wrapper}
+        ${disabled ? 'bg-gray-100' : ''}
+        ${size ? inputConfig.size[size] : ''}
+        ${state ? inputConfig.state[state] : ''}
+      `} 
+      style={{ width: optionWidth }}>
       {prefix && (
-        <div className={style.fixCommon + style.prefix}>
+        <div className={`${style.fixCommon} ${style.prefix}`}>
           {prefix}
         </div>
       )}
@@ -59,16 +67,18 @@ export const Input = forwardRef<HTMLInputElement, Props>(({
         value={value}
         onChange={handleChange} />
 
-      <div className={style.backSide}>
+      <div className={style.backSide.wrapper}>
         {suffix && (
-          <div className={style.fixCommon + style.suffix}>
+          <div className={`${style.fixCommon} ${style.backSide.suffix}`}>
             {suffix}
           </div>
         )}
 
         {allowClear && (
-          <div className={style.clear.wrapper} onClick={handleClear}>
-            <Close className={style.clear.close} />
+          <div 
+            className={style.backSide.clear.wrapper} 
+            onClick={handleClear}>
+            <Close className={style.backSide.clear.close} />
           </div>
         )}
       </div>
@@ -91,11 +101,7 @@ const inputConfig = {
   }
 };
 
-const getStyle = ({ 
-  disabled,
-  state = 'normal', 
-  size = 'default' 
-}: Pick<Props, 'disabled'| 'state' | 'size'>) => ({
+const style = {
   wrapper: `
     w-full 
     relative
@@ -103,9 +109,6 @@ const getStyle = ({
     ring-1 ring-inset rounded-md 
     px-4
     focus-within:ring-[1.3px]
-    ${disabled && 'bg-gray-100'}
-    ${inputConfig.size[size]}
-    ${inputConfig.state[state]}
   `,
   input: `
     bg-transparent
@@ -114,7 +117,6 @@ const getStyle = ({
     placeholder:text-gray-400 
     read-only:cursor-not-allowed
   `,
-  backSide: 'flex gap-2 pl-1',
   fixCommon: `
     flex
     items-center
@@ -123,9 +125,12 @@ const getStyle = ({
     text-gray-500 
   `,
   prefix: 'mr-1.5',
-  suffix: 'ml-1.5',
-  clear: {
-    wrapper: 'p-1 my-auto cursor-pointer',
-    close: 'size-3 text-gray-400 hover:text-gray-500',
+  backSide: {
+    wrapper: 'flex gap-2 pl-1',
+    suffix: 'ml-1.5',
+    clear: {
+      wrapper: 'relative left-[4px] p-1 my-auto cursor-pointer',
+      close: 'size-3 text-gray-400 hover:text-gray-500',
+    },
   },
-});
+};
