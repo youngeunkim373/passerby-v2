@@ -3,7 +3,7 @@ import { Category } from '@/constants/post';
 
 export interface BoardFilterDTO {
   titleOrContent?: string;
-  category?: Category;
+  category?: Category | null;
 }
 
 export enum BoardSortBy {

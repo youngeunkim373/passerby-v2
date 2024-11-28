@@ -1,3 +1,5 @@
+import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { BoardFilterDTO } from '@/app/board/board.interface';
@@ -15,12 +17,25 @@ interface Props {
 }
 
 export function BoardSearch({ defaultFilter, onPagination }: Props) {
-  const { control, register, getValues } = useForm<BoardFilterDTO>();
+  const searchParams = useSearchParams();
+  const { control, getValues, register, reset } = useForm<BoardFilterDTO>();
 
   const handleSearch = () => {
     const filter = getValues();
     onPagination({ filter, page: 1 });
   };
+
+  // pathname이 같은데 query params가 없을 때
+  // 새로운 검색조건으로 data fetch
+  useEffect(() => {
+    const resetFields = async () => {
+      const filter = { titleOrContent: '', category: null };
+      await onPagination({ filter });
+      reset(filter);
+    };
+
+    if(searchParams.size === 0) resetFields();
+  }, [ searchParams ]);
 
   const formItems: FormItemProps[] = [
     {
