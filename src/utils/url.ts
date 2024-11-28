@@ -4,7 +4,7 @@ import { CustomError } from '@/utils/error';
 
 const cryptoSecretKey = process.env.NEXT_PUBLIC_CRYPTO_SECRET;
 
-// 암호화
+/* -------------------- 암호화 -------------------- */ 
 export const encryptObjectToUrl = (obj: object): string => {
   if(!cryptoSecretKey) {
     throw new CustomError(500, 'url 생성 중 오류가 발생했습니다.');
@@ -21,7 +21,7 @@ export const encryptObjectToUrl = (obj: object): string => {
   return urlSafeString;
 };
 
-// 복호화
+/* -------------------- 복호화 -------------------- */ 
 export const decryptUrlToObject = (urlSafeString: string): object | null => {
   if(!cryptoSecretKey) {
     throw new CustomError(500, 'url 생성 중 오류가 발생했습니다.');
@@ -40,4 +40,26 @@ export const decryptUrlToObject = (urlSafeString: string): object | null => {
     console.error('Decryption error:', error);
     return null;
   }
+};
+
+/* -------------------- filter -> queryString -------------------- */
+export const changeFilterToQueryString = (filterObj: Record<string, unknown>) => {
+  const objPairs: string[] = [];
+
+  for (const key in filterObj) {
+    if (
+      filterObj.hasOwnProperty(key) 
+      && filterObj[key] !== null 
+      && filterObj[key] !== ''
+      && filterObj[key] !== undefined
+    ) {
+      const param = encodeURIComponent(key) 
+          + '=' 
+          + encodeURIComponent(JSON.stringify(filterObj[key]));
+
+      objPairs.push(param);
+    }
+  }
+    
+  return objPairs.join('&');
 };

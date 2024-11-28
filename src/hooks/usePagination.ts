@@ -1,4 +1,8 @@
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+
+import { isEqual } from '@/utils/common';
+import { changeFilterToQueryString } from '@/utils/url';
 
 export interface Pagination<TFilter> {
   size: number;
@@ -26,6 +30,8 @@ export const usePagination = <TFilter>({
   defaultPagination = DEFAULT_PAGINATION,
   afterPagination,
 }: PaginationOptions<TFilter>): PaginationSet<TFilter> => {
+  const pathname = usePathname();
+  const router = useRouter();
 
   const [ pagination, setPagination ] = useState<Pagination<TFilter>>(defaultPagination);
 
@@ -38,6 +44,17 @@ export const usePagination = <TFilter>({
         ...(newPagination.filter ?? {})
       } as TFilter,
     };
+
+    // pagination 변경 시 url에 반영
+    if(!isEqual(pagination, mergedPagination)) {  
+      let newQuery = `page=${mergedPagination.page}`;
+  
+      if(mergedPagination.filter && Object.values(mergedPagination.filter).some(Boolean)) {
+        newQuery += '&' + changeFilterToQueryString(mergedPagination.filter);
+      }
+  
+      router.replace(`${pathname}?${newQuery}`, { scroll: true });
+    }
 
     // pagination state 변경 및 data fetch
     setPagination(mergedPagination);
