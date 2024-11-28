@@ -7,7 +7,7 @@ import { BoardFilterDTO, GetBoardResponseDTO } from '@/app/board/board.interface
 import { Board } from '@/app/board/components/Board';
 import { Props } from '@/components/common/Notification';
 import { Category } from '@/constants/post';
-import { Pagination, usePagination } from '@/hooks/usePagination';
+import { Pagination } from '@/hooks/usePagination';
 
 export default {
   component: Board,
@@ -18,11 +18,20 @@ const Template: StoryFn<Props> = () => {
   const [ isLoading, setLoading ] = useState<boolean | null>(null);
   const [ list, setList ] = useState<Post[]>([]);
   const [ totalCount, setTotaleCount ] = useState<number>(0);
+  const [ pagination, setPagination ] = useState<Pagination<BoardFilterDTO>>({ size: 3, page: 1 });
 
-  const { pagination, onPagination, } = usePagination<BoardFilterDTO>({
-    defaultPagination: { size: 3, page: 1 }
-  });
-  const { page, size, filter } = pagination;
+  const onPagination = async (newPagination: Partial<Pagination<BoardFilterDTO>>) => {
+    const mergedPagination: Pagination<BoardFilterDTO> = {
+      page: newPagination.page ?? pagination.page,
+      size: newPagination.size ?? pagination.size, 
+      filter: {
+        ...(pagination.filter ?? {}),
+        ...(newPagination.filter ?? {})
+      } as BoardFilterDTO,
+    };
+
+    setPagination(mergedPagination);
+  };
 
   const getBoardList = async (newPagination: Pagination<BoardFilterDTO>)
     : Promise<GetBoardResponseDTO[] | void > => {
@@ -63,7 +72,12 @@ const Template: StoryFn<Props> = () => {
 
   useEffect(() => {
     getBoardList(pagination);
-  }, [ page, size, filter?.titleOrContent, filter?.category ]);
+  }, [ 
+    pagination.page, 
+    pagination.size, 
+    pagination.filter?.titleOrContent, 
+    pagination.filter?.category,
+  ]);
 
   return (
     <div className={'w-max'}>

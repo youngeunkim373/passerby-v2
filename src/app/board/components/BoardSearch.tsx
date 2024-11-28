@@ -34,7 +34,7 @@ export function BoardSearch({ defaultFilter, onPagination }: Props) {
       reset(filter);
     };
 
-    if(searchParams.size === 0) resetFields();
+    if(searchParams?.size === 0) resetFields();
   }, [ searchParams ]);
 
   const formItems: FormItemProps[] = [
