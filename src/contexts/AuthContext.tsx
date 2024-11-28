@@ -67,7 +67,6 @@ export const useAuth = () => {
     removeLocalStorageItem('accessToken');
     removeLocalStorageItem('refreshToken');
     setLoggedIn(false);
-    router.push('/');
   };
 
   const extendSession = ({ accessToken, refreshToken }: LoginResponseDTO) => {
