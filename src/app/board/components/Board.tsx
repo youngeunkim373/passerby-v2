@@ -23,6 +23,7 @@ export function Board({
   return (
     <div className={style.wrapper}>
       <BoardSearch
+        defaultFilter={pagination.filter}
         onPagination={onPagination} />
       <List 
         isLoading={isLoading} 

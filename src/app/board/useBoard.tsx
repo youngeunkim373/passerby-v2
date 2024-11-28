@@ -1,25 +1,23 @@
 'use client';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { BoardFilterDTO, BoardSortBy, GetBoardResponseDTO } from '@/app/board/board.interface';
 import { getPosts } from '@/app/board/board.service';
 import { Pagination, usePagination } from '@/hooks/usePagination';
+import { changeQueryStringToFilter } from '@/utils/url';
 
 interface Props {
-  defaultPagination?: Pagination<BoardFilterDTO>;
   sortBy: BoardSortBy;
 }
 
-export const useBoard = ({ defaultPagination, sortBy }: Props) => {
+export const useBoard = ({ sortBy }: Props) => {
   const [ isLoading, setLoading ] = useState<boolean | null>(null);
   const [ list, setList ] = useState<GetBoardResponseDTO['items']>([]);
   const [ totalCount, setTotaleCount ] = useState<number>(0);
 
-  const { pagination, onPagination, } = usePagination<BoardFilterDTO>(defaultPagination);
-  const { page, size, filter } = pagination;
-
-  const getBoardList = async (pagination: Pagination<BoardFilterDTO>)
-    : Promise<GetBoardResponseDTO[] | void > => {
+  // 게시글 fetch
+  const getBoardList = async (pagination?: Pagination<BoardFilterDTO>): Promise<void> => {
     try {
       setLoading(true);
 
@@ -34,12 +32,18 @@ export const useBoard = ({ defaultPagination, sortBy }: Props) => {
     }
   };
 
-  const titleOrContent = filter?.titleOrContent;
-  const category = filter?.category;
+  // url정보로 pagination 초기값 지정
+  const searchParams = useSearchParams();
+  const defaultPagination = changeQueryStringToFilter<BoardFilterDTO>(searchParams);
+
+  const { pagination, onPagination } = usePagination<BoardFilterDTO>({
+    defaultPagination,
+    afterPagination: getBoardList,
+  });
 
   useEffect(() => {
     getBoardList(pagination);
-  }, [ page, size, titleOrContent, category ]);
+  }, []);
 
   return {
     isLoading,
