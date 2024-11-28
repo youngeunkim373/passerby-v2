@@ -19,7 +19,9 @@ const Template: StoryFn<Props> = () => {
   const [ list, setList ] = useState<Post[]>([]);
   const [ totalCount, setTotaleCount ] = useState<number>(0);
 
-  const { pagination, onPagination, } = usePagination<BoardFilterDTO>({ size: 3, page: 1 });
+  const { pagination, onPagination, } = usePagination<BoardFilterDTO>({
+    defaultPagination: { size: 3, page: 1 }
+  });
   const { page, size, filter } = pagination;
 
   const getBoardList = async (newPagination: Pagination<BoardFilterDTO>)
