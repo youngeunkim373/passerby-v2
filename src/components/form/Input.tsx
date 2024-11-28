@@ -16,9 +16,10 @@ export interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'pref
 
 export const Input = forwardRef<HTMLInputElement, Props>(({ 
   allowClear = true,
+  defaultValue,
   disabled = false, 
   prefix, 
-  size, 
+  size = 'default', 
   state = 'normal', 
   suffix, 
   type = 'text', 
@@ -26,7 +27,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(({
   onClear,
   ...inputProps
 }, ref) => {
-  const [ value, setValue ] = useState(inputProps.value ?? '');
+  const [ value, setValue ] = useState(defaultValue ?? '');
 
   const optionWidth = typeof width === 'number' 
     ? `${width}px` 

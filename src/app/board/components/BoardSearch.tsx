@@ -10,10 +10,11 @@ import { Category, CategoryLabelRecord } from '@/constants/post';
 import { PaginationSet } from '@/hooks/usePagination';
 
 interface Props {
+  defaultFilter?: BoardFilterDTO;
   onPagination: PaginationSet<BoardFilterDTO>['onPagination'];
 }
 
-export function BoardSearch({ onPagination }: Props) {
+export function BoardSearch({ defaultFilter, onPagination }: Props) {
   const { control, register, getValues } = useForm<BoardFilterDTO>();
 
   const handleSearch = () => {
@@ -26,6 +27,7 @@ export function BoardSearch({ onPagination }: Props) {
       name: 'titleOrContent',
       children: (
         <Input
+          defaultValue={defaultFilter?.titleOrContent ?? ''}
           placeholder={'제목/내용 검색'} 
           suffix={<SearchButton onClick={handleSearch} />}
           allowClear={false}
@@ -37,6 +39,7 @@ export function BoardSearch({ onPagination }: Props) {
       children: (
         <FormSelect
           control={control}
+          defaultValue={defaultFilter?.category}
           width={120}
           placeholder={'분류 선택'}
           allowClear={true}
@@ -45,9 +48,7 @@ export function BoardSearch({ onPagination }: Props) {
               .entries(Category)
               .map(([ key, value ]) => ({ id: key, title: CategoryLabelRecord[value] }))
           }
-          {...register('category', {
-            onChange: handleSearch,
-          })} />
+          {...register('category', { onChange: handleSearch })} />
       ),
     },
   ];

@@ -1,5 +1,6 @@
 import CryptoJS from 'crypto-js';
 
+import { Pagination } from '@/hooks/usePagination';
 import { CustomError } from '@/utils/error';
 
 const cryptoSecretKey = process.env.NEXT_PUBLIC_CRYPTO_SECRET;
@@ -62,4 +63,26 @@ export const changeFilterToQueryString = (filterObj: Record<string, unknown>) =>
   }
     
   return objPairs.join('&');
+};
+
+/* -------------------- queryString -> filter -------------------- */
+export const changeQueryStringToFilter = <TFilter>(searchParams: URLSearchParams): Pagination<TFilter> => {
+  const queryParams = {
+    page: 1,
+    size: 10,
+    filter: {} as TFilter,
+  };
+
+  for (const param of searchParams.entries()) {
+    const [ key, value ] = param;
+
+    if(key === 'page' || key === 'size') {
+      queryParams[key] = +value;
+      continue;
+    }
+
+    queryParams.filter[key as keyof TFilter] = JSON.parse(value);
+  }
+
+  return queryParams;
 };
