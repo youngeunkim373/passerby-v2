@@ -54,12 +54,14 @@ interface ItemProps {
 function Item({ item }: ItemProps) {
   return (
     <li key={item.objectID} className={itemStyle.wrapper}>
-      <Image 
-        width={108}
-        height={0}
-        className={itemStyle.thumbnail} 
-        src={item.imageUrl} 
-        alt={item.title} />
+      {item.imageUrl && (
+        <Image 
+          width={108}
+          height={0}
+          className={itemStyle.thumbnail} 
+          src={item.imageUrl} 
+          alt={item.title} />
+      )}
 
       <div className={itemStyle.content.wrapper}>
         <div className={itemStyle.content.textArea.wrapper}>
