@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Post } from '@/app/_data/posts.interface';
 import { writePost } from '@/app/write/write.service';
 import { ErrorModal } from '@/components/modals/ErrorModal';
+import { useAuthContext } from '@/contexts/AuthContext';
 import { useModalContext } from '@/contexts/ModalContext';
 import { CustomError } from '@/utils/error';
 
@@ -12,6 +13,7 @@ type WriteFormDTO = Omit<Post, 'objectID' | 'postedAt'>;
 export const useWrite = () => {
   const contentRef = useRef<string>('');
 
+  const { loggedInUser } = useAuthContext();
   const { show } = useModalContext();
 
   const {
@@ -32,13 +34,18 @@ export const useWrite = () => {
   };
 
   const createPost = async () => {
+    if(!loggedInUser) {
+      throw new CustomError(401, '유저 인증 정보가 필요합니다.');
+    }
+
     try {
       const { title, category } = getValues();
 
       const res = await writePost({ 
         title, 
         category, 
-        content: contentRef.current
+        content: contentRef.current,
+        userEmail: loggedInUser,
       });
       
       // TODO 게시글 상세 페이지로 이동

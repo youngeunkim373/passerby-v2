@@ -7,7 +7,7 @@ import { CustomError } from '@/utils/error';
 
 export async function POST(req: Request) {
   try {
-    const { title, category, content, imageUrl } = await req.json();
+    const { title, category, content, userEmail, imageUrl } = await req.json();
 
     const now = new Date().valueOf();
 
@@ -19,6 +19,7 @@ export async function POST(req: Request) {
       hits: 0,
       postedAt: now,
       updatedAt: now,
+      userEmail,
     };
 
     try {

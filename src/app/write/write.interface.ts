@@ -6,6 +6,7 @@ export interface WritePostRequestDTO {
   category: Category[];
   content: string;
   imageUrl?: string;
+  userEmail: string;
 }
 
 export interface WritePostResponseDTO {

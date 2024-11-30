@@ -10,4 +10,5 @@ export interface Post {
   hits: number;
   postedAt: number;
   updatedAt: number;
+  userEmail: string;
 }

@@ -1,7 +1,6 @@
 import { addDoc, collection, getDocs, limit, query, where } from 'firebase/firestore';
 import firestore from 'firestore';
 import { NextResponse } from 'next/server';
-import { ulid } from 'ulid';
 
 import { LoginHistory } from '@/app/_data/login_history.interface';
 import { CustomError } from '@/utils/error';
@@ -36,7 +35,6 @@ export async function POST(req: Request) {
     const now = new Date().valueOf();
 
     const newLoginHistory: LoginHistory = {
-      id: ulid(),
       userEmail: email,
       accessToken,
       refreshToken,

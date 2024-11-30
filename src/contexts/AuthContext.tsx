@@ -18,7 +18,13 @@ interface LoginArgs extends LoginRequestDTO {
 export const useAuth = () => {
   const router = useRouter();
 
-  const [ isLoggedIn, setLoggedIn ] = useState<boolean | null>(null);
+  const [ loggedInUser, setLoggedInUser ] = useState<{
+    isLoggedIn: boolean | null,
+    userEmail: string | null,
+   }>({
+     isLoggedIn: null,
+     userEmail: null,
+   });
   const [ isLoading, setLoading ] = useState(false);
 
   const login: SubmitHandler<LoginArgs> = async ({ email, password, setError }: LoginArgs) => { 
@@ -40,6 +46,7 @@ export const useAuth = () => {
       extendSession({ 
         accessToken: response.data.accessToken, 
         refreshToken: response.data.refreshToken,
+        userEmail: email,
       });
 
       setLoading(false);
@@ -66,13 +73,23 @@ export const useAuth = () => {
   const logout = () => {
     removeLocalStorageItem('accessToken');
     removeLocalStorageItem('refreshToken');
-    setLoggedIn(false);
+    setLoggedInUser({
+      isLoggedIn: false,
+      userEmail: null,
+    });
   };
 
-  const extendSession = ({ accessToken, refreshToken }: LoginResponseDTO) => {
+  const extendSession = ({ 
+    accessToken, 
+    refreshToken, 
+    userEmail 
+  }: LoginResponseDTO & { userEmail: string }) => {
     setLocalStorageItem('accessToken', accessToken);
     setLocalStorageItem('refreshToken', refreshToken);
-    setLoggedIn(true);
+    setLoggedInUser({
+      isLoggedIn: true,
+      userEmail,
+    });
 
     setTimeout(silentRefresh, (1800 - 30) * 1000); // 29.5분
   };
@@ -90,7 +107,12 @@ export const useAuth = () => {
       if(decodedRefreshToken) {
         const accessToken = generateAccessToken(decodedRefreshToken.userId);
         const refreshToken = generateRefreshToken(decodedRefreshToken.userId);
-        extendSession({ accessToken, refreshToken });
+
+        extendSession({ 
+          accessToken, 
+          refreshToken, 
+          userEmail: decodedRefreshToken.userId, 
+        });
       }
     } catch (error) {
       console.log('error', error);
@@ -104,7 +126,8 @@ export const useAuth = () => {
 
   return { 
     isLoading,
-    isLoggedIn,
+    isLoggedIn: loggedInUser.isLoggedIn,
+    loggedInUser: loggedInUser.userEmail,
     login,
     logout,
   };
