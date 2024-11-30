@@ -112,6 +112,7 @@ const data: Post[] = [
     'views': 6,
     'title': 'test1',
     'postedAt': 1732598076000,
+    'updatedAt': 1732598076000,
     'category': [ Category.LOVE ],
   },
   {
@@ -122,6 +123,7 @@ const data: Post[] = [
     'views': 6,
     'title': 'test2',
     'postedAt': 1732598076000,
+    'updatedAt': 1732598076000,
     'category': [ Category.LOVE ],
   },
   {
@@ -132,6 +134,7 @@ const data: Post[] = [
     'views': 6,
     'title': 'test3',
     'postedAt': 1732598076000,
+    'updatedAt': 1732598076000,
     'category': [ Category.PARENTING, Category.FAMILY ],
   },
   {
@@ -142,6 +145,7 @@ const data: Post[] = [
     'views': 6,
     'title': 'test4',
     'postedAt': 1732598076000,
+    'updatedAt': 1732598076000,
     'category': [ Category.SCHOOL, Category.RELATIONSHIP ],
   },
   {
@@ -152,6 +156,7 @@ const data: Post[] = [
     'views': 6,
     'title': 'test5',
     'postedAt': 1732598076000,
+    'updatedAt': 1732598076000,
     'category': [ Category.ETC ],
   },
 ];
