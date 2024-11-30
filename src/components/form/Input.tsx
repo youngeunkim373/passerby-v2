@@ -106,6 +106,7 @@ const style = {
     w-full 
     relative
     flex items-center
+    bg-white
     ring-1 ring-inset rounded-md 
     px-4
     focus-within:ring-[1.3px]
