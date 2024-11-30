@@ -28,13 +28,12 @@ export function SuccessModal({ button, message, ...modalProps }: Props) {
         </span>
 
         <div className={style.description}>
-          
           {message}
         </div>
 
         <Button 
           className={style.confirmButton}
-          color={'blue'}
+          color={'green'}
           variant={'solid'} 
           onClick={handleConfirm}>
           {button ?? '확인'}
@@ -46,8 +45,8 @@ export function SuccessModal({ button, message, ...modalProps }: Props) {
 
 const style = {
   wrapper: 'flex flex-col items-center gap-4',
-  image: 'size-20 text-blue mx-auto',
-  title: 'text-2xl font-bold text-blue',
+  image: '!size-16 text-green mx-auto',
+  title: 'text-2xl font-bold text-green',
   description: 'text-center text-sm text-gray-600',
   confirmButton: 'w-full mt-2',
 };

@@ -51,7 +51,7 @@ export function ErrorModal({ button, message, statusCode, ...modalProps }: Props
 
 const style = {
   wrapper: 'flex flex-col items-center gap-4',
-  image: 'size-20 text-red mx-auto',
+  image: '!size-16 text-red mx-auto',
   title: 'text-2xl font-bold text-red',
   description: 'text-center text-sm text-gray-600',
   confirmButton: 'w-full mt-2',

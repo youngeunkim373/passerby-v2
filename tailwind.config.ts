@@ -58,7 +58,7 @@ const config: Config = {
       },
       green: {
         pale: '#f0fdf4',
-        light: '#86efac',
+        light: '#22c55e',
         DEFAULT: '#16a34a',
         dark: '#15803d',
       },
