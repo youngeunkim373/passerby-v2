@@ -86,6 +86,7 @@ export function WriteForm() {
 
       <Editor 
         initialValue={' '}
+        storageDirectory={'board'}
         onChange={handleChange} />
 
       <Button 

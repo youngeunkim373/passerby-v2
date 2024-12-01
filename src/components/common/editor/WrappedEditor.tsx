@@ -14,7 +14,7 @@ export default function WrappedEditor({ forwardedRef, ...props }: Props) {
       <Editor
         ref={forwardedRef}
         previewStyle={'tab'}
-        initialEditType={'markdown'}
+        initialEditType={'wysiwyg'}
         useCommandShortcut={true}
         hideModeSwitch={true}
         toolbarItems={[
