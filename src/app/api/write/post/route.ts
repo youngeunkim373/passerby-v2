@@ -15,6 +15,7 @@ export async function POST(req: Request) {
       title,
       category,
       content,
+      imageUrl,
       views: 0,
       hits: 0,
       postedAt: now,

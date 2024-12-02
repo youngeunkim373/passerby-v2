@@ -40,11 +40,18 @@ export const useWrite = () => {
 
     try {
       const { title, category } = getValues();
+      const htmlContent = contentRef.current;
 
-      const res = await writePost({ 
+      // 정규식을 사용하여 첫 번째 이미지 태그 추출
+      const imgRegex = /<img[^>]+src="([^">]+)"/i;
+      const match = htmlContent.match(imgRegex);
+
+      // const res = await writePost({ 
+      await writePost({ 
         title, 
         category, 
         content: contentRef.current,
+        imageUrl: match ? match[1] : undefined,
         userEmail: loggedInUser,
       });
       
