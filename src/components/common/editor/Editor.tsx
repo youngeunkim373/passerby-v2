@@ -65,8 +65,6 @@ export const Editor = ({ onChange, storageDirectory, ...props }: Props) => {
 
     try {
       const imageUrl = await uploadImage(blob, storageDirectory);
-
-
       if(callback) callback(imageUrl);
     } catch (error) {
       console.error('Image upload failed:', error);
