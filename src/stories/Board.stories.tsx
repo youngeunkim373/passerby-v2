@@ -111,7 +111,9 @@ const data: Post[] = [
     'hits': 3,
     'views': 6,
     'title': 'test1',
+    'userEmail': 'youngeunkim373@gmail.com',
     'postedAt': 1732598076000,
+    'updatedAt': 1732598076000,
     'category': [ Category.LOVE ],
   },
   {
@@ -121,7 +123,9 @@ const data: Post[] = [
     'hits': 3,
     'views': 6,
     'title': 'test2',
+    'userEmail': 'youngeunkim373@gmail.com',
     'postedAt': 1732598076000,
+    'updatedAt': 1732598076000,
     'category': [ Category.LOVE ],
   },
   {
@@ -131,7 +135,9 @@ const data: Post[] = [
     'hits': 3,
     'views': 6,
     'title': 'test3',
+    'userEmail': 'youngeunkim373@gmail.com',
     'postedAt': 1732598076000,
+    'updatedAt': 1732598076000,
     'category': [ Category.PARENTING, Category.FAMILY ],
   },
   {
@@ -141,7 +147,9 @@ const data: Post[] = [
     'hits': 3,
     'views': 6,
     'title': 'test4',
+    'userEmail': 'youngeunkim373@gmail.com',
     'postedAt': 1732598076000,
+    'updatedAt': 1732598076000,
     'category': [ Category.SCHOOL, Category.RELATIONSHIP ],
   },
   {
@@ -151,7 +159,9 @@ const data: Post[] = [
     'hits': 3,
     'views': 6,
     'title': 'test5',
+    'userEmail': 'youngeunkim373@gmail.com',
     'postedAt': 1732598076000,
+    'updatedAt': 1732598076000,
     'category': [ Category.ETC ],
   },
 ];

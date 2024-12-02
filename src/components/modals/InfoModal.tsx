@@ -1,16 +1,17 @@
 import { ReactNode } from 'react';
 
-import { CheckSolid } from '@/assets/icons/Chevron';
+import { InfoSolid } from '@/assets/icons/Info';
 import { Button } from '@/components/buttons/Button';
 import { Modal, Props as ModalProps } from '@/components/layout/Modal';
 import { useModalContext } from '@/contexts/ModalContext';
 
 export interface Props extends Omit<ModalProps, 'closable'> {
   button?: string;
+  title: string | ReactNode;
   message: string | ReactNode;
 }
 
-export function SuccessModal({ button, message, ...modalProps }: Props) {
+export function InfoModal({ button, title, message, ...modalProps }: Props) {
   const { hide } = useModalContext();
 
   const handleConfirm = () => {
@@ -21,10 +22,10 @@ export function SuccessModal({ button, message, ...modalProps }: Props) {
   return (
     <Modal {...modalProps} closable={false} onConfirm={handleConfirm}>
       <div className={style.wrapper}>
-        <CheckSolid className={style.image} />
+        <InfoSolid className={style.image} />
 
         <span className={style.title}>
-          Success
+          {title}
         </span>
 
         <div className={style.description}>
@@ -33,7 +34,7 @@ export function SuccessModal({ button, message, ...modalProps }: Props) {
 
         <Button 
           className={style.confirmButton}
-          color={'green'}
+          color={'blue'}
           variant={'solid'} 
           onClick={handleConfirm}>
           {button ?? '확인'}
@@ -45,8 +46,8 @@ export function SuccessModal({ button, message, ...modalProps }: Props) {
 
 const style = {
   wrapper: 'flex flex-col items-center gap-4',
-  image: '!size-16 text-green mx-auto',
-  title: 'text-2xl font-bold text-green',
+  image: '!size-16 text-blue mx-auto',
+  title: 'text-xl font-bold text-black',
   description: 'text-center text-sm text-gray-600',
   confirmButton: 'w-full mt-2',
 };
