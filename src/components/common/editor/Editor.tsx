@@ -3,12 +3,24 @@ import { EditorProps, Editor as ToastEditor } from '@toast-ui/react-editor';
 import dynamic from 'next/dynamic';
 import { ForwardedRef, forwardRef, useCallback, useRef, useState, } from 'react';
 
+import { SpinLoading } from '@/assets/icons/Loading';
 import { ErrorModal } from '@/components/modals/ErrorModal';
 import { useModalContext } from '@/contexts/ModalContext';
 import { uploadImage } from '@/utils/image';
 
 /* -------------------- ForwardedEditor -------------------- */
-const WrappedEditor = dynamic(() => import('./WrappedEditor'), { ssr: false });
+const WrappedEditor = dynamic(
+  () => import('./WrappedEditor'), 
+  { 
+    ssr: false, 
+    loading: () => (
+      <div className={'w-full h-[300px] flex flex-col justify-center items-center gap-2'}>
+        <SpinLoading className={'size-16'} />
+        <span className={'font-semibold text-gray-500'}>Loading..</span>
+      </div>
+    ), 
+  },
+);
 
 const ForwardedEditor = forwardRef((
   props: EditorProps, 
