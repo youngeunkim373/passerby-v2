@@ -83,6 +83,10 @@ export const useWrite = () => {
   return {
     control,
     errors,
+    fieldState: {
+      title: errors.title ? 'error' : 'normal',
+      category: errors.category ? 'error' : 'normal',
+    },
     register: {
       title: register('title', formValidation.title),
       category: register('category', formValidation.category),
