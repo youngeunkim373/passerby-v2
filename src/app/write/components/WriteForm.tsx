@@ -7,7 +7,7 @@ import { Button } from '@/components/buttons/Button';
 import { Editor } from '@/components/common/editor/Editor';
 import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
-import { FormSelect } from '@/components/form/FormSelect';
+import { FormSelect } from '@/components/form/select/FormSelect';
 import { Input } from '@/components/form/Input';
 import { InfoModal } from '@/components/modals/InfoModal';
 import { Category, CategoryLabelRecord } from '@/constants/post';
@@ -48,9 +48,8 @@ export function WriteForm() {
       children: (
         <FormSelect
           control={control}
-          width={'100%'}
           placeholder={'분류를 선택해주세요'}
-          allowClear={true}
+          mode={'multiple'}
           options={
             Object
               .entries(Category)

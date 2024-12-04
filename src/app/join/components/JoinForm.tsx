@@ -7,7 +7,7 @@ import { User } from '@/assets/icons/User';
 import { Button } from '@/components/buttons/Button';
 import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
-import { FormSelect } from '@/components/form/FormSelect';
+import { FormSelect } from '@/components/form/select/FormSelect';
 import { Input } from '@/components/form/Input';
 import { ageRange, Regions } from '@/constants/user';
 
