@@ -7,8 +7,9 @@ import { Button } from '@/components/buttons/Button';
 import { Editor } from '@/components/common/editor/Editor';
 import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
+import { Input, InputState } from '@/components/form/Input';
 import { FormSelect } from '@/components/form/select/FormSelect';
-import { Input } from '@/components/form/Input';
+import { SelectState } from '@/components/form/select/Select';
 import { InfoModal } from '@/components/modals/InfoModal';
 import { Category, CategoryLabelRecord } from '@/constants/post';
 import { useAuthContext } from '@/contexts/AuthContext';
@@ -24,6 +25,7 @@ export function WriteForm() {
   const { 
     control, 
     errors,
+    fieldState,
     register, 
     handleChange,
     writePost,
@@ -36,8 +38,9 @@ export function WriteForm() {
       isRequired: true,
       children: (
         <Input
-          placeholder={'제목을 입력해주세요'} 
+          placeholder={'제목을 입력해주세요'}
           allowClear={false}
+          state={fieldState.title as InputState}
           {...register.title} />
       ),
     },
@@ -50,6 +53,7 @@ export function WriteForm() {
           control={control}
           placeholder={'분류를 선택해주세요'}
           mode={'multiple'}
+          state={fieldState.category as SelectState}
           options={
             Object
               .entries(Category)

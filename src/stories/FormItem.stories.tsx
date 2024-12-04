@@ -51,15 +51,12 @@ const errorOptions = {
 const Template: StoryFn<FieldValues> = () => {
   const { 
     control,
-    formState: { errors, isValid },
+    formState: { errors },
     register,  
+    watch,
   } = useForm({ mode: 'all' });
 
-  const hasError = Object.keys(errors).length > 0;
-
-  const inputState = isValid 
-    ? 'success'
-    : hasError ? 'error' :'normal';
+  const { input, select } = watch();
 
   const formItems = [
     {
@@ -68,7 +65,7 @@ const Template: StoryFn<FieldValues> = () => {
       children: (
         <Input 
           placeholder={'Enter any text'}
-          state={inputState}
+          state={errors.input ? 'error' : (input ? 'success' : 'normal')}
           {...register('input', errorOptions['input'])} />
       ),
       isRequired: true,
@@ -82,7 +79,7 @@ const Template: StoryFn<FieldValues> = () => {
           control={control}
           placeholder={'Select your country'}
           options={options}
-          state={inputState}
+          state={errors.select ? 'error' : (select ? 'success' : 'normal')}
           allowClear={true}
           {...register('select', errorOptions['select'])} />
       ),
