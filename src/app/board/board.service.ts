@@ -1,4 +1,5 @@
 'use client';
+import { Post } from '@/app/_data/posts.interface';
 import { BoardFilterDTO, BoardSortBy, GetBoardResponseDTO } from '@/app/board/board.interface';
 import { Pagination } from '@/hooks/usePagination';
 import { CustomError } from '@/utils/error';
@@ -6,16 +7,18 @@ import { CustomError } from '@/utils/error';
 interface Props {
   pagination?: Pagination<BoardFilterDTO>;
   sortBy: BoardSortBy;
+  userEmail?: Post['userEmail'] | null;
 }
 
-// 게시글 조회
-export const getPosts = async ({ pagination, sortBy }: Props) => {
+// 게시글 리스트 조회
+export const getPosts = async ({ pagination, sortBy, userEmail }: Props) => {
   const params = new URLSearchParams({ 
     page: (pagination?.page ?? '').toString(),
     size: (pagination?.size ?? '').toString(),
     titleOrContent: pagination?.filter?.titleOrContent ?? '',
     category: pagination?.filter?.category ?? '',
     sortBy,
+    userEmail: userEmail ?? '',
   });
 
   const url = `/api/board/getPosts?${params.toString()}`;

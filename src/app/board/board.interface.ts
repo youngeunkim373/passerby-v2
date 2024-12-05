@@ -4,6 +4,7 @@ import { Category } from '@/constants/post';
 export interface BoardFilterDTO {
   titleOrContent?: string;
   category?: Category | null;
+  userEmail?: Post['userEmail'];
 }
 
 export enum BoardSortBy {

@@ -1,0 +1,66 @@
+'use client';
+import { useRouter } from 'next/navigation';
+
+import { UserBoardSearch } from '@/app/user/posts/components/UserBoardSearch';
+import { useUserBoard } from '@/app/user/posts/useUserBoard';
+import { Button } from '@/components/buttons/Button';
+import { List } from '@/components/common/List';
+import { PageTitle } from '@/components/common/PageTitle';
+import { Pagination } from '@/components/common/Pagination';
+import { useAuthContext } from '@/contexts/AuthContext';
+
+export function UserBoard() {
+  const router = useRouter();
+
+  const { isLoggedIn, loggedInUser } = useAuthContext();
+
+  const { 
+    isLoading,
+    list,
+    pagination, 
+    totalPage, 
+    onPagination,
+  } = useUserBoard({ isLoggedIn, userEmail: loggedInUser });
+
+  return (
+    <div className={style.wrapper}>
+      <PageTitle 
+        title={'내가 쓴 글 보기'} 
+        description={'그동안 작성한 게시글을 조회할 수 있습니다.'} />
+
+      {loggedInUser && (
+        <UserBoardSearch
+          defaultFilter={pagination.filter}
+          onPagination={onPagination}
+          userEmail={loggedInUser} />
+      )}
+      <List 
+        isLoading={!isLoggedIn || isLoading} 
+        items={list} />
+      <Pagination 
+        pagination={pagination} 
+        totalPage={totalPage}
+        onPagination={onPagination} />
+
+      {isLoading === false && (
+        <Button 
+          variant={'solid'} 
+          className={style.button}
+          onClick={() => router.push('/write')}>
+          글 쓰기
+        </Button>
+      )}
+    </div> 
+  );
+}
+
+const style = {
+  wrapper: `
+    w-full h-min
+    relative
+    flex flex-col gap-2 
+    pt-8 pb-2 mb-auto sm:pt-10 sm:pb-4
+  `,
+  button: 'w-fit sticky bottom-4 !right-[16px z-10 ml-auto mb-2',
+};
+
