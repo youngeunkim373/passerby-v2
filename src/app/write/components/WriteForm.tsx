@@ -23,6 +23,7 @@ export function WriteForm() {
     control, 
     errors,
     fieldState,
+    isLoading,
     post,
     register, 
     handleChange,
@@ -71,6 +72,10 @@ export function WriteForm() {
 
   return (
     <div className={style.wrapper}>
+      {isLoading && (
+        <div className={style.loading}>게시글 로드 중...</div>
+      )}
+
       <Form
         items={formItems}
         onSubmit={writePost}
@@ -96,4 +101,9 @@ export function WriteForm() {
 const style = {
   wrapper: 'w-full max-w-[700px] flex flex-col justify-center items-center gap-8 pt-12 pb-16 mx-auto',
   form: 'w-full  flex flex-col gap-4',
+  loading: `
+    absolute top-[calc(50%+22.5px)] z-40
+    left-1/2 -translate-x-1/2 -translate-y-1/2 
+    text-gray-400
+  `,
 };
