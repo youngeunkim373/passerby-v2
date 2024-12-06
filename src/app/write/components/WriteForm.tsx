@@ -15,7 +15,6 @@ import { useAuthContext } from '@/contexts/AuthContext';
 import { useModalContext } from '@/contexts/ModalContext';
 
 export function WriteForm() {
-  // 유저 로그인 여부 확인
   const { isLoggedIn } = useAuthContext();
   const { show } = useModalContext();
 
@@ -27,7 +26,7 @@ export function WriteForm() {
     post,
     register, 
     handleChange,
-    writePost,
+    handleSubmit,
   } = useWrite();
 
   const formItems: FormItemProps[] = [
@@ -63,6 +62,7 @@ export function WriteForm() {
     },
   ];
 
+  // 유저 로그인 여부 확인
   useEffect(() => {
     if (isLoggedIn === null) return;
     if (isLoggedIn === false) {
@@ -78,7 +78,7 @@ export function WriteForm() {
 
       <Form
         items={formItems}
-        onSubmit={writePost}
+        onSubmit={handleSubmit}
         errors={errors}
         className={style.form} />
 
@@ -91,7 +91,7 @@ export function WriteForm() {
       <Button 
         variant={'solid'}
         className={'w-full'}
-        onClick={writePost}>
+        onClick={handleSubmit}>
         작성 완료
       </Button>
     </div>
