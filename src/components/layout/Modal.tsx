@@ -82,6 +82,6 @@ const style = {
       mx-auto p-4
     `,
     content: 'w-full text-left',
-    close: 'size-5 p-1 absolute top-4 right-4 text-gray-400 cursor-pointer',
+    close: '!size-5 p-1 absolute top-4 right-4 text-gray-400 cursor-pointer',
   },
 };

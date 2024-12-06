@@ -56,7 +56,7 @@ export function NotificationContextProvider({ children }: PropsWithChildren) {
       <div 
         className={`
           max-h-[calc(100%-81px)]
-          fixed top-20 z-50 
+          fixed top-20 z-[60]
           right-[max(calc(50%-31rem),1rem)] md:right-[max(calc(50%-30rem),2rem)]
           flex flex-col gap-2
           overflow-y-auto overscroll-none
