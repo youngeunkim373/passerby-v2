@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Post } from '@/app/_data/posts.interface';
 import { GetPostResponseDTO } from '@/app/board/board.interface';
 import { getPost } from '@/app/board/board.service';
-import { writePost } from '@/app/write/write.service';
+import { editPost, writePost } from '@/app/write/write.service';
 import { ErrorModal } from '@/components/modals/ErrorModal';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { useModalContext } from '@/contexts/ModalContext';
@@ -43,7 +43,7 @@ export const useWrite = () => {
     contentRef.current = value;
   };
 
-  const createPost = async () => {
+  const createUpdatePost = async () => {
     if(!loggedInUser) {
       throw new CustomError(401, '유저 인증 정보가 필요합니다.');
     }
@@ -56,14 +56,15 @@ export const useWrite = () => {
       const imgRegex = /<img[^>]+src="([^">]+)"/i;
       const match = htmlContent.match(imgRegex);
 
-      // const res = await writePost({ 
-      await writePost({ 
-        title, 
-        category, 
-        content: contentRef.current,
-        imageUrl: match ? match[1] : undefined,
-        userEmail: loggedInUser,
-      });
+      const content = contentRef.current;
+      const imageUrl = match ? match[1] : undefined;
+      const commonBody = { title, category, content, imageUrl };
+
+      if (!postId) {
+        await writePost({ ...commonBody, userEmail: loggedInUser });
+      } else {
+        await editPost({ postId, ...commonBody });
+      }
       
       // TODO 게시글 상세 페이지로 이동
       // router.push(`/board/${res.objectID}`)
@@ -129,7 +130,7 @@ export const useWrite = () => {
       category: register('category', formValidation.category),
     },
     handleChange,
-    writePost: handleSubmit(createPost),
+    handleSubmit: handleSubmit(createUpdatePost),
   };
 };
 
