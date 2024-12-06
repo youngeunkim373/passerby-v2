@@ -28,6 +28,9 @@ export const useAuth = () => {
   const [ isLoading, setLoading ] = useState(false);
 
   const login: SubmitHandler<LoginArgs> = async ({ email, password, setError }: LoginArgs) => { 
+    const searchParams = new URLSearchParams(window.location.search);
+    const isBackAvailable = searchParams.get('isBackAvailable');
+    
     try {
       setLoading(true);
 
@@ -50,7 +53,9 @@ export const useAuth = () => {
       });
 
       setLoading(false);
-      router.push('/');
+
+      if(isBackAvailable === 'true') router.back();
+      else router.push('/');
     } catch (error) {
       console.error('Error fetching data:', error);
 

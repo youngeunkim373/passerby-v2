@@ -2,9 +2,9 @@ import { useRouter } from 'next/navigation';
 
 import { Post } from '@/app/_data/posts.interface';
 import { BoardFilterDTO } from '@/app/board/board.interface';
+import { BoardList } from '@/app/board/components/BoardList';
 import { BoardSearch } from '@/app/board/components/BoardSearch';
 import { Button } from '@/components/buttons/Button';
-import { List } from '@/components/common/List';
 import { Pagination } from '@/components/common/Pagination';
 import { PaginationSet } from '@/hooks/usePagination';
 
@@ -30,7 +30,7 @@ export function Board({
       <BoardSearch
         defaultFilter={pagination.filter}
         onPagination={onPagination} />
-      <List 
+      <BoardList 
         isLoading={isLoading} 
         items={list} />
       <Pagination 

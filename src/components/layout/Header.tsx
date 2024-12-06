@@ -1,4 +1,5 @@
 'use client';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -10,11 +11,12 @@ import { Button } from '@/components/buttons/Button';
 import { MenuButton } from '@/components/buttons/MenuButton';
 import { Notification } from '@/components/common/Notification';
 import { Drawer } from '@/components/layout/Drawer';
+import { UserMenuModal } from '@/components/modals/UserMenuModal';
 import { items } from '@/constants/menu';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { useDrawerContext } from '@/contexts/DrawerContext';
+import { useModalContext } from '@/contexts/ModalContext';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 /* ---------- Header ---------- */
 export function Header() {
@@ -22,6 +24,7 @@ export function Header() {
 
   const { isLoggedIn, logout } = useAuthContext();
   const { isVisible, show: showDrawer, hide } = useDrawerContext();
+  const { show: showModal, hide: hideModal } = useModalContext();
   const { show: showNotification } = useNotificationContext();
 
   const notifyFeatureInProgress = () => {
@@ -35,6 +38,14 @@ export function Header() {
   const handleClickMenu = (path: string) => {
     router.push(path);
     hide();
+  };
+
+  const handleClickUserMenu = () => {
+    showModal(
+      <UserMenuModal 
+        hideModal={hideModal}
+        notifyFeatureInProgress={notifyFeatureInProgress} />
+    );
   };
 
   const handleOpenMenu = () => {
@@ -83,8 +94,10 @@ export function Header() {
         {/* ----------- User area ----------- */}
         <div className={style.user}>
           {isLoggedIn === true
-            ? <LoggedInUserArea logout={logout} notifyFeatureInProgress={notifyFeatureInProgress} />
-            : isLoggedIn === false ? <LoggedOutUserArea router={router} /> : <SpinLoading fill={'#64748b'} /> }
+            ? <LoggedInUserArea logout={logout} onClickUser={handleClickUserMenu} />
+            : isLoggedIn === false 
+              ? <LoggedOutUserArea router={router} /> 
+              : <SpinLoading fill={'#64748b'} /> }
             
           {/* ----------- Mobile area ----------- */}
           <Button 
@@ -136,9 +149,9 @@ function LoggedOutUserArea({ router }: { router: AppRouterInstance }) {
   );
 }
 
-function LoggedInUserArea({ logout, notifyFeatureInProgress }: { 
+function LoggedInUserArea({ logout, onClickUser }: { 
   logout: () => void;
-  notifyFeatureInProgress: () => void; 
+  onClickUser: () => void; 
 }) {
   return (
     <>
@@ -153,8 +166,7 @@ function LoggedInUserArea({ logout, notifyFeatureInProgress }: {
         variant={'link'}
         size={'small'}
         color={'black'}
-        // TODO Notification 컴포넌트 만들기
-        onClick={notifyFeatureInProgress}>
+        onClick={onClickUser}>
         <UserCircle className={'size-7'} />
       </Button>
     </>

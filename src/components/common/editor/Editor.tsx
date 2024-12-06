@@ -1,8 +1,9 @@
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { EditorProps, Editor as ToastEditor } from '@toast-ui/react-editor';
 import dynamic from 'next/dynamic';
-import { ForwardedRef, forwardRef, useCallback, useRef, useState, } from 'react';
+import { ForwardedRef, forwardRef, useCallback, useEffect, useRef, useState, } from 'react';
 
+import { GetPostResponseDTO } from '@/app/board/board.interface';
 import { SpinLoading } from '@/assets/icons/Loading';
 import { ErrorModal } from '@/components/modals/ErrorModal';
 import { useModalContext } from '@/contexts/ModalContext';
@@ -35,11 +36,12 @@ ForwardedEditor.displayName = 'ForwardedEditor';
 type StorageDirectory = 'static' | 'board';
 
 interface Props extends EditorProps {
-  onChange: (value: string) => void;
   storageDirectory: StorageDirectory;
+  content?: GetPostResponseDTO['content'] | null;
+  onChange: (value: string) => void;
 }
 
-export const Editor = ({ onChange, storageDirectory, ...props }: Props) => {
+export const Editor = ({ storageDirectory, content, onChange, ...props }: Props) => {
   const editorRef = useRef<ToastEditor>(null);
   const [ isImageUploading, setImageUploading ] = useState(false);
 
@@ -73,6 +75,12 @@ export const Editor = ({ onChange, storageDirectory, ...props }: Props) => {
       setImageUploading(false);
     }
   }, [ show, storageDirectory ]);
+
+  // 게시글 수정 시에는 기존에 작성한 내용이 들어오도록 함
+  useEffect(() => {
+    if(!editorRef.current || !content) return;
+    editorRef.current.getInstance().setHTML(content);
+  }, [ content ]);
 
   return (
     <div className={style.wrapper}>

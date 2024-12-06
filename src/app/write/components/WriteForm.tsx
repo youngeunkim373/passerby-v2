@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import { useWrite } from '@/app/write/useWrite';
@@ -10,14 +9,12 @@ import { FormItemProps } from '@/components/form/FormItem';
 import { Input, InputState } from '@/components/form/Input';
 import { FormSelect } from '@/components/form/select/FormSelect';
 import { SelectState } from '@/components/form/select/Select';
-import { InfoModal } from '@/components/modals/InfoModal';
+import { LoginModal } from '@/components/modals/LoginModal';
 import { Category, CategoryLabelRecord } from '@/constants/post';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { useModalContext } from '@/contexts/ModalContext';
 
 export function WriteForm() {
-  const router = useRouter();
-
   // 유저 로그인 여부 확인
   const { isLoggedIn } = useAuthContext();
   const { show } = useModalContext();
@@ -26,6 +23,8 @@ export function WriteForm() {
     control, 
     errors,
     fieldState,
+    isLoading,
+    post,
     register, 
     handleChange,
     writePost,
@@ -66,21 +65,17 @@ export function WriteForm() {
 
   useEffect(() => {
     if (isLoggedIn === null) return;
-  
-    if (!isLoggedIn) {
-      show(
-        <InfoModal
-          title={'로그인을 먼저 해주세요'}
-          message={'글쓰기를 하려면 로그인이 먼저 선행되어야 합니다.'}
-          button={'로그인하러 가기'}
-          onConfirm={() => router.push('/login')}
-        />
-      );
+    if (isLoggedIn === false) {
+      show(<LoginModal />);
     }
   }, [ isLoggedIn ]);
 
   return (
     <div className={style.wrapper}>
+      {isLoading && (
+        <div className={style.loading}>게시글 로드 중...</div>
+      )}
+
       <Form
         items={formItems}
         onSubmit={writePost}
@@ -89,6 +84,7 @@ export function WriteForm() {
 
       <Editor 
         initialValue={' '}
+        content={post?.content}
         storageDirectory={'board'}
         onChange={handleChange} />
 
@@ -105,4 +101,9 @@ export function WriteForm() {
 const style = {
   wrapper: 'w-full max-w-[700px] flex flex-col justify-center items-center gap-8 pt-12 pb-16 mx-auto',
   form: 'w-full  flex flex-col gap-4',
+  loading: `
+    absolute top-[calc(50%+22.5px)] z-40
+    left-1/2 -translate-x-1/2 -translate-y-1/2 
+    text-gray-400
+  `,
 };
