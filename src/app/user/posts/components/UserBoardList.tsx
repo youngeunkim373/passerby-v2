@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
@@ -53,6 +54,12 @@ interface ItemProps {
 }
 
 function Item({ item }: ItemProps) {
+  const router = useRouter();
+
+  const editPost = (postId: Post['objectID']) => {
+    router.push(`/write?postId=${postId}`);
+  };
+  
   return (
     <li key={item.objectID} className={itemStyle.wrapper}>
       <div className={itemStyle.content.wrapper}>
@@ -95,7 +102,8 @@ function Item({ item }: ItemProps) {
         <Button 
           color={'blue'} 
           size={'small'}
-          variant={'link'}>
+          variant={'link'}
+          onClick={() => editPost(item.objectID)}>
           수정하기
         </Button>
         <Button 

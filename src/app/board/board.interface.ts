@@ -17,3 +17,5 @@ export interface GetBoardResponseDTO {
   items: Post[];
   totalCount: number;
 }
+
+export type GetPostResponseDTO = Post;

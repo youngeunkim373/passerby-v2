@@ -1,7 +1,10 @@
-import { useRef } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Post } from '@/app/_data/posts.interface';
+import { GetPostResponseDTO } from '@/app/board/board.interface';
+import { getPost } from '@/app/board/board.service';
 import { writePost } from '@/app/write/write.service';
 import { ErrorModal } from '@/components/modals/ErrorModal';
 import { useAuthContext } from '@/contexts/AuthContext';
@@ -11,6 +14,12 @@ import { CustomError } from '@/utils/error';
 type WriteFormDTO = Omit<Post, 'objectID' | 'postedAt'>;
 
 export const useWrite = () => {
+  const searchParams = useSearchParams();
+  const { postId } = Object.fromEntries(searchParams.entries());
+
+  const [ isLoading, setLoading ] = useState<boolean | null>(null);
+  const [ post, setPost ] = useState<GetPostResponseDTO | null>(null);
+
   const contentRef = useRef<string>('');
 
   const { loggedInUser } = useAuthContext();
@@ -19,9 +28,10 @@ export const useWrite = () => {
   const {
     control,
     formState: { errors },
+    getValues,
     handleSubmit,
     register,
-    getValues,
+    reset,
   } = useForm<WriteFormDTO>({ mode: 'all' });
 
   const formValidation = {
@@ -80,6 +90,31 @@ export const useWrite = () => {
     }
   };
 
+  const getPostDetail = async (): Promise<void> => {
+    try {
+      if(!postId) return;
+
+      setLoading(true);
+
+      const res = await getPost(postId as string);
+
+      setPost(res);
+      reset({
+        title: res.title,
+        category: res.category,
+      });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if(!postId) return;
+    getPostDetail();
+  }, [ postId ]);
+
   return {
     control,
     errors,
@@ -87,6 +122,8 @@ export const useWrite = () => {
       title: errors.title ? 'error' : 'normal',
       category: errors.category ? 'error' : 'normal',
     },
+    isLoading,
+    post,
     register: {
       title: register('title', formValidation.title),
       category: register('category', formValidation.category),

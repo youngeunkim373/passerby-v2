@@ -23,6 +23,7 @@ export function WriteForm() {
     control, 
     errors,
     fieldState,
+    post,
     register, 
     handleChange,
     writePost,
@@ -63,7 +64,6 @@ export function WriteForm() {
 
   useEffect(() => {
     if (isLoggedIn === null) return;
-  
     if (isLoggedIn === false) {
       show(<LoginModal />);
     }
@@ -79,6 +79,7 @@ export function WriteForm() {
 
       <Editor 
         initialValue={' '}
+        content={post?.content}
         storageDirectory={'board'}
         onChange={handleChange} />
 
