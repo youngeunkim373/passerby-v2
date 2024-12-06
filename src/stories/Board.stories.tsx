@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import { Post } from '@/app/_data/posts.interface';
 import { BoardFilterDTO, GetBoardResponseDTO } from '@/app/board/board.interface';
 import { Board } from '@/app/board/components/Board';
+import { BoardList } from '@/app/board/components/BoardList';
 import { BoardSearch } from '@/app/board/components/BoardSearch';
-import { List } from '@/components/common/List';
 import { Props } from '@/components/common/Notification';
 import { Pagination } from '@/components/common/Pagination';
 import { Category } from '@/constants/post';
@@ -87,7 +87,7 @@ const Template: StoryFn<Props> = () => {
       <BoardSearch
         defaultFilter={pagination.filter}
         onPagination={onPagination} />
-      <List 
+      <BoardList 
         isLoading={isLoading} 
         items={list} />
       <Pagination 

@@ -14,7 +14,7 @@ interface Props {
   items: Post[];
 }
 
-export function List({ isLoading = false, items }: Props) {
+export function BoardList({ isLoading = false, items }: Props) {
   return (
     <ul className={listStyle.wrapper}>
       {/* 로딩 화면 */}

@@ -1,10 +1,10 @@
 'use client';
 import { useRouter } from 'next/navigation';
 
+import { UserBoardList } from '@/app/user/posts/components/UserBoardList';
 import { UserBoardSearch } from '@/app/user/posts/components/UserBoardSearch';
 import { useUserBoard } from '@/app/user/posts/useUserBoard';
 import { Button } from '@/components/buttons/Button';
-import { List } from '@/components/common/List';
 import { PageTitle } from '@/components/common/PageTitle';
 import { Pagination } from '@/components/common/Pagination';
 import { useAuthContext } from '@/contexts/AuthContext';
@@ -34,7 +34,7 @@ export function UserBoard() {
           onPagination={onPagination}
           userEmail={loggedInUser} />
       )}
-      <List 
+      <UserBoardList 
         isLoading={!isLoggedIn || isLoading} 
         items={list} />
       <Pagination 
