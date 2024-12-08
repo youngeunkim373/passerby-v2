@@ -3,7 +3,9 @@ import { useRouter } from 'next/navigation';
 
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
+import { PencilSquare } from '@/assets/icons/Pencil';
 import { Thumb } from '@/assets/icons/Thumb';
+import { Trash } from '@/assets/icons/Trash';
 import { Button } from '@/components/buttons/Button';
 import { EmptyState } from '@/components/common/EmptyState';
 import { CardSkeleton } from '@/components/skeletons/CardSkeleton';
@@ -106,14 +108,14 @@ function Item({ item, deletePost }: ItemProps) {
           size={'small'}
           variant={'link'}
           onClick={() => editPost(item.objectID)}>
-          수정하기
+          <PencilSquare />
         </Button>
         <Button 
           color={'red'} 
           size={'small'}
           variant={'link'}
           onClick={() => deletePost(item.objectID)}>
-          삭제하기
+          <Trash />
         </Button>
       </div>
     </li>
