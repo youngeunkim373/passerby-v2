@@ -61,9 +61,10 @@ export const useUserBoard = ({ isLoggedIn, userEmail }: Props) => {
       // Algolia 데이터 삭제 동기화
       // 그냥 firestore와의 동기화에 맡기기엔 refetch 시기를 잡기 어려움
       const index = searchClient.initIndex(BoardSortBy.POSTEDAT);
-      await index.deleteObject(postId);
+      const deleteTask = await index.deleteObject(postId);
+      await index.waitTask(deleteTask.taskID);
 
-      getBoardList(defaultPagination);
+      await getBoardList(defaultPagination);
     } catch (err) {
       console.error(err);
 
