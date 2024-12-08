@@ -15,10 +15,12 @@ export function UserBoard() {
   const { isLoggedIn, loggedInUser } = useAuthContext();
 
   const { 
-    isLoading,
+    isDeleteLoading,
+    isFetchLoading,
     list,
     pagination, 
     totalPage, 
+    deletePost,
     onPagination,
   } = useUserBoard({ isLoggedIn, userEmail: loggedInUser });
 
@@ -35,14 +37,15 @@ export function UserBoard() {
           userEmail={loggedInUser} />
       )}
       <UserBoardList 
-        isLoading={!isLoggedIn || isLoading} 
-        items={list} />
+        isLoading={!isLoggedIn || !!isFetchLoading || !!isDeleteLoading} 
+        items={list}
+        deletePost={deletePost} />
       <Pagination 
         pagination={pagination} 
         totalPage={totalPage}
         onPagination={onPagination} />
 
-      {isLoading === false && (
+      {isFetchLoading === false && (
         <Button 
           variant={'solid'} 
           className={style.button}
