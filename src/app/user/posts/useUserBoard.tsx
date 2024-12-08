@@ -1,13 +1,17 @@
 'use client';
+import { searchClient } from 'algolia';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { Post } from '@/app/_data/posts.interface';
 import { BoardFilterDTO, BoardSortBy, GetBoardResponseDTO } from '@/app/board/board.interface';
 import { getPosts } from '@/app/board/board.service';
+import { removePost } from '@/app/write/write.service';
+import { ErrorModal } from '@/components/modals/ErrorModal';
 import { LoginModal } from '@/components/modals/LoginModal';
 import { useModalContext } from '@/contexts/ModalContext';
 import { Pagination, usePagination } from '@/hooks/usePagination';
+import { CustomError } from '@/utils/error';
 import { changeQueryStringToFilter } from '@/utils/url';
 
 interface Props {
@@ -18,14 +22,15 @@ interface Props {
 export const useUserBoard = ({ isLoggedIn, userEmail }: Props) => {
   const { show } = useModalContext();
 
-  const [ isLoading, setLoading ] = useState<boolean | null>(null);
+  const [ isDeleteLoading, setDeleteLoading ] = useState<boolean>(false);
+  const [ isFetchLoading, setFetchLoading ] = useState<boolean>(false);
   const [ list, setList ] = useState<GetBoardResponseDTO['items']>([]);
   const [ totalCount, setTotaleCount ] = useState<number>(0);
 
   // 게시글 fetch
   const getBoardList = async (pagination?: Pagination<BoardFilterDTO>): Promise<void> => {
     try {
-      setLoading(true);
+      setFetchLoading(true);
 
       const res = await getPosts({ 
         pagination, 
@@ -38,7 +43,50 @@ export const useUserBoard = ({ isLoggedIn, userEmail }: Props) => {
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      setFetchLoading(false);
+    }
+  };
+
+  // 게시글 삭제
+  const deletePost = async (postId: Post['objectID']) => {
+    if(!isLoggedIn) {
+      throw new CustomError(401, '유저 인증 정보가 필요합니다.');
+    }
+
+    try {
+      setDeleteLoading(true);
+
+      await removePost({ postId });
+
+      // Algolia 데이터 삭제 동기화
+      // 그냥 firestore와의 동기화에 맡기기엔 refetch 시기를 잡기 어려움
+      const index = searchClient.initIndex(BoardSortBy.POSTEDAT);
+      const deleteTask = await index.deleteObject(postId);
+      await index.waitTask(deleteTask.taskID);
+
+      await getBoardList(defaultPagination);
+    } catch (err) {
+      console.error(err);
+
+      if(err instanceof CustomError) {
+        return show(
+          <ErrorModal 
+            statusCode={err.statusCode}
+            message={err.message} />
+        );
+      }
+
+      show(
+        <ErrorModal 
+          message={
+            <>
+              게시글 삭제 도중 알 수 없는 오류가 발생했습니다.<br />
+              잠시 후 다시 시도해주세요.
+            </>
+          } />
+      );
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -63,10 +111,12 @@ export const useUserBoard = ({ isLoggedIn, userEmail }: Props) => {
   }, [ isLoggedIn ]);
 
   return {
-    isLoading,
+    isDeleteLoading,
+    isFetchLoading,
     list,
     pagination,
     totalPage: Math.ceil(totalCount / pagination.size),
+    deletePost,
     onPagination,
   };
 };

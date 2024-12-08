@@ -23,3 +23,11 @@ export interface EditPostRequestDTO {
 export interface EditPostResponseDTO {
   objectID: Post['objectID'];
 }
+
+export interface RemovePostRequestDTO {
+  postId: Post['objectID'];
+}
+
+export interface RemovePostResponseDTO {
+  objectID: Post['objectID'];
+}

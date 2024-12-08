@@ -3,7 +3,9 @@ import { useRouter } from 'next/navigation';
 
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
+import { PencilSquare } from '@/assets/icons/Pencil';
 import { Thumb } from '@/assets/icons/Thumb';
+import { Trash } from '@/assets/icons/Trash';
 import { Button } from '@/components/buttons/Button';
 import { EmptyState } from '@/components/common/EmptyState';
 import { CardSkeleton } from '@/components/skeletons/CardSkeleton';
@@ -14,9 +16,10 @@ import { getTimeAgo } from '@/utils/time';
 interface Props {
   isLoading?: boolean | null;
   items: Post[];
+  deletePost: (postId: Post['objectID']) => void;
 }
 
-export function UserBoardList({ isLoading = false, items }: Props) {
+export function UserBoardList({ isLoading = false, items, deletePost }: Props) {
   return (
     <ul className={listStyle.wrapper}>
       {/* 로딩 화면 */}
@@ -26,7 +29,7 @@ export function UserBoardList({ isLoading = false, items }: Props) {
 
       {/* 데이터 있을 때 화면 */}
       {(isLoading === false && items.length > 0) && (
-        items.map((item) => <Item key={item.objectID} item={item} />)
+        items.map((item) => <Item key={item.objectID} item={item} deletePost={deletePost} />)
       )}
 
       {/* 데이터 없을 때 화면 */}
@@ -51,15 +54,16 @@ const listStyle = {
 /* ------------------ Item ------------------ */
 interface ItemProps {
   item: Post;
+  deletePost: (postId: Post['objectID']) => void;
 }
 
-function Item({ item }: ItemProps) {
+function Item({ item, deletePost }: ItemProps) {
   const router = useRouter();
 
   const editPost = (postId: Post['objectID']) => {
     router.push(`/write?postId=${postId}`);
   };
-  
+
   return (
     <li key={item.objectID} className={itemStyle.wrapper}>
       <div className={itemStyle.content.wrapper}>
@@ -104,13 +108,14 @@ function Item({ item }: ItemProps) {
           size={'small'}
           variant={'link'}
           onClick={() => editPost(item.objectID)}>
-          수정하기
+          <PencilSquare />
         </Button>
         <Button 
           color={'red'} 
           size={'small'}
-          variant={'link'}>
-          삭제하기
+          variant={'link'}
+          onClick={() => deletePost(item.objectID)}>
+          <Trash />
         </Button>
       </div>
     </li>
