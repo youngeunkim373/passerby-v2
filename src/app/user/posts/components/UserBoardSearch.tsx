@@ -13,7 +13,7 @@ import { Category, CategoryLabelRecord } from '@/constants/post';
 import { PaginationSet } from '@/hooks/usePagination';
 
 interface Props {
-  userEmail: Post['userEmail'];
+  userEmail: Post['userEmail'] | null; 
   defaultFilter?: BoardFilterDTO;
   onPagination: PaginationSet<BoardFilterDTO>['onPagination'];
 }
@@ -29,6 +29,8 @@ export function UserBoardSearch({ userEmail, defaultFilter, onPagination }: Prop
 
   // pathname이 같은데 query params가 없을 때 새로운 검색조건으로 data fetch
   useEffect(() => {
+    if(!userEmail) return;
+
     const resetFields = async () => {
       const filter = { 
         titleOrContent: '',

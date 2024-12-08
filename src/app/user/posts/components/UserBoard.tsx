@@ -30,12 +30,10 @@ export function UserBoard() {
         title={'내가 쓴 글 보기'} 
         description={'그동안 작성한 게시글을 조회할 수 있습니다.'} />
 
-      {loggedInUser && (
-        <UserBoardSearch
-          defaultFilter={pagination.filter}
-          onPagination={onPagination}
-          userEmail={loggedInUser} />
-      )}
+      <UserBoardSearch
+        defaultFilter={pagination.filter}
+        onPagination={onPagination}
+        userEmail={loggedInUser} />
       <UserBoardList 
         isLoading={!isLoggedIn || !!isFetchLoading || !!isDeleteLoading} 
         items={list}
