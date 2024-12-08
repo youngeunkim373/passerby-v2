@@ -23,13 +23,13 @@ export function EmptyState({ title, description }: Props) {
 }
 
 const style = {
-  wrapper: 'grid gap-4 w-60',
+  wrapper: 'grid gap-4 w-60 py-8',
   image: {
     wrapper: 'w-20 h-20 mx-auto bg-gray-100 rounded-full shadow-sm justify-center items-center inline-flex',
     icon: 'size-8 text-main',
   },
   text: {
     title: 'text-center text-black text-lg font-semibold leading-7 pb-1',
-    description: 'text-center text-gray-600 text-base font-normal leading-relaxed pb-4',
+    description: 'text-center text-gray-600 text-base font-normal leading-relaxed',
   }
 };

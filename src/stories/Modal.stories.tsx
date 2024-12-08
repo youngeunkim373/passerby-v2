@@ -45,4 +45,5 @@ export const Default = Template.bind({});
 Default.args = {
   duration: 0,
   closable: true,
+  closeOnOutsideClick: true,
 };

@@ -12,6 +12,7 @@ export async function GET(req: Request) {
     const titleOrContent = searchParams.get('titleOrContent');
     const category = searchParams.get('category');
     const sortBy = searchParams.get('sortBy');
+    const userEmail = searchParams.get('userEmail');
 
     if(!page || !size) {
       throw new CustomError(404, '잘못된 요청입니다');
@@ -22,6 +23,7 @@ export async function GET(req: Request) {
 
     const filters = [
       ...(category ? [ `category:"${category}"` ] : []),
+      ...(userEmail ? [ `userEmail:"${decodeURIComponent(userEmail)}"` ] : []),
     ].join(' AND ');
 
     const initIndex = (sortBy && Object.values(BoardSortBy).includes(sortBy  as BoardSortBy)) 

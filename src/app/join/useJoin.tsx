@@ -8,7 +8,7 @@ import { ExclamationMarkSolidCircle } from '@/assets/icons/ExclamationMark';
 import { GradationLoading } from '@/assets/icons/Loading';
 import { Button } from '@/components/buttons/Button';
 import { InputState } from '@/components/form/Input';
-import { SelectState } from '@/components/form/Select';
+import { SelectState } from '@/components/form/select/Select';
 import { Modal } from '@/components/layout/Modal';
 import { ErrorModal } from '@/components/modals/ErrorModal';
 import { SuccessModal } from '@/components/modals/SuccessModal';

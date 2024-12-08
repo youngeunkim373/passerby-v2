@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes } from 'react';
 
 type ButtonVariant = 'solid' | 'outlined' | 'text' | 'link';
-type ButtonColor = 'main' | 'red' | 'blue' | 'orange' | 'black';
+type ButtonColor = 'main' | 'red' | 'blue' | 'orange' | 'green' | 'black';
 type ButtonSize = 'small' | 'default' | 'large';
 
 export interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -46,6 +46,7 @@ const buttonConfig: ButtonConfig = {
         red: 'bg-red hover:bg-red-light disabled:bg-red-light',
         blue: 'bg-blue hover:bg-blue-light disabled:bg-blue-light',
         orange: 'bg-orange hover:bg-orange-light disabled:bg-orange-light',
+        green: 'bg-green hover:bg-green-light disabled:bg-green-light',
         black: 'bg-gray-800 hover:bg-gray-700  disabled:bg-gray-500',
       },
       size: {
@@ -61,6 +62,7 @@ const buttonConfig: ButtonConfig = {
         red: 'border-red text-red hover:border-red-light hover:text-red-light disabled:border-red-light disabled:text-red-light',
         blue: 'border-blue text-blue hover:border-blue-light hover:text-blue-light disabled:border-blue-light disabled:text-blue-light',
         orange: 'border-orange text-orange hover:border-orange-light hover:text-orange-light disabled:border-orange-light disabled:text-orange-light',
+        green: 'border-green text-green hover:border-green-light hover:text-green-light disabled:border-green-light disabled:text-green-light',
         black: 'border-gray-700 text-gray-800 hover:border-main hover:text-main disabled:border-gray-500 disabled:text-gray-500',
       },
       size: {
@@ -75,6 +77,7 @@ const buttonConfig: ButtonConfig = {
         red: 'text-red hover:bg-red-pale disabled:text-red-light disabled:bg-transparent',
         blue: 'text-blue hover:bg-blue-pale disabled:text-blue-light disabled:bg-transparent',
         orange: 'text-orange hover:bg-orange-pale disabled:text-orange-light disabled:bg-transparent',
+        green: 'text-green hover:bg-green-pale disabled:text-green-light disabled:bg-transparent',
         black: 'text-gray800 hover:bg-gray-100 disabled:text-gray-500 disabled:bg-transparent',
       },
       size: {
@@ -89,6 +92,7 @@ const buttonConfig: ButtonConfig = {
         red: 'text-red hover:text-red-light disabled:text-red-light',
         blue: 'text-blue hover:text-blue-light disabled:text-blue-light',
         orange: 'text-orange hover:text-orange-light disabled:text-orange-light',
+        green: 'text-green hover:text-green-light disabled:text-green-light',
         black: 'text-gray-800 hover:text-main disabled:text-gray-500',
       },
       size: {

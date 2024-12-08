@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from '@storybook/react';
 
-import { Select, Props as SelectProps } from '@/components/form/Select';
+import { ModeType, Select, Props as SelectProps } from '@/components/form/select/Select';
 import { options } from '@/stories/constants';
 
 export default {
@@ -10,10 +10,14 @@ export default {
     options: { control: false },
     initialOptionId: { control: false },
     onChange: { control: false },
+    mode: {
+      control: { type: 'radio' },
+      options: [ 'single', 'multiple' ],
+    },
   },
 } as Meta<typeof Select>;
 
-const Template: StoryFn<SelectProps> = (args) => {
+const Template: StoryFn<SelectProps<ModeType>> = (args) => {
   return (
     <div className={'w-screen h-screen flex flex-col justify-between items-center ml-[-16px] mt-[-16px]'}>
       <div className={'pt-8'}>
@@ -34,9 +38,10 @@ const Template: StoryFn<SelectProps> = (args) => {
 export const Default = Template.bind({});
 
 Default.args = {
-  size: 'default',
-  width: 200,
-  state: 'normal',
-  placeholder: '국가를 선택해주세요',
   allowClear: true,
+  mode: 'single',
+  placeholder: '국가를 선택해주세요',
+  size: 'default',
+  state: 'normal',
+  width: '240px',
 };

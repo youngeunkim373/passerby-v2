@@ -123,3 +123,13 @@ input:focus {
   @apply text-ellipsis overflow-hidden break-words line-clamp-4;
 }
 
+.scrollbar-hidden {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge, Opera */
+}
+
+

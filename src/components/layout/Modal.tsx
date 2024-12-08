@@ -7,6 +7,7 @@ import { useModalContext } from '@/contexts/ModalContext';
 export interface Props extends PropsWithChildren {
   className?: string;
   closable?: boolean;
+  closeOnOutsideClick?: boolean;
   duration?: number;
   onConfirm? : () => void;
 }
@@ -15,6 +16,7 @@ export function Modal({
   children, 
   className = '', 
   closable = true, 
+  closeOnOutsideClick = true,
   duration, 
   onConfirm,
 }: Props) {
@@ -46,7 +48,11 @@ export function Modal({
         <div className={style.backdrop}></div>
 
         {/* ---------- Modal area ---------- */}
-        <div className={style.modal.layer} onClick={hide}>
+        <div 
+          className={style.modal.layer} 
+          onClick={() => {
+            if (closeOnOutsideClick) hide();
+          }}>
           <div 
             className={`
               ${style.modal.box} 
@@ -82,6 +88,6 @@ const style = {
       mx-auto p-4
     `,
     content: 'w-full text-left',
-    close: 'size-5 p-1 absolute top-4 right-4 text-gray-400 cursor-pointer',
+    close: '!size-5 p-1 absolute top-4 right-4 text-gray-400 cursor-pointer',
   },
 };

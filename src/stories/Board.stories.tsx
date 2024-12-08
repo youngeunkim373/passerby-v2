@@ -5,9 +5,12 @@ import { useEffect, useState } from 'react';
 import { Post } from '@/app/_data/posts.interface';
 import { BoardFilterDTO, GetBoardResponseDTO } from '@/app/board/board.interface';
 import { Board } from '@/app/board/components/Board';
+import { BoardList } from '@/app/board/components/BoardList';
+import { BoardSearch } from '@/app/board/components/BoardSearch';
 import { Props } from '@/components/common/Notification';
+import { Pagination } from '@/components/common/Pagination';
 import { Category } from '@/constants/post';
-import { Pagination } from '@/hooks/usePagination';
+import { Pagination as PaginationProps } from '@/hooks/usePagination';
 
 export default {
   component: Board,
@@ -18,10 +21,10 @@ const Template: StoryFn<Props> = () => {
   const [ isLoading, setLoading ] = useState<boolean | null>(null);
   const [ list, setList ] = useState<Post[]>([]);
   const [ totalCount, setTotaleCount ] = useState<number>(0);
-  const [ pagination, setPagination ] = useState<Pagination<BoardFilterDTO>>({ size: 3, page: 1 });
+  const [ pagination, setPagination ] = useState<PaginationProps<BoardFilterDTO>>({ size: 3, page: 1 });
 
-  const onPagination = async (newPagination: Partial<Pagination<BoardFilterDTO>>) => {
-    const mergedPagination: Pagination<BoardFilterDTO> = {
+  const onPagination = async (newPagination: Partial<PaginationProps<BoardFilterDTO>>) => {
+    const mergedPagination: PaginationProps<BoardFilterDTO> = {
       page: newPagination.page ?? pagination.page,
       size: newPagination.size ?? pagination.size, 
       filter: {
@@ -33,7 +36,7 @@ const Template: StoryFn<Props> = () => {
     setPagination(mergedPagination);
   };
 
-  const getBoardList = async (newPagination: Pagination<BoardFilterDTO>)
+  const getBoardList = async (newPagination: PaginationProps<BoardFilterDTO>)
     : Promise<GetBoardResponseDTO[] | void > => {
     try {
       setLoading(true);
@@ -80,15 +83,29 @@ const Template: StoryFn<Props> = () => {
   ]);
 
   return (
-    <div className={'w-max'}>
-      <Board 
-        isLoading= {isLoading}
-        list={list}
-        pagination={pagination}
+    <div className={style.wrapper}>
+      <BoardSearch
+        defaultFilter={pagination.filter}
+        onPagination={onPagination} />
+      <BoardList 
+        isLoading={isLoading} 
+        items={list} />
+      <Pagination 
+        pagination={pagination} 
         totalPage={Math.ceil(totalCount / pagination.size)}
         onPagination={onPagination} />
-    </div>
+    </div> 
   );
+};
+
+const style = {
+  wrapper: `
+    w-full h-min
+    relative
+    flex flex-col gap-2 
+    pt-8 pb-2 mb-auto sm:pt-10 sm:pb-4
+  `,
+  button: 'w-fit sticky bottom-4 !right-[16px z-10 ml-auto mb-2',
 };
 
 export const Default = Template.bind({});
@@ -111,7 +128,9 @@ const data: Post[] = [
     'hits': 3,
     'views': 6,
     'title': 'test1',
+    'userEmail': 'youngeunkim373@gmail.com',
     'postedAt': 1732598076000,
+    'updatedAt': 1732598076000,
     'category': [ Category.LOVE ],
   },
   {
@@ -121,7 +140,9 @@ const data: Post[] = [
     'hits': 3,
     'views': 6,
     'title': 'test2',
+    'userEmail': 'youngeunkim373@gmail.com',
     'postedAt': 1732598076000,
+    'updatedAt': 1732598076000,
     'category': [ Category.LOVE ],
   },
   {
@@ -131,7 +152,9 @@ const data: Post[] = [
     'hits': 3,
     'views': 6,
     'title': 'test3',
+    'userEmail': 'youngeunkim373@gmail.com',
     'postedAt': 1732598076000,
+    'updatedAt': 1732598076000,
     'category': [ Category.PARENTING, Category.FAMILY ],
   },
   {
@@ -141,7 +164,9 @@ const data: Post[] = [
     'hits': 3,
     'views': 6,
     'title': 'test4',
+    'userEmail': 'youngeunkim373@gmail.com',
     'postedAt': 1732598076000,
+    'updatedAt': 1732598076000,
     'category': [ Category.SCHOOL, Category.RELATIONSHIP ],
   },
   {
@@ -151,7 +176,9 @@ const data: Post[] = [
     'hits': 3,
     'views': 6,
     'title': 'test5',
+    'userEmail': 'youngeunkim373@gmail.com',
     'postedAt': 1732598076000,
+    'updatedAt': 1732598076000,
     'category': [ Category.ETC ],
   },
 ];
