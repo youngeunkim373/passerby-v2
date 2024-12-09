@@ -7,6 +7,7 @@ import { PencilSquare } from '@/assets/icons/Pencil';
 import { Thumb } from '@/assets/icons/Thumb';
 import { Trash } from '@/assets/icons/Trash';
 import { Button } from '@/components/buttons/Button';
+import { Viewer } from '@/components/common/editor/Viewer';
 import { EmptyState } from '@/components/common/EmptyState';
 import { CardSkeleton } from '@/components/skeletons/CardSkeleton';
 import { CategoryLabelRecord } from '@/constants/post';
@@ -64,6 +65,8 @@ function Item({ item, deletePost }: ItemProps) {
     router.push(`/write?postId=${postId}`);
   };
 
+  const textContent = item.content.replace(/<img[^>]*>/g, '').replace(/<\/?[^>]+(>|$)/g, '');
+
   return (
     <li key={item.objectID} className={itemStyle.wrapper}>
       <div className={itemStyle.content.wrapper}>
@@ -86,7 +89,9 @@ function Item({ item, deletePost }: ItemProps) {
               </span>
               {item.title}
             </p>
-            <p className={itemStyle.content.text.body.description}>{item.content}</p>
+            <div className={itemStyle.content.text.body.description}>
+              <Viewer initialValue={textContent} />
+            </div>
           </div>
 
           <div className={itemStyle.content.text.info.wrapper}>
