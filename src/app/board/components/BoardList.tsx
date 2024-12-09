@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
@@ -17,16 +18,31 @@ interface Props {
 }
 
 export function BoardList({ isLoading = false, items }: Props) {
+  const [ imagesLoaded, setImagesLoaded ] = useState(0);
+
+  const imageCount = items.filter((item) => item.imageUrl).length;
+  const allImagesLoaded = imagesLoaded === imageCount;
+
+  const handleImageLoad = () => {
+    setImagesLoaded((prev) => prev + 1);
+  };
+
   return (
     <ul className={listStyle.wrapper}>
       {/* 로딩 화면 */}
-      {isLoading && (
+      {(isLoading || !allImagesLoaded) && (
         [ ...Array(3) ].map((_, idx) => <CardSkeleton key={idx} />)
       )}
 
       {/* 데이터 있을 때 화면 */}
       {(isLoading === false && items.length > 0) && (
-        items.map((item) => <Item key={item.objectID} item={item} />)
+        items.map((item) => (
+          <Item 
+            key={item.objectID} 
+            item={item} 
+            allImagesLoaded={allImagesLoaded}
+            onImageLoad={handleImageLoad} />
+        ))
       )}
 
       {/* 데이터 없을 때 화면 */}
@@ -50,23 +66,31 @@ const listStyle = {
 
 /* ------------------ Item ------------------ */
 interface ItemProps {
+  allImagesLoaded: boolean;
   item: Post;
+  onImageLoad: () => void;
 }
 
-function Item({ item }: ItemProps) {
+function Item({ allImagesLoaded, item, onImageLoad }: ItemProps) {
   const router = useRouter();
 
   const textContent = item.content.replace(/<img[^>]*>/g, '').replace(/<\/?[^>]+(>|$)/g, '');
 
   return (
-    <li key={item.objectID} className={itemStyle.wrapper}>
+    <li 
+      key={item.objectID} 
+      className={`
+        ${itemStyle.wrapper}
+        ${allImagesLoaded ? 'visible' : 'invisible'}
+      `}>
       {item.imageUrl && (
         <Image 
           width={108}
           height={0}
           className={itemStyle.thumbnail} 
           src={item.imageUrl} 
-          alt={item.title} />
+          alt={item.title}
+          onLoadingComplete={onImageLoad} />
       )}
 
       <div className={itemStyle.content.wrapper}>

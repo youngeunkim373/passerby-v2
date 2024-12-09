@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
@@ -21,18 +22,33 @@ interface Props {
 }
 
 export function UserBoardList({ isLoading = false, items, deletePost }: Props) {
+  const [ imagesLoaded, setImagesLoaded ] = useState(0);
+
+  const imageCount = items.filter((item) => item.imageUrl).length;
+  const allImagesLoaded = imagesLoaded === imageCount;
+
+  const handleImageLoad = () => {
+    setImagesLoaded((prev) => prev + 1);
+  };
+
   return (
     <ul className={listStyle.wrapper}>
       {/* 로딩 화면 */}
-      {isLoading && (
+      {(isLoading || !allImagesLoaded) && (
         [ ...Array(3) ].map((_, idx) => <CardSkeleton key={idx} />)
       )}
 
       {/* 데이터 있을 때 화면 */}
       {(isLoading === false && items.length > 0) && (
-        items.map((item) => <Item key={item.objectID} item={item} deletePost={deletePost} />)
+        items.map((item) => (
+          <Item 
+            key={item.objectID} 
+            item={item} 
+            allImagesLoaded={allImagesLoaded}
+            deletePost={deletePost}
+            onImageLoad={handleImageLoad} />
+        ))
       )}
-
       {/* 데이터 없을 때 화면 */}
       {(isLoading === false && items.length === 0) && (
         <div className={listStyle.content.wrapper}>
@@ -54,11 +70,13 @@ const listStyle = {
 
 /* ------------------ Item ------------------ */
 interface ItemProps {
+  allImagesLoaded: boolean;
   item: Post;
   deletePost: (postId: Post['objectID']) => void;
+  onImageLoad: () => void;
 }
 
-function Item({ item, deletePost }: ItemProps) {
+function Item({ allImagesLoaded, item, deletePost, onImageLoad }: ItemProps) {
   const router = useRouter();
 
   const editPost = (postId: Post['objectID']) => {
@@ -68,7 +86,12 @@ function Item({ item, deletePost }: ItemProps) {
   const textContent = item.content.replace(/<img[^>]*>/g, '').replace(/<\/?[^>]+(>|$)/g, '');
 
   return (
-    <li key={item.objectID} className={itemStyle.wrapper}>
+    <li 
+      key={item.objectID} 
+      className={`
+        ${itemStyle.wrapper}
+        ${allImagesLoaded ? 'visible' : 'invisible'}
+      `}>
       <div className={itemStyle.content.wrapper}>
         {item.imageUrl && (
           <Image 
@@ -76,7 +99,8 @@ function Item({ item, deletePost }: ItemProps) {
             height={0}
             className={itemStyle.content.thumbnail} 
             src={item.imageUrl} 
-            alt={item.title} />
+            alt={item.title}
+            onLoadingComplete={onImageLoad} />
         )}
 
         <div 
