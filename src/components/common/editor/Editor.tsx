@@ -16,7 +16,7 @@ const WrappedEditor = dynamic(
     ssr: false, 
     loading: () => (
       <div className={'w-full h-[300px] flex flex-col justify-center items-center gap-2'}>
-        <SpinLoading className={'size-16'} />
+        <SpinLoading className={'!size-12'} />
         <span className={'font-semibold text-gray-500'}>Loading..</span>
       </div>
     ), 
