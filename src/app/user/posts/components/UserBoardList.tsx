@@ -76,7 +76,9 @@ function Item({ item, deletePost }: ItemProps) {
             alt={item.title} />
         )}
 
-        <div className={itemStyle.content.text.wrapper}>
+        <div 
+          className={itemStyle.content.text.wrapper}
+          onClick={() => router.push(`/board/${item.objectID}`)}>
           <div>
             <p className={itemStyle.content.text.body.title}>
               <span className={itemStyle.content.text.body.category}>
@@ -132,7 +134,7 @@ const itemStyle = {
       object-cover rounded-md
     `,
     text: {
-      wrapper: 'w-full flex flex-col justify-between gap-x-6 sm:flex-row',
+      wrapper: 'w-full flex flex-col justify-between gap-x-6 sm:flex-row cursor-pointer',
       body: {
         category: 'font-normal text-gray-500 text-[12px] mr-2',
         title: 'font-semibold text-gray-900 ellipsis-1',

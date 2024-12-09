@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
@@ -52,6 +53,8 @@ interface ItemProps {
 }
 
 function Item({ item }: ItemProps) {
+  const router = useRouter();
+
   return (
     <li key={item.objectID} className={itemStyle.wrapper}>
       {item.imageUrl && (
@@ -64,7 +67,9 @@ function Item({ item }: ItemProps) {
       )}
 
       <div className={itemStyle.content.wrapper}>
-        <div className={itemStyle.content.textArea.wrapper}>
+        <div 
+          className={itemStyle.content.textArea.wrapper}
+          onClick={() => router.push(`/board/${item.objectID}`)}>
           <p className={itemStyle.content.textArea.title}>
             <span className={itemStyle.content.textArea.category}>
               [{item.category.map((ele) => CategoryLabelRecord[ele]).join(', ')}]
@@ -98,7 +103,7 @@ const itemStyle = {
     object-cover rounded-md
   `,
   content: {
-    wrapper: 'w-full flex flex-col justify-between gap-x-6 sm:flex-row',
+    wrapper: 'w-full flex flex-col justify-between gap-x-6 sm:flex-row cursor-pointer',
     textArea: {
       wrapper: 'flex-auto',
       title: 'font-semibold text-gray-900 ellipsis-1',

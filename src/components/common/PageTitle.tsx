@@ -22,7 +22,6 @@ export function PageTitle({
         </div>
 
         {suffix}
-
       </div>
       <hr className={style.divide} />
     </div>
