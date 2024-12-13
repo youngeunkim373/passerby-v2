@@ -6,7 +6,7 @@ import { usePost } from '@/app/board/[postId]/usePost';
 import { Viewer } from '@/components/common/editor/Viewer';
 
 export function PostDetail() {
-  const { postDetail: post } = usePost();
+  const { post } = usePost();
 
   if(!post) return <></>;
   const { content, ...postInfo } = post;

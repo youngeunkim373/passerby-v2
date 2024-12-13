@@ -17,7 +17,7 @@ export const usePost = () => {
   const { show } = useModalContext();
 
   const [ isLoading, setLoading ] = useState<boolean | null>(null);
-  const [ postDetail, setPostDetail ] = useState<GetPostResponseDTO | null>(null);
+  const [ post, setPost ] = useState<GetPostResponseDTO | null>(null);
 
   const getPostDetail = async (): Promise<void> => {
     try {
@@ -29,7 +29,7 @@ export const usePost = () => {
 
       const res = await getPost(postId as string);
 
-      setPostDetail(res);
+      setPost(res);
     } catch (e) {
       console.error(e);
 
@@ -65,6 +65,6 @@ export const usePost = () => {
 
   return {
     isLoading,
-    postDetail,
+    post,
   };
 };
