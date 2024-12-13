@@ -33,4 +33,13 @@ export interface WriteCommentResponseDTO {
   objectID: Comment['objectID'];
 }
 
+export interface CommentFilterDTO {
+  postId: Comment['postId'];
+}
+
+export interface GetCommentsResponseDTO {
+  items: Comment[];
+  totalCount: number;
+}
+
 export type CommentFormDTO = Pick<Comment, 'comment' | 'originalCommentId'>;
