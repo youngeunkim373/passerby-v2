@@ -1,3 +1,4 @@
+import { Comment } from '@/app/_data/comments.interface';
 import { Post } from '@/app/_data/posts.interface';
 import { Category } from '@/constants/post';
 
@@ -19,3 +20,17 @@ export interface GetBoardResponseDTO {
 }
 
 export type GetPostResponseDTO = Post;
+
+export interface WriteCommentRequestDTO {
+  userEmail: Comment['userEmail'];
+  postId: Comment['postId']
+  comment: Comment['comment'];
+  originalCommentId: Comment['originalCommentId'];
+  depth: Comment['depth'];
+}
+
+export interface WriteCommentResponseDTO {
+  objectID: Comment['objectID'];
+}
+
+export type CommentFormDTO = Pick<Comment, 'comment' | 'originalCommentId'>;
