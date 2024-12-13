@@ -13,6 +13,7 @@ export function CommentList() {
   const { 
     comments, 
     errors, 
+    isCreateLoading,
     pagination, 
     register, 
     totalCount, 
@@ -24,6 +25,7 @@ export function CommentList() {
     <div className={listStyle.wrapper}>
       <CommentForm 
         errors={errors}
+        isLoading={isCreateLoading}
         register={register}
         submit={submit} />
 
@@ -58,6 +60,7 @@ function Item({ item }: ItemProps) {
 
   const { 
     errors, 
+    isLoading,
     register, 
     submit 
   } = useNestedComment(item); 
@@ -87,6 +90,7 @@ function Item({ item }: ItemProps) {
           <CommentForm 
             className={'w-full'}
             errors={errors}
+            isLoading={isLoading}
             register={register}
             submit={submit} />
         </div>

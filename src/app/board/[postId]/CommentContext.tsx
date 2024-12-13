@@ -73,6 +73,8 @@ export const useComment = () => {
   }, [ postId ]);
 
   /* -------------------- 댓글 작성 -------------------- */
+  const [ isCreateLoading, setCreateLoading ] = useState<boolean>(false);
+
   const { loggedInUser } = useAuthContext();
   const { show } = useModalContext();
   
@@ -80,6 +82,8 @@ export const useComment = () => {
 
   const createComment = async () => {
     try {
+      setCreateLoading(true);
+
       if(!loggedInUser) {
         throw new CustomError(401, '유저 인증 정보가 필요합니다.');
       }
@@ -143,12 +147,15 @@ export const useComment = () => {
             </>
           } />
       );
+    } finally {
+      setCreateLoading(false);
     }
   };
 
   return {
     comments,
     errors: commentForm.formState.errors,
+    isCreateLoading,
     isLoading,
     pagination,
     register: {

@@ -1,6 +1,6 @@
 import { searchClient } from 'algolia';
 import { useParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Comment, CommentStatus } from '@/app/_data/comments.interface';
@@ -19,6 +19,8 @@ export const useNestedComment = (item: Comment) => {
   const { show } = useModalContext();
   const { pagination, getComments } = useCommentContext();
 
+  const [ isLoading, setLoading ] = useState(false);
+
   /* -------------------- 대댓글 작성 -------------------- */
   const nestedCommentForm = useForm<CommentFormDTO>({ mode: 'all' });
 
@@ -31,6 +33,8 @@ export const useNestedComment = (item: Comment) => {
 
   const createNestedComment = async () => {
     try {
+      setLoading(true);
+
       if(!loggedInUser) {
         throw new CustomError(401, '유저 인증 정보가 필요합니다.');
       }
@@ -94,11 +98,14 @@ export const useNestedComment = (item: Comment) => {
             </>
           } />
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   return {
     errors: nestedCommentForm.formState.errors,
+    isLoading,
     register: {
       comment: nestedCommentForm.register('comment'),
       originalCommentId: nestedCommentForm.register('originalCommentId'),

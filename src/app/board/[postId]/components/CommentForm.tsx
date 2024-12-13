@@ -1,6 +1,7 @@
 import { FieldErrors, UseFormRegisterReturn } from 'react-hook-form';
 
 import { CommentFormDTO } from '@/app/board/board.interface';
+import { SpinLoading } from '@/assets/icons/Loading';
 import { Button } from '@/components/buttons/Button';
 import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
@@ -9,6 +10,7 @@ import { TextArea } from '@/components/form/TextArea';
 
 interface Props {
   errors:  FieldErrors<CommentFormDTO>;
+  isLoading: boolean;
   register: {
     comment: UseFormRegisterReturn<'comment'>;
     originalCommentId: UseFormRegisterReturn<'originalCommentId'>;
@@ -17,7 +19,7 @@ interface Props {
   submit: () => Promise<void>;
 }
 
-export function CommentForm ({ errors, register, className, submit }: Props) {
+export function CommentForm ({ errors, isLoading, register, className, submit }: Props) {
   const formItems: FormItemProps[] = [
     {
       name: 'originalCommentId',
@@ -52,6 +54,7 @@ export function CommentForm ({ errors, register, className, submit }: Props) {
         className={'w-fit'}
         onClick={submit}>
         등록
+        {isLoading && <SpinLoading className={'pl-1'} />}
       </Button>
     </div>
   );
