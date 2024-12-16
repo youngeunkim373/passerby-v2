@@ -1,4 +1,4 @@
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, increment, updateDoc } from 'firebase/firestore';
 import firestore from 'firestore';
 import { NextResponse } from 'next/server';
 
@@ -12,9 +12,13 @@ export async function GET(req: Request) {
     if(!postId) {
       throw new CustomError(404, '잘못된 요청입니다');
     }
+    
+    const postRef = doc(firestore, 'posts', postId);
 
-    const postsRef = doc(firestore, 'posts', postId);
-    const postSnapshot = await getDoc(postsRef);
+    // 조회수 업데이트
+    updateDoc(postRef, { views: increment(1) });
+
+    const postSnapshot = await getDoc(postRef);
   
     if (!postSnapshot.exists) {
       throw new CustomError(404, '잘못된 요청입니다');

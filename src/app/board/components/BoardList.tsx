@@ -1,8 +1,10 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
 import { Thumb } from '@/assets/icons/Thumb';
+import { Viewer } from '@/components/common/editor/Viewer';
 import { EmptyState } from '@/components/common/EmptyState';
 import { CardSkeleton } from '@/components/skeletons/CardSkeleton';
 import { CategoryLabelRecord } from '@/constants/post';
@@ -52,6 +54,10 @@ interface ItemProps {
 }
 
 function Item({ item }: ItemProps) {
+  const router = useRouter();
+
+  const textContent = item.content.replace(/<img[^>]*>/g, '').replace(/<\/?[^>]+(>|$)/g, '');
+
   return (
     <li key={item.objectID} className={itemStyle.wrapper}>
       {item.imageUrl && (
@@ -64,14 +70,18 @@ function Item({ item }: ItemProps) {
       )}
 
       <div className={itemStyle.content.wrapper}>
-        <div className={itemStyle.content.textArea.wrapper}>
+        <div 
+          className={itemStyle.content.textArea.wrapper}
+          onClick={() => router.push(`/board/${item.objectID}`)}>
           <p className={itemStyle.content.textArea.title}>
             <span className={itemStyle.content.textArea.category}>
               [{item.category.map((ele) => CategoryLabelRecord[ele]).join(', ')}]
             </span>
             {item.title}
           </p>
-          <p className={itemStyle.content.textArea.description}>{item.content}</p>
+          <div className={itemStyle.content.textArea.description}>
+            <Viewer initialValue={textContent} />
+          </div>
         </div>
 
         <div className={itemStyle.content.info.wrapper}>
@@ -98,7 +108,7 @@ const itemStyle = {
     object-cover rounded-md
   `,
   content: {
-    wrapper: 'w-full flex flex-col justify-between gap-x-6 sm:flex-row',
+    wrapper: 'w-full flex flex-col justify-between gap-x-6 sm:flex-row cursor-pointer',
     textArea: {
       wrapper: 'flex-auto',
       title: 'font-semibold text-gray-900 ellipsis-1',

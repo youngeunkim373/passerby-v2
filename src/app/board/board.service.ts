@@ -63,6 +63,10 @@ export const getPost = async (postId: string) => {
       throw new CustomError(response.status, response.message);
     }
 
+    if(!response.data) {
+      throw new CustomError(404, '요청하신 게시글 정보가 없습니다.');
+    }
+
     return response.data as GetPostResponseDTO;
   } catch (err) {
     console.error('An error occurs: ', err);

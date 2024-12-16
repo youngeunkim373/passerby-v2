@@ -19,3 +19,8 @@
   border: 1px solid #cbd5e1 !important;
   /* border-color: red !important; */
 }
+
+.toastui-editor-contents {
+  font-family: 'NanumGothic';
+  font-size: 16px !important;
+}
