@@ -5,6 +5,7 @@ import { FieldError } from 'react-hook-form';
 export interface FormItemProps extends LabelProps, PropsWithChildren {
   error?: FieldError;
   helper?: string | ReactNode;
+  hidden?: boolean;
   style?: {
     label?: string;
     message?: string;
@@ -17,11 +18,12 @@ export function FormItem({
   children, 
   error,
   helper,
+  hidden = false,
   isRequired = false,
 }: FormItemProps) {
 
   return (
-    <div>
+    <div className={hidden ? 'hidden' : 'block'}>
       {label && (
         <FormLabel
           name={name} 

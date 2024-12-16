@@ -49,12 +49,12 @@ export const useUserBoard = ({ isLoggedIn, userEmail }: Props) => {
 
   // 게시글 삭제
   const deletePost = async (postId: Post['objectID']) => {
-    if(!isLoggedIn) {
-      throw new CustomError(401, '유저 인증 정보가 필요합니다.');
-    }
-
     try {
       setDeleteLoading(true);
+
+      if(!isLoggedIn) {
+        throw new CustomError(401, '유저 인증 정보가 필요합니다.');
+      }
 
       await removePost({ postId });
 
