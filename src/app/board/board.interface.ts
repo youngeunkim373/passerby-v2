@@ -43,3 +43,7 @@ export interface GetCommentsResponseDTO {
 }
 
 export type CommentFormDTO = Pick<Comment, 'comment' | 'originalCommentId'>;
+
+export interface UpdateViewsRequestDTO {
+  postId: Post['objectID'];
+}

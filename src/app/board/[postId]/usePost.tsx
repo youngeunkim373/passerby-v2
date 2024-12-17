@@ -3,7 +3,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { GetPostResponseDTO } from '@/app/board/board.interface';
-import { getPost } from '@/app/board/board.service';
+import { getPostAPI, updateViewsAPI } from '@/app/board/board.service';
 import { ErrorModal } from '@/components/modals/ErrorModal';
 import { useModalContext } from '@/contexts/ModalContext';
 import { CustomError } from '@/utils/error';
@@ -16,18 +16,20 @@ export const usePost = () => {
 
   const { show } = useModalContext();
 
+  /* ---------------------- 상세 게시글 조회 ---------------------- */
   const [ isLoading, setLoading ] = useState<boolean | null>(null);
   const [ post, setPost ] = useState<GetPostResponseDTO | null>(null);
 
-  const getPostDetail = async (): Promise<void> => {
+  const getPost = async (): Promise<void> => {
     try {
-      if(!postId) {
+      if(!postId || Array.isArray(postId)) {
         throw new CustomError(404, '잘못된 요청입니다.');
       };
 
       setLoading(true);
 
-      const res = await getPost(postId as string);
+      await updateViewsAPI({ postId });
+      const res = await getPostAPI(postId);
 
       setPost(res);
     } catch (e) {
@@ -60,7 +62,7 @@ export const usePost = () => {
   };
 
   useEffect(() => {
-    getPostDetail();
+    getPost();
   }, [ postId ]);
 
   return {

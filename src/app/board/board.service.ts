@@ -1,7 +1,7 @@
 'use client';
 import { Comment } from '@/app/_data/comments.interface';
 import { Post } from '@/app/_data/posts.interface';
-import { BoardFilterDTO, BoardSortBy, CommentFilterDTO, GetBoardResponseDTO, GetCommentsResponseDTO, GetPostResponseDTO, WriteCommentRequestDTO, WriteCommentResponseDTO } from '@/app/board/board.interface';
+import { BoardFilterDTO, BoardSortBy, CommentFilterDTO, GetBoardResponseDTO, GetCommentsResponseDTO, GetPostResponseDTO, UpdateViewsRequestDTO, WriteCommentRequestDTO, WriteCommentResponseDTO } from '@/app/board/board.interface';
 import { Pagination } from '@/hooks/usePagination';
 import { CustomError } from '@/utils/error';
 
@@ -50,11 +50,11 @@ export const getPosts = async ({ pagination, sortBy, userEmail }: Props) => {
 };
 
 /* -------------------- 게시글 상세 조회 -------------------- */ 
-export const getPost = async (postId: string) => {
+export const getPostAPI = async (postId: string) => {
   const params = new URLSearchParams({ postId: postId.toString() });
 
   try {
-    const res = await fetch(`/api/board/getPost?${params.toString()}`, {
+    const res = await fetch(`/api/board/post?${params.toString()}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
@@ -127,6 +127,33 @@ export const writeCommentAPI = async (body: WriteCommentRequestDTO): Promise<Wri
   try {
     const res = await fetch('/api/write/comment', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    const response = await res.json();
+
+    if(response.status !== 200) {
+      throw new CustomError(response.status, response.message);
+    }
+
+    return response.data;
+  } catch (err) {
+    console.error('An error occurs: ', err);
+
+    if(err instanceof CustomError) {
+      throw new CustomError(err.statusCode, err.message);
+    }
+
+    throw err; 
+  }
+};
+
+/* -------------------- 조회수 업데이트 -------------------- */ 
+export const updateViewsAPI = async (body: UpdateViewsRequestDTO) => { 
+  try {
+    const res = await fetch('/api/board/post', {
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
