@@ -1,8 +1,11 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
-import { Thumb } from '@/assets/icons/Thumb';
+import { Heart } from '@/assets/icons/Heart';
+import { Viewer } from '@/components/common/editor/Viewer';
 import { EmptyState } from '@/components/common/EmptyState';
 import { CardSkeleton } from '@/components/skeletons/CardSkeleton';
 import { CategoryLabelRecord } from '@/constants/post';
@@ -15,16 +18,31 @@ interface Props {
 }
 
 export function BoardList({ isLoading = false, items }: Props) {
+  const [ imagesLoaded, setImagesLoaded ] = useState(0);
+
+  const imageCount = items.filter((item) => item.imageUrl).length;
+  const allImagesLoaded = imagesLoaded === imageCount;
+
+  const handleImageLoad = () => {
+    setImagesLoaded((prev) => prev + 1);
+  };
+
   return (
     <ul className={listStyle.wrapper}>
       {/* 로딩 화면 */}
-      {isLoading && (
+      {(isLoading || !allImagesLoaded) && (
         [ ...Array(3) ].map((_, idx) => <CardSkeleton key={idx} />)
       )}
 
       {/* 데이터 있을 때 화면 */}
       {(isLoading === false && items.length > 0) && (
-        items.map((item) => <Item key={item.objectID} item={item} />)
+        items.map((item) => (
+          <Item 
+            key={item.objectID} 
+            item={item} 
+            allImagesLoaded={allImagesLoaded}
+            onImageLoad={handleImageLoad} />
+        ))
       )}
 
       {/* 데이터 없을 때 화면 */}
@@ -48,37 +66,53 @@ const listStyle = {
 
 /* ------------------ Item ------------------ */
 interface ItemProps {
+  allImagesLoaded: boolean;
   item: Post;
+  onImageLoad: () => void;
 }
 
-function Item({ item }: ItemProps) {
+function Item({ allImagesLoaded, item, onImageLoad }: ItemProps) {
+  const router = useRouter();
+
+  const textContent = item.content.replace(/<img[^>]*>/g, '').replace(/<\/?[^>]+(>|$)/g, '');
+
   return (
-    <li key={item.objectID} className={itemStyle.wrapper}>
+    <li 
+      key={item.objectID} 
+      className={`
+        ${itemStyle.wrapper}
+        ${allImagesLoaded ? 'visible' : 'invisible'}
+      `}>
       {item.imageUrl && (
         <Image 
           width={108}
           height={0}
           className={itemStyle.thumbnail} 
           src={item.imageUrl} 
-          alt={item.title} />
+          alt={item.title}
+          onLoadingComplete={onImageLoad} />
       )}
 
       <div className={itemStyle.content.wrapper}>
-        <div className={itemStyle.content.textArea.wrapper}>
+        <div 
+          className={itemStyle.content.textArea.wrapper}
+          onClick={() => router.push(`/board/${item.objectID}`)}>
           <p className={itemStyle.content.textArea.title}>
             <span className={itemStyle.content.textArea.category}>
               [{item.category.map((ele) => CategoryLabelRecord[ele]).join(', ')}]
             </span>
             {item.title}
           </p>
-          <p className={itemStyle.content.textArea.description}>{item.content}</p>
+          <div className={itemStyle.content.textArea.description}>
+            <Viewer initialValue={textContent} />
+          </div>
         </div>
 
         <div className={itemStyle.content.info.wrapper}>
           <div className={itemStyle.content.info.reaction}>
             <Eye className={'size-4 text-gray-500 p-1'} />
             {item.views} 
-            <Thumb className={'size-4 text-gray-500 p-1 ml-2'} />
+            <Heart className={'size-4 text-gray-500 p-1 ml-2'} />
             {item.hits}
           </div>
           <p className={itemStyle.content.info.time}>
@@ -98,7 +132,7 @@ const itemStyle = {
     object-cover rounded-md
   `,
   content: {
-    wrapper: 'w-full flex flex-col justify-between gap-x-6 sm:flex-row',
+    wrapper: 'w-full flex flex-col justify-between gap-x-6 sm:flex-row cursor-pointer',
     textArea: {
       wrapper: 'flex-auto',
       title: 'font-semibold text-gray-900 ellipsis-1',

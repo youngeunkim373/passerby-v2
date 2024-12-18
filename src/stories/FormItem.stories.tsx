@@ -6,6 +6,7 @@ import { FormItem } from '@/components/form/FormItem';
 import { Input } from '@/components/form/Input';
 import { FormSelect } from '@/components/form/select/FormSelect';
 import { options } from '@/stories/constants';
+import { TextArea } from '@/components/form/TextArea';
 
 export default {
   component: FormItem,
@@ -45,7 +46,10 @@ const errorOptions = {
   },
   select: {
     required: 'Select a value',
-  }
+  },
+  textarea: {
+    required: 'Enter a value',
+  },
 };
 
 const Template: StoryFn<FieldValues> = () => {
@@ -56,7 +60,7 @@ const Template: StoryFn<FieldValues> = () => {
     watch,
   } = useForm({ mode: 'all' });
 
-  const { input, select } = watch();
+  const { input, select, textarea } = watch();
 
   const formItems = [
     {
@@ -82,6 +86,19 @@ const Template: StoryFn<FieldValues> = () => {
           state={errors.select ? 'error' : (select ? 'success' : 'normal')}
           allowClear={true}
           {...register('select', errorOptions['select'])} />
+      ),
+      isRequired: true,
+      helper: 'there are required, pattern, min/max length and min/max validations',
+    },
+    {
+      name: 'textarea',
+      label: 'Example 2 - Textarea',
+      children: (
+        <TextArea 
+          placeholder={'Enter any text'}
+          maxLength={30}
+          state={errors.textarea ? 'error' : (textarea ? 'success' : 'normal')}
+          {...register('textarea', errorOptions['textarea'])} />
       ),
       isRequired: true,
       helper: 'there are required, pattern, min/max length and min/max validations',

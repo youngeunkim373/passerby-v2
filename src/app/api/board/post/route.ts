@@ -1,4 +1,4 @@
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, increment, updateDoc } from 'firebase/firestore';
 import firestore from 'firestore';
 import { NextResponse } from 'next/server';
 
@@ -12,9 +12,9 @@ export async function GET(req: Request) {
     if(!postId) {
       throw new CustomError(404, '잘못된 요청입니다');
     }
-
-    const postsRef = doc(firestore, 'posts', postId);
-    const postSnapshot = await getDoc(postsRef);
+    
+    const postRef = doc(firestore, 'posts', postId);
+    const postSnapshot = await getDoc(postRef);
   
     if (!postSnapshot.exists) {
       throw new CustomError(404, '잘못된 요청입니다');
@@ -37,6 +37,37 @@ export async function GET(req: Request) {
 
     return NextResponse.json(
       { message: '게시글 로드 중 오류가 발생했습니다.' }, 
+      { status: 500 },
+    );
+  }
+}
+
+export async function PUT(req: Request) {
+  try {
+    const { postId } = await req.json();
+
+    if(!postId) {
+      throw new CustomError(404, '잘못된 요청입니다');
+    }
+    
+    const postRef = doc(firestore, 'posts', postId);
+
+    updateDoc(postRef, { views: increment(1) });
+  
+    return NextResponse.json({ status: 200 });
+  } catch (e: unknown) {
+    // TODO 에러 핸들링 처리 디테일하게 하기
+    console.log(e);
+
+    if(e instanceof CustomError) {
+      return NextResponse.json({
+        message: e.message, 
+        status: e.statusCode,
+      });
+    }
+
+    return NextResponse.json(
+      { message: '게시글 조회수 업데이트 중 오류가 발생했습니다.' }, 
       { status: 500 },
     );
   }

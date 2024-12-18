@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
+import { Heart } from '@/assets/icons/Heart';
 import { PencilSquare } from '@/assets/icons/Pencil';
-import { Thumb } from '@/assets/icons/Thumb';
 import { Trash } from '@/assets/icons/Trash';
 import { Button } from '@/components/buttons/Button';
+import { Viewer } from '@/components/common/editor/Viewer';
 import { EmptyState } from '@/components/common/EmptyState';
 import { CardSkeleton } from '@/components/skeletons/CardSkeleton';
 import { CategoryLabelRecord } from '@/constants/post';
@@ -20,18 +22,33 @@ interface Props {
 }
 
 export function UserBoardList({ isLoading = false, items, deletePost }: Props) {
+  const [ imagesLoaded, setImagesLoaded ] = useState(0);
+
+  const imageCount = items.filter((item) => item.imageUrl).length;
+  const allImagesLoaded = imagesLoaded === imageCount;
+
+  const handleImageLoad = () => {
+    setImagesLoaded((prev) => prev + 1);
+  };
+
   return (
     <ul className={listStyle.wrapper}>
       {/* 로딩 화면 */}
-      {isLoading && (
+      {(isLoading || !allImagesLoaded) && (
         [ ...Array(3) ].map((_, idx) => <CardSkeleton key={idx} />)
       )}
 
       {/* 데이터 있을 때 화면 */}
       {(isLoading === false && items.length > 0) && (
-        items.map((item) => <Item key={item.objectID} item={item} deletePost={deletePost} />)
+        items.map((item) => (
+          <Item 
+            key={item.objectID} 
+            item={item} 
+            allImagesLoaded={allImagesLoaded}
+            deletePost={deletePost}
+            onImageLoad={handleImageLoad} />
+        ))
       )}
-
       {/* 데이터 없을 때 화면 */}
       {(isLoading === false && items.length === 0) && (
         <div className={listStyle.content.wrapper}>
@@ -53,19 +70,28 @@ const listStyle = {
 
 /* ------------------ Item ------------------ */
 interface ItemProps {
+  allImagesLoaded: boolean;
   item: Post;
   deletePost: (postId: Post['objectID']) => void;
+  onImageLoad: () => void;
 }
 
-function Item({ item, deletePost }: ItemProps) {
+function Item({ allImagesLoaded, item, deletePost, onImageLoad }: ItemProps) {
   const router = useRouter();
 
   const editPost = (postId: Post['objectID']) => {
     router.push(`/write?postId=${postId}`);
   };
 
+  const textContent = item.content.replace(/<img[^>]*>/g, '').replace(/<\/?[^>]+(>|$)/g, '');
+
   return (
-    <li key={item.objectID} className={itemStyle.wrapper}>
+    <li 
+      key={item.objectID} 
+      className={`
+        ${itemStyle.wrapper}
+        ${allImagesLoaded ? 'visible' : 'invisible'}
+      `}>
       <div className={itemStyle.content.wrapper}>
         {item.imageUrl && (
           <Image 
@@ -73,10 +99,13 @@ function Item({ item, deletePost }: ItemProps) {
             height={0}
             className={itemStyle.content.thumbnail} 
             src={item.imageUrl} 
-            alt={item.title} />
+            alt={item.title}
+            onLoadingComplete={onImageLoad} />
         )}
 
-        <div className={itemStyle.content.text.wrapper}>
+        <div 
+          className={itemStyle.content.text.wrapper}
+          onClick={() => router.push(`/board/${item.objectID}`)}>
           <div>
             <p className={itemStyle.content.text.body.title}>
               <span className={itemStyle.content.text.body.category}>
@@ -84,14 +113,16 @@ function Item({ item, deletePost }: ItemProps) {
               </span>
               {item.title}
             </p>
-            <p className={itemStyle.content.text.body.description}>{item.content}</p>
+            <div className={itemStyle.content.text.body.description}>
+              <Viewer initialValue={textContent} />
+            </div>
           </div>
 
           <div className={itemStyle.content.text.info.wrapper}>
             <div className={itemStyle.content.text.info.reaction}>
               <Eye className={'size-4 text-gray-500 p-1'} />
               {item.views} 
-              <Thumb className={'size-4 text-gray-500 p-1 ml-2'} />
+              <Heart className={'size-4 text-gray-500 p-1 ml-2'} />
               {item.hits}
             </div>
 
@@ -132,7 +163,7 @@ const itemStyle = {
       object-cover rounded-md
     `,
     text: {
-      wrapper: 'w-full flex flex-col justify-between gap-x-6 sm:flex-row',
+      wrapper: 'w-full flex flex-col justify-between gap-x-6 sm:flex-row cursor-pointer',
       body: {
         category: 'font-normal text-gray-500 text-[12px] mr-2',
         title: 'font-semibold text-gray-900 ellipsis-1',

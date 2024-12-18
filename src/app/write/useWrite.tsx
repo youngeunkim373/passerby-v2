@@ -1,10 +1,10 @@
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Post } from '@/app/_data/posts.interface';
 import { GetPostResponseDTO } from '@/app/board/board.interface';
-import { getPost } from '@/app/board/board.service';
+import { getPostAPI } from '@/app/board/board.service';
 import { editPost, writePost } from '@/app/write/write.service';
 import { ErrorModal } from '@/components/modals/ErrorModal';
 import { useAuthContext } from '@/contexts/AuthContext';
@@ -14,6 +14,8 @@ import { CustomError } from '@/utils/error';
 type WriteFormDTO = Omit<Post, 'objectID' | 'postedAt'>;
 
 export const useWrite = () => {
+  const router = useRouter();
+
   const searchParams = useSearchParams();
   const { postId } = Object.fromEntries(searchParams.entries());
 
@@ -60,14 +62,15 @@ export const useWrite = () => {
       const imageUrl = match ? match[1] : undefined;
       const commonBody = { title, category, content, imageUrl };
 
+      let res;
+
       if (!postId) {
-        await writePost({ ...commonBody, userEmail: loggedInUser });
+        res = await writePost({ ...commonBody, userEmail: loggedInUser });
       } else {
-        await editPost({ postId, ...commonBody });
+        res = await editPost({ postId, ...commonBody });
       }
       
-      // TODO 게시글 상세 페이지로 이동
-      // router.push(`/board/${res.objectID}`)
+      router.push(`/board/${res.objectID}`);
     } catch (err) {
       console.error(err);
 
@@ -97,7 +100,7 @@ export const useWrite = () => {
 
       setLoading(true);
 
-      const res = await getPost(postId as string);
+      const res = await getPostAPI(postId as string);
 
       setPost(res);
       reset({

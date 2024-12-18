@@ -1,3 +1,5 @@
+import { Comment } from '@/app/_data/comments.interface';
+import { Encouragement } from '@/app/_data/encouragement_history.interface';
 import { Post } from '@/app/_data/posts.interface';
 import { Category } from '@/constants/post';
 
@@ -19,3 +21,44 @@ export interface GetBoardResponseDTO {
 }
 
 export type GetPostResponseDTO = Post;
+
+export interface WriteCommentRequestDTO {
+  userEmail: Comment['userEmail'];
+  postId: Comment['postId']
+  comment: Comment['comment'];
+  originalCommentId: Comment['originalCommentId'];
+  depth: Comment['depth'];
+}
+
+export interface WriteCommentResponseDTO {
+  objectID: Comment['objectID'];
+}
+
+export interface CommentFilterDTO {
+  postId: Comment['postId'];
+}
+
+export interface GetCommentsResponseDTO {
+  items: Comment[];
+  totalCount: number;
+}
+
+export type CommentFormDTO = Pick<Comment, 'comment' | 'originalCommentId'>;
+
+export interface UpdateViewsRequestDTO {
+  postId: Post['objectID'];
+}
+
+export interface GetEncouragementRequestDTO {
+  userEmail: Encouragement['userEmail'];
+  postId: Encouragement['postId'];
+}
+
+export type GetEncouragementResponseDTO = Encouragement | null;
+
+export interface EncourageRequestDTO {
+  userEmail: Encouragement['userEmail'];
+  postId: Encouragement['postId'];
+}
+
+export type EncourageResponseDTO = Encouragement['status'];
