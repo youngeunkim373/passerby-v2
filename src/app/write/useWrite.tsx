@@ -30,10 +30,12 @@ export const useWrite = () => {
   const {
     control,
     formState: { errors },
+    clearErrors,
     getValues,
     handleSubmit,
     register,
     reset,
+    setError,
   } = useForm<WriteFormDTO>({ mode: 'all' });
 
   const formValidation = {
@@ -41,26 +43,45 @@ export const useWrite = () => {
     category: { required: '분류를 선택해주세요' },
   };
 
+  const occurContentError = (content: string): boolean => {
+    const conditions = !content 
+      || content === '<p><br></p>' 
+      || content.replaceAll(' ', '') === '<p></p>';
+
+    if(conditions) {
+      setError('content', {
+        type: 'manual',
+        message: '게시글을 작성해주세요',
+      });
+    } else {
+      clearErrors('content');
+    }
+
+    return conditions;
+  }
+
   const handleChange = (value: string) => {
+    if(occurContentError(value)) return;
     contentRef.current = value;
   };
 
   const createUpdatePost = async () => {
+    const htmlContent = contentRef.current;
+    if(occurContentError(htmlContent)) return;
+
     if(!loggedInUser) {
       throw new CustomError(401, '유저 인증 정보가 필요합니다.');
     }
 
     try {
       const { title, category } = getValues();
-      const htmlContent = contentRef.current;
 
       // 정규식을 사용하여 첫 번째 이미지 태그 추출
       const imgRegex = /<img[^>]+src="([^">]+)"/i;
       const match = htmlContent.match(imgRegex);
 
-      const content = contentRef.current;
       const imageUrl = match ? match[1] : undefined;
-      const commonBody = { title, category, content, imageUrl };
+      const commonBody = { title, category, content: htmlContent, imageUrl };
 
       let res;
 
@@ -70,7 +91,7 @@ export const useWrite = () => {
         res = await editPost({ postId, ...commonBody });
       }
       
-      router.push(`/board/${res.objectID}`);
+      router.replace(`/board/${res.objectID}`);
     } catch (err) {
       console.error(err);
 
