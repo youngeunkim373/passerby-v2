@@ -49,6 +49,7 @@ export function BoardList({ items, isLoading = false }: Props) {
         className={`
           ${listStyle.content.wrapper}
           ${(isListLoaded && items.length > 0) ? 'visible h-auto' : 'invisible h-0'}
+          divide-y divide-gray-100
         `}>
         {items.map((item, idx) => (
           <Item 
@@ -59,19 +60,22 @@ export function BoardList({ items, isLoading = false }: Props) {
       </div>
 
       {/* 데이터 없을 때 화면 */}
-      {(isListLoaded && items.length === 0) && (
-        <div className={listStyle.content.wrapper}>
-          <EmptyState
-            title={'검색 결과가 없습니다'}
-            description={<>검색어가 바르게 입력되었는지<br />확인해 보세요</>} />
-        </div>
-      )}
+      <div 
+        className={`
+          ${listStyle.content.wrapper}
+          ${(isListLoaded && items.length === 0) ? 'visible h-auto' : 'invisible h-0'}
+           my-auto
+        `}>
+        <EmptyState
+          title={'검색 결과가 없습니다'}
+          description={<>검색어가 바르게 입력되었는지<br />확인해 보세요</>} />
+      </div>
     </ul>
   );
 }
 
 const listStyle = {
-  wrapper: 'w-full flex flex-col justify-start items-center divide-y divide-gray-100',
+  wrapper: 'w-full flex-grow flex flex-col justify-start items-center',
   content: { 
     wrapper: 'w-full flex flex-col gap-2 items-center',
   },
