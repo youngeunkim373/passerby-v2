@@ -8,6 +8,7 @@ import { CommentStatus } from '@/app/_data/comments.interface';
 import { CommentFilterDTO, CommentFormDTO, GetCommentsResponseDTO } from '@/app/board/board.interface';
 import { getCommentsAPI, writeCommentAPI } from '@/app/board/board.service';
 import { ErrorModal } from '@/components/modals/ErrorModal';
+import { LoginModal } from '@/components/modals/LoginModal';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { useModalContext } from '@/contexts/ModalContext';
 import { Pagination, usePagination } from '@/hooks/usePagination';
@@ -85,7 +86,7 @@ export const useComment = () => {
       setCreateLoading(true);
 
       if(!loggedInUser) {
-        throw new CustomError(401, '유저 인증 정보가 필요합니다.');
+        return show(<LoginModal />);
       }
   
       if(!postId || Array.isArray(postId)) {
