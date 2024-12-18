@@ -28,7 +28,8 @@ export const useBoard = ({ sortBy }: Props) => {
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      // Viewer를 dynamic import로 부르기 때문에 시간차를 두어 로딩 상태를 관리
+      setTimeout(() => setLoading(false), 500);
     }
   };
 

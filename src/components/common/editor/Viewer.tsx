@@ -17,7 +17,11 @@ const ForwardedViewer = forwardRef((
 ForwardedViewer.displayName = 'ForwardedViewer';
 
 /* -------------------- Viewer -------------------- */
-export const Viewer = (props: ViewerProps) => {
+interface Props extends ViewerProps {
+  applyLoading?: boolean;
+}
+
+export const Viewer = ({ applyLoading = true,  ...viewerProps }: Props) => {
   const viewerRef = useRef<ToastViewer>(null);
 
   const [ isLoading, setIsLoading ] = useState(true);
@@ -58,7 +62,7 @@ export const Viewer = (props: ViewerProps) => {
 
   return (
     <>
-      {isLoading && (
+      {(applyLoading && isLoading) && (
         <div className={'w-full h-[300px] flex flex-col justify-center items-center gap-2'}>
           <SpinLoading className={'!size-12'} />
           <span className={'font-semibold text-gray-500'}>Loading..</span>
@@ -67,10 +71,9 @@ export const Viewer = (props: ViewerProps) => {
 
       <ForwardedViewer 
         ref={viewerRef} 
-        className={isLoading ? 'invisible' : 'visible'}
+        className={isLoading ? 'hidden' : 'block'}
         onLoad={handleLoad}
-        {...props} />
+        {...viewerProps} />
     </>
-
   );
 };
