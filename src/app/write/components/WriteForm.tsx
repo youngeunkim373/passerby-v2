@@ -60,6 +60,19 @@ export function WriteForm() {
           {...register.category} />
       ),
     },
+    {
+      name: 'content',
+      label: '내용',
+      isRequired: true,
+      children: (
+        <Editor
+          autofocus={false}
+          content={post?.content}
+          initialValue={' '}
+          storageDirectory={'board'}
+          onChange={handleChange} />
+      ),
+    },
   ];
 
   // 유저 로그인 여부 확인
@@ -75,18 +88,11 @@ export function WriteForm() {
       {isLoading && (
         <div className={style.loading}>게시글 로드 중...</div>
       )}
-
       <Form
         items={formItems}
         onSubmit={handleSubmit}
         errors={errors}
         className={style.form} />
-
-      <Editor 
-        initialValue={' '}
-        content={post?.content}
-        storageDirectory={'board'}
-        onChange={handleChange} />
 
       <Button 
         variant={'solid'}
