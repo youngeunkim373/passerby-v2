@@ -36,12 +36,13 @@ const Template: StoryFn<Props> = () => {
     setPagination(mergedPagination);
   };
 
-  const getBoardList = async (newPagination: PaginationProps<BoardFilterDTO>)
-    : Promise<GetBoardResponseDTO[] | void > => {
+  const getBoardList = async ({ 
+    page, 
+    size, 
+    filter, 
+  }: PaginationProps<BoardFilterDTO>): Promise<GetBoardResponseDTO[] | void > => {
     try {
       setLoading(true);
-
-      const { page, size, filter } = newPagination;
 
       let items = [ ...data ];
 
@@ -65,11 +66,11 @@ const Template: StoryFn<Props> = () => {
       items = items.slice((page - 1) * size, page * size);
 
       setTotaleCount(totalCount);
-      setList(items);  
+      setList(items);
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      setTimeout(() => setLoading(false), 1000);
     }
   };
 
@@ -122,8 +123,8 @@ Default.args = {
 
 const data: Post[] = [
   {
-    'objectID': '2yQzzzDoHXi50CWMi7pb',
-    'imageUrl': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    'objectID': '1',
+    'imageUrl': 'https://firebasestorage.googleapis.com/v0/b/passersby-67eaa.firebasestorage.app/o/static%2Fbubble-logo.png?alt=media&token=c1bdaf96-8814-48f7-899d-1b976966d1fe',
     'content': 'test1입니다. test1입니다.test1입니다.test1입니다.test1입니다.test1입니다.test1입니다.test1입니다.test1입니다.test1입니다.test1입니다.test1입니다.test1입니다.test1입니다.test1입니다.test1입니다.test1입니다.test1입니다.',
     'hits': 3,
     'views': 6,
@@ -134,8 +135,8 @@ const data: Post[] = [
     'category': [ Category.LOVE ],
   },
   {
-    'objectID': '2yQzzzDoHXi50CWMi7pb',
-    'imageUrl': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    'objectID': '2',
+    'imageUrl': 'https://firebasestorage.googleapis.com/v0/b/passersby-67eaa.firebasestorage.app/o/static%2Fbubble-logo.png?alt=media&token=c1bdaf96-8814-48f7-899d-1b976966d1fe',
     'content': 'test2입니다. test2입니다.test2입니다.test2입니다.test2입니다.test2입니다.test2입니다.test2입니다.test2입니다.test2입니다.test2입니다.test2입니다.test2입니다.test2입니다.test2입니다.test2입니다.test2입니다.test2입니다.',
     'hits': 3,
     'views': 6,
@@ -146,8 +147,8 @@ const data: Post[] = [
     'category': [ Category.LOVE ],
   },
   {
-    'objectID': '2yQzzzDoHXi50CWMi7pb',
-    'imageUrl': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    'objectID': '3',
+    'imageUrl': 'https://firebasestorage.googleapis.com/v0/b/passersby-67eaa.firebasestorage.app/o/static%2Fbubble-logo.png?alt=media&token=c1bdaf96-8814-48f7-899d-1b976966d1fe',
     'content': 'test3입니다. test3입니다.test3입니다.test3입니다.test3입니다.test3입니다.test3입니다.test3입니다.test3입니다.test3입니다.test3입니다.test3입니다.test3입니다.test3입니다.test3입니다.test3입니다.test3입니다.test3입니다.',
     'hits': 3,
     'views': 6,
@@ -158,8 +159,8 @@ const data: Post[] = [
     'category': [ Category.PARENTING, Category.FAMILY ],
   },
   {
-    'objectID': '2yQzzzDoHXi50CWMi7pb',
-    'imageUrl': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    'objectID': '4',
+    'imageUrl': 'https://firebasestorage.googleapis.com/v0/b/passersby-67eaa.firebasestorage.app/o/static%2Fbubble-logo.png?alt=media&token=c1bdaf96-8814-48f7-899d-1b976966d1fe',
     'content': 'test4입니다. test4입니다.test4입니다.test4입니다.test4입니다.test4입니다.test4입니다.test4입니다.test4입니다.test4입니다.test4입니다.test4입니다.test4입니다.test4입니다.test4입니다.test4입니다.test4입니다.test4입니다.',
     'hits': 3,
     'views': 6,
@@ -170,8 +171,8 @@ const data: Post[] = [
     'category': [ Category.SCHOOL, Category.RELATIONSHIP ],
   },
   {
-    'objectID': '2yQzzzDoHXi50CWMi7pb',
-    'imageUrl': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    'objectID': '5',
+    'imageUrl': 'https://firebasestorage.googleapis.com/v0/b/passersby-67eaa.firebasestorage.app/o/static%2Fbubble-logo.png?alt=media&token=c1bdaf96-8814-48f7-899d-1b976966d1fe',
     'content': 'test5입니다. test5입니다.test5입니다.test5입니다.test5입니다.test5입니다.test5입니다.test5입니다.test5입니다.test5입니다.test5입니다.test5입니다.test5입니다.test5입니다.test5입니다.test5입니다.test5입니다.test5입니다.',
     'hits': 3,
     'views': 6,

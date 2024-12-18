@@ -28,30 +28,32 @@ export const Viewer = (props: ViewerProps) => {
   };
 
   const handleLoad = () => {
-    if(!viewerRef.current) return;
-
-    const viewerElement = viewerRef.current.getRootElement();
-    const images = extractImageElements(viewerElement);
-
-    if (images.length === 0) {
-      setIsLoading(false);
-      return;
-    }
-
-    const imageLoadStates = Array.from(images).map((img) => {
-      return new Promise<void>((resolve) => {
-
-        if (img.complete) {
-          resolve();
-        } else {
-          img.addEventListener('load', () => resolve());
-          img.addEventListener('error', () => resolve());
-        }
+    if(viewerRef.current) {
+      const viewerElement = viewerRef.current.getRootElement();
+      const images = extractImageElements(viewerElement);
+  
+      if (images.length === 0) {
+        setIsLoading(false);
+        return;
+      }
+  
+      const imageLoadStates = Array.from(images).map((img) => {
+        return new Promise<void>((resolve) => {
+  
+          if (img.complete) {
+            resolve();
+          } else {
+            img.addEventListener('load', () => resolve());
+            img.addEventListener('error', () => resolve());
+          }
+        });
       });
-    });
-
-    Promise.all(imageLoadStates)
-      .then(() => setIsLoading(false));
+  
+      Promise.all(imageLoadStates)
+        .then(() => setIsLoading(false));
+    } else {
+      setIsLoading(false);
+    }
   };
 
   return (
