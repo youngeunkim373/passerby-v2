@@ -23,7 +23,6 @@ export const usePost = () => {
   /* ---------------------- 상세 게시글 조회 ---------------------- */
   const [ isLoading, setLoading ] = useState<boolean | null>(null);
   const [ post, setPost ] = useState<GetPostResponseDTO | null>(null);
-  const [ encouragement, setEncouragement ] = useState<EncouragementStatus>(EncouragementStatus.CANCEL);
 
   const getPost = async (): Promise<void> => {
     try {
@@ -39,18 +38,6 @@ export const usePost = () => {
       // 게시글 정보 조회
       const post = await getPostAPI(postId);
       setPost(post);
-
-      // 게시글 응원 정보 조회
-      if(loggedInUser) {
-        const encouragement = await getEncouragementAPI({
-          userEmail: loggedInUser,
-          postId,
-        });
-
-        if(encouragement) {
-          setEncouragement(encouragement.status);
-        }
-      }
     } catch (e) {
       console.error(e);
 
@@ -82,7 +69,59 @@ export const usePost = () => {
 
   useEffect(() => {
     getPost();
-  }, [ postId, isLoggedIn ]);
+  }, [ postId ]);
+
+  /* ---------------------- 게시글 응원 정보 조회 ---------------------- */
+  const [ encouragement, setEncouragement ] = useState<EncouragementStatus>(EncouragementStatus.CANCEL);
+
+  const getEncouragement = async (): Promise<void> => {
+    try {
+      if(!postId || Array.isArray(postId)) {
+        throw new CustomError(404, '잘못된 요청입니다.');
+      };
+
+      if(loggedInUser) {
+        const encouragement = await getEncouragementAPI({
+          userEmail: loggedInUser,
+          postId,
+        });
+
+        if(encouragement) {
+          setEncouragement(encouragement.status);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+
+      if(e instanceof CustomError) {
+        if(e.statusCode === 404) {
+          router.push('/404');
+        }
+
+        show(
+          <ErrorModal 
+            statusCode={e.statusCode}
+            message={e.message} />
+        );
+      }
+
+      show(
+        <ErrorModal 
+          message={
+            <>
+              게시글 응원 정보 조회 도중 알 수 없는 오류가 발생했습니다.<br />
+              잠시 후 다시 시도해주세요.
+            </>
+          } />
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getEncouragement();
+  }, [ isLoggedIn ]);
 
   /* ---------------------- 응원하기 ---------------------- */
   const encourage = async (): Promise<void> => {
