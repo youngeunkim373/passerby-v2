@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
@@ -13,40 +13,53 @@ import { getTimeAgo } from '@/utils/time';
 
 /* ------------------ List ------------------ */
 interface Props {
-  isLoading?: boolean | null;
   items: Post[];
+  isLoading?: boolean | null;
 }
 
-export function BoardList({ isLoading = false, items }: Props) {
-  const [ imagesLoaded, setImagesLoaded ] = useState(0);
+export function BoardList({ items, isLoading = false }: Props) {
+  const [ imageLoadedState, setImageLoadedState ] = useState<boolean[]>([]);
 
-  const imageCount = items.filter((item) => item.imageUrl).length;
-  const allImagesLoaded = imagesLoaded === imageCount;
+  const postIds = items.map((item) => item.objectID);
+  
+  const allImagesLoaded = imageLoadedState.every(Boolean);
+  const isListLoaded = isLoading === false && allImagesLoaded;
 
-  const handleImageLoad = () => {
-    setImagesLoaded((prev) => prev + 1);
+  const handleImageLoad = (idx: number) => {
+    setImageLoadedState((prev) =>
+      prev.map((loaded, i) => (i === idx ? true : loaded))
+    );
   };
+
+  useEffect(() => {
+    const newImageState = items.map((item) => !item.imageUrl);  
+    setImageLoadedState(newImageState);
+  }, [ ...postIds ]);
 
   return (
     <ul className={listStyle.wrapper}>
       {/* 로딩 화면 */}
-      {(isLoading || !allImagesLoaded) && (
+      {!isListLoaded && (
         [ ...Array(3) ].map((_, idx) => <CardSkeleton key={idx} />)
       )}
 
       {/* 데이터 있을 때 화면 */}
-      {(isLoading === false && items.length > 0) && (
-        items.map((item) => (
+      {/* onLoad 이벤트로 인해 조건부 렌더링 X */}
+      <div 
+        className={`
+          ${listStyle.content.wrapper}
+          ${(isListLoaded && items.length > 0) ? 'visible h-auto' : 'invisible h-0'}
+        `}>
+        {items.map((item, idx) => (
           <Item 
             key={item.objectID} 
             item={item} 
-            allImagesLoaded={allImagesLoaded}
-            onImageLoad={handleImageLoad} />
-        ))
-      )}
+            onImageLoad={() => handleImageLoad(idx)} />
+        ))}
+      </div>
 
       {/* 데이터 없을 때 화면 */}
-      {(isLoading === false && items.length === 0) && (
+      {(isListLoaded && items.length === 0) && (
         <div className={listStyle.content.wrapper}>
           <EmptyState
             title={'검색 결과가 없습니다'}
@@ -58,31 +71,25 @@ export function BoardList({ isLoading = false, items }: Props) {
 }
 
 const listStyle = {
-  wrapper: 'w-full flex flex-col justify-start items-center flex-grow divide-y divide-gray-100',
+  wrapper: 'w-full flex flex-col justify-start items-center divide-y divide-gray-100',
   content: { 
-    wrapper: 'w-full flex flex-col gap-2 justify-center items-center flex-grow',
+    wrapper: 'w-full flex flex-col gap-2 items-center',
   },
 };
 
 /* ------------------ Item ------------------ */
 interface ItemProps {
-  allImagesLoaded: boolean;
   item: Post;
   onImageLoad: () => void;
 }
 
-function Item({ allImagesLoaded, item, onImageLoad }: ItemProps) {
+function Item({ item, onImageLoad }: ItemProps) {
   const router = useRouter();
 
   const textContent = item.content.replace(/<img[^>]*>/g, '').replace(/<\/?[^>]+(>|$)/g, '');
 
   return (
-    <li 
-      key={item.objectID} 
-      className={`
-        ${itemStyle.wrapper}
-        ${allImagesLoaded ? 'visible' : 'invisible'}
-      `}>
+    <li className={itemStyle.wrapper}>
       {item.imageUrl && (
         <Image 
           width={108}
@@ -104,7 +111,9 @@ function Item({ allImagesLoaded, item, onImageLoad }: ItemProps) {
             {item.title}
           </p>
           <div className={itemStyle.content.textArea.description}>
-            <Viewer initialValue={textContent} />
+            <Viewer 
+              applyLoading={false}
+              initialValue={textContent} />
           </div>
         </div>
 
