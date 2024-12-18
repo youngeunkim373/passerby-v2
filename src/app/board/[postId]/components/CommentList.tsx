@@ -46,7 +46,7 @@ export function CommentList() {
 }
 
 const listStyle = {
-  wrapper: 'w-full flex flex-col py-12',
+  wrapper: 'w-full flex flex-col pt-4 pb-12',
   list: 'divide-y divide-gray-200',
 };
 

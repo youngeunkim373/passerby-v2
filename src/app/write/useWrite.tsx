@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { Post } from '@/app/_data/posts.interface';
 import { GetPostResponseDTO } from '@/app/board/board.interface';
-import { getPost } from '@/app/board/board.service';
+import { getPostAPI } from '@/app/board/board.service';
 import { editPost, writePost } from '@/app/write/write.service';
 import { ErrorModal } from '@/components/modals/ErrorModal';
 import { useAuthContext } from '@/contexts/AuthContext';
@@ -100,7 +100,7 @@ export const useWrite = () => {
 
       setLoading(true);
 
-      const res = await getPost(postId as string);
+      const res = await getPostAPI(postId as string);
 
       setPost(res);
       reset({
