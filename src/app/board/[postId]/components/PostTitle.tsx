@@ -1,7 +1,6 @@
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
-import { Thumb } from '@/assets/icons/Thumb';
-// import { UserCircle } from '@/assets/icons/User';
+import { Heart } from '@/assets/icons/Heart';
 import { CategoryLabelRecord } from '@/constants/post';
 import { getTimeAgo } from '@/utils/time';
 
@@ -34,7 +33,7 @@ export function PostTitle(props: Omit<Post, 'objectID' | 'content'>) {
           <div className={style.info.reaction.wrapper}>
             <Eye className={style.info.reaction.icon} />
             {props.views} 
-            <Thumb className={style.info.reaction.icon + ' ml-3'} />
+            <Heart className={style.info.reaction.icon + ' ml-3'} />
             {props.hits}
           </div>
         </div>

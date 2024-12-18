@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
-import { Thumb } from '@/assets/icons/Thumb';
+import { Heart } from '@/assets/icons/Heart';
 import { Viewer } from '@/components/common/editor/Viewer';
 import { EmptyState } from '@/components/common/EmptyState';
 import { CardSkeleton } from '@/components/skeletons/CardSkeleton';
@@ -112,7 +112,7 @@ function Item({ allImagesLoaded, item, onImageLoad }: ItemProps) {
           <div className={itemStyle.content.info.reaction}>
             <Eye className={'size-4 text-gray-500 p-1'} />
             {item.views} 
-            <Thumb className={'size-4 text-gray-500 p-1 ml-2'} />
+            <Heart className={'size-4 text-gray-500 p-1 ml-2'} />
             {item.hits}
           </div>
           <p className={itemStyle.content.info.time}>

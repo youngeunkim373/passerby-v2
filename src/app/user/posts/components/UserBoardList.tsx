@@ -4,8 +4,8 @@ import { useState } from 'react';
 
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
+import { Heart } from '@/assets/icons/Heart';
 import { PencilSquare } from '@/assets/icons/Pencil';
-import { Thumb } from '@/assets/icons/Thumb';
 import { Trash } from '@/assets/icons/Trash';
 import { Button } from '@/components/buttons/Button';
 import { Viewer } from '@/components/common/editor/Viewer';
@@ -122,7 +122,7 @@ function Item({ allImagesLoaded, item, deletePost, onImageLoad }: ItemProps) {
             <div className={itemStyle.content.text.info.reaction}>
               <Eye className={'size-4 text-gray-500 p-1'} />
               {item.views} 
-              <Thumb className={'size-4 text-gray-500 p-1 ml-2'} />
+              <Heart className={'size-4 text-gray-500 p-1 ml-2'} />
               {item.hits}
             </div>
 
