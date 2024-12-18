@@ -1,4 +1,5 @@
 import { Comment } from '@/app/_data/comments.interface';
+import { Encouragement } from '@/app/_data/encouragement_history.interface';
 import { Post } from '@/app/_data/posts.interface';
 import { Category } from '@/constants/post';
 
@@ -47,3 +48,17 @@ export type CommentFormDTO = Pick<Comment, 'comment' | 'originalCommentId'>;
 export interface UpdateViewsRequestDTO {
   postId: Post['objectID'];
 }
+
+export interface GetEncouragementRequestDTO {
+  userEmail: Encouragement['userEmail'];
+  postId: Encouragement['postId'];
+}
+
+export type GetEncouragementResponseDTO = Encouragement | null;
+
+export interface EncourageRequestDTO {
+  userEmail: Encouragement['userEmail'];
+  postId: Encouragement['postId'];
+}
+
+export type EncourageResponseDTO = Encouragement['status'];

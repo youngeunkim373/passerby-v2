@@ -1,7 +1,7 @@
 'use client';
 import { Comment } from '@/app/_data/comments.interface';
 import { Post } from '@/app/_data/posts.interface';
-import { BoardFilterDTO, BoardSortBy, CommentFilterDTO, GetBoardResponseDTO, GetCommentsResponseDTO, GetPostResponseDTO, UpdateViewsRequestDTO, WriteCommentRequestDTO, WriteCommentResponseDTO } from '@/app/board/board.interface';
+import { BoardFilterDTO, BoardSortBy, CommentFilterDTO, EncourageRequestDTO, EncourageResponseDTO, GetBoardResponseDTO, GetCommentsResponseDTO, GetEncouragementRequestDTO, GetEncouragementResponseDTO, GetPostResponseDTO, UpdateViewsRequestDTO, WriteCommentRequestDTO, WriteCommentResponseDTO } from '@/app/board/board.interface';
 import { Pagination } from '@/hooks/usePagination';
 import { CustomError } from '@/utils/error';
 
@@ -165,6 +165,61 @@ export const updateViewsAPI = async (body: UpdateViewsRequestDTO) => {
     }
 
     return response.data;
+  } catch (err) {
+    console.error('An error occurs: ', err);
+
+    if(err instanceof CustomError) {
+      throw new CustomError(err.statusCode, err.message);
+    }
+
+    throw err; 
+  }
+};
+
+/* -------------------- 게시글 응원 정보 조회 -------------------- */ 
+export const getEncouragementAPI = async ({ userEmail, postId }: GetEncouragementRequestDTO): Promise<GetEncouragementResponseDTO> => {
+  const params = new URLSearchParams({ userEmail, postId });
+
+  try {
+    const res = await fetch(`/api/board/encouragement?${params.toString()}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    const response = await res.json();
+
+    if(res.status !== 200) {
+      throw new CustomError(response.status, response.message);
+    }
+    
+    return response.data as GetEncouragementResponseDTO;
+  } catch (err) {
+    console.error('An error occurs: ', err);
+
+    if(err instanceof CustomError) {
+      throw new CustomError(err.statusCode, err.message);
+    }
+
+    throw err; 
+  }
+};
+
+/* -------------------- 응원하기 -------------------- */ 
+export const encourageAPI = async (body: EncourageRequestDTO): Promise<EncourageResponseDTO> => { 
+  try {
+    const res = await fetch('/api/board/encouragement', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    const response = await res.json();
+
+    if(response.status !== 200) {
+      throw new CustomError(response.status, response.message);
+    }
+
+    return response.data as EncourageResponseDTO;
   } catch (err) {
     console.error('An error occurs: ', err);
 
