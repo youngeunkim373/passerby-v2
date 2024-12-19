@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { Post } from '@/app/_data/posts.interface';
 import { BoardFilterDTO, BoardSortBy, GetPostsResponseDTO } from '@/app/board/board.interface';
 import { getPostsAPI } from '@/app/board/board.service';
-import { removePost } from '@/app/write/write.service';
+import { removePostAPI } from '@/app/write/write.service';
 import { ErrorModal } from '@/components/modals/ErrorModal';
 import { LoginModal } from '@/components/modals/LoginModal';
 import { useModalContext } from '@/contexts/ModalContext';
@@ -56,7 +56,7 @@ export const useUserBoard = ({ isLoggedIn, userEmail }: Props) => {
         throw new CustomError(401, '유저 인증 정보가 필요합니다.');
       }
 
-      await removePost({ postId });
+      await removePostAPI({ postId });
 
       // Algolia 데이터 삭제 동기화
       // 그냥 firestore와의 동기화에 맡기기엔 refetch 시기를 잡기 어려움
