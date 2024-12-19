@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { JoinRequestDTO } from '@/app/join/join.interface';
-import { join, sendVerificationEmail as sendVerificationEmailApi } from '@/app/join/join.service';
+import { joinAPI, sendVerificationEmailAPI } from '@/app/join/join.service';
 import { ExclamationMarkSolidCircle } from '@/assets/icons/ExclamationMark';
 import { GradationLoading } from '@/assets/icons/Loading';
 import { Button } from '@/components/buttons/Button';
@@ -98,7 +98,7 @@ export const useJoin = () => {
 
   const joinUser = async () => {
     try {
-      await join({ email, password, nickname, age, sex, region });
+      await joinAPI({ email, password, nickname, age, sex, region });
       
       show(
         <SuccessModal 
@@ -133,7 +133,7 @@ export const useJoin = () => {
   const sendVerificationEmail = async () => {
     try {
       setEmailVerification('isSending');
-      await sendVerificationEmailApi({ email, password, passwordCheck, nickname, age, sex, region });
+      await sendVerificationEmailAPI({ email, password, passwordCheck, nickname, age, sex, region });
       setEmailVerification('sent');
     } catch(err) {
       setEmailVerification('unsent');
@@ -236,7 +236,7 @@ export const useJoin = () => {
     emailHelper,
     errors,
     formValidation,
-    formValues: { email, password, nickname, age, sex, region,passwordCheck },
+    formValues: { email, password, nickname, age, sex, region, passwordCheck },
     emailVerification,
     valueStates: {
       email: getValidState('email', email),

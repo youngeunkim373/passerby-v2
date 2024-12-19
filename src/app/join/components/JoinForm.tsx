@@ -1,15 +1,16 @@
 'use client';
 import Image from 'next/image';
 
+import { Regions } from '@/app/_data/users.interface';
 import { useJoin } from '@/app/join/useJoin';
 import { Locker } from '@/assets/icons/Locker';
 import { User } from '@/assets/icons/User';
 import { Button } from '@/components/buttons/Button';
 import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
-import { FormSelect } from '@/components/form/select/FormSelect';
 import { Input } from '@/components/form/Input';
-import { ageRange, Regions } from '@/constants/user';
+import { FormSelect } from '@/components/form/select/FormSelect';
+import { AgeRange, RegionLabelRecord } from '@/constants/label';
 
 export function JoinForm() {
   const { 
@@ -98,7 +99,7 @@ export function JoinForm() {
           state={valueStates.age}
           options={
             Object
-              .entries(ageRange)
+              .entries(AgeRange)
               .map(([ key, value ]) => ({ id: key, title: value.name }))
           }
           {...register.age} />
@@ -134,7 +135,7 @@ export function JoinForm() {
           options={
             Object
               .entries(Regions)
-              .map(([ key, value ]) => ({ id: key, title: value }))
+              .map(([ key, value ]) => ({ id: key, title: RegionLabelRecord[value] }))
           }
           {...register.region} />
       ),

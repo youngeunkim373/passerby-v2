@@ -1,8 +1,8 @@
 import { EditPostRequestDTO, EditPostResponseDTO, RemovePostRequestDTO, RemovePostResponseDTO, WritePostRequestDTO, WritePostResponseDTO } from '@/app/write/write.interface';
-import { CustomError } from '@/utils/error';
+import { CustomError, handleAPIError } from '@/utils/error';
 
 /* -------------------- 게시글 작성 -------------------- */ 
-export const writePost = async (body: WritePostRequestDTO): Promise<WritePostResponseDTO> => { 
+export const writePostAPI = async (body: WritePostRequestDTO): Promise<WritePostResponseDTO> => { 
   try {
     const res = await fetch('/api/write/post', {
       method: 'POST',
@@ -18,18 +18,12 @@ export const writePost = async (body: WritePostRequestDTO): Promise<WritePostRes
 
     return response.data;
   } catch (err) {
-    console.error('An error occurs: ', err);
-
-    if(err instanceof CustomError) {
-      throw new CustomError(err.statusCode, err.message);
-    }
-
-    throw err; 
+    return handleAPIError(err);
   }
 };
 
 /* -------------------- 게시글 수정 -------------------- */ 
-export const editPost = async (body: EditPostRequestDTO): Promise<EditPostResponseDTO> => { 
+export const editPostAPI = async (body: EditPostRequestDTO): Promise<EditPostResponseDTO> => { 
   try {
     const res = await fetch('/api/write/post', {
       method: 'PUT',
@@ -45,18 +39,12 @@ export const editPost = async (body: EditPostRequestDTO): Promise<EditPostRespon
 
     return response.data;
   } catch (err) {
-    console.error('An error occurs: ', err);
-
-    if(err instanceof CustomError) {
-      throw new CustomError(err.statusCode, err.message);
-    }
-
-    throw err; 
+    return handleAPIError(err);
   }
 };
 
 /* -------------------- 게시글 삭제 -------------------- */ 
-export const removePost = async (body: RemovePostRequestDTO): Promise<RemovePostResponseDTO> => { 
+export const removePostAPI = async (body: RemovePostRequestDTO): Promise<RemovePostResponseDTO> => { 
   try {
     const res = await fetch('/api/write/post', {
       method: 'DELETE',
@@ -72,13 +60,7 @@ export const removePost = async (body: RemovePostRequestDTO): Promise<RemovePost
 
     return response.data;
   } catch (err) {
-    console.error('An error occurs: ', err);
-
-    if(err instanceof CustomError) {
-      throw new CustomError(err.statusCode, err.message);
-    }
-
-    throw err; 
+    return handleAPIError(err);
   }
 };
 

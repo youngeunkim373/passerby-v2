@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Post } from '@/app/_data/posts.interface';
 import { GetPostResponseDTO } from '@/app/board/board.interface';
 import { getPostAPI } from '@/app/board/board.service';
-import { editPost, writePost } from '@/app/write/write.service';
+import { editPostAPI, writePostAPI } from '@/app/write/write.service';
 import { ErrorModal } from '@/components/modals/ErrorModal';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { useModalContext } from '@/contexts/ModalContext';
@@ -86,9 +86,9 @@ export const useWrite = () => {
       let res;
 
       if (!postId) {
-        res = await writePost({ ...commonBody, userEmail: loggedInUser });
+        res = await writePostAPI({ ...commonBody, userEmail: loggedInUser });
       } else {
-        res = await editPost({ postId, ...commonBody });
+        res = await editPostAPI({ postId, ...commonBody });
       }
       
       router.replace(`/board/${res.objectID}`);

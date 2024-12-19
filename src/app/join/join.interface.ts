@@ -1,14 +1,11 @@
-import { ageRange, Regions } from '@/constants/user';
-
-export type AgeType = keyof typeof ageRange;
-export type SexType = 'male' | 'female';
+import { Ages, Regions, Sexes } from '@/app/_data/users.interface';
 
 export interface JoinRequestDTO {
   email: string;
   password: string;
   nickname: string;
-  age: AgeType;
-  sex: SexType;
+  age: Ages;
+  sex: Sexes;
   region: Regions;
 }
 

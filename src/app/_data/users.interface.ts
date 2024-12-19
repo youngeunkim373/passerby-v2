@@ -1,5 +1,30 @@
-import { Regions } from '@/constants/user';
-import { AgeType, SexType } from '@/app/join/join.interface';
+export enum Ages {
+  TEENS = 'TEENS',
+  TWENTIES = 'TWENTIES',
+  THIRTIES = 'THIRTIES',
+  FORTIES = 'FORTIES',
+  FIFTIES = 'FIFTIES',
+  SIXTIES_OVER = 'SIXTIES_OVER',
+};
+
+export type Sexes = 'MALE' | 'FEMALE';
+
+export enum Regions {
+  SEOUL = 'SEOUL',
+  GYEONGGI = 'GYEONGGI',
+  GWANGJU = 'GWANGJU',
+  DAEGU = 'DAEGU',
+  DAEJEON = 'DAEJEON',
+  BUSAN = 'BUSAN',
+  INCHEON = 'INCHEON',
+  ULSAN = 'ULSAN',
+  SEJONG = 'SEJONG',
+  JEJU = 'JEJU',
+  GANGWON = 'GANGWON',
+  GYEONGSANG = 'GYEONGSANG',
+  JEOLLA = 'JEOLLA',
+  CHUNGCHEONG = 'CHUNGCHEONG',
+};
 
 type UserStatus = 'ACTIVE' | 'DELETED';
 
@@ -7,8 +32,8 @@ export interface User {
   id: string;
   email: string;
   password: string;
-  age: AgeType; 
-  sex: SexType;
+  age: Ages; 
+  sex: Sexes;
   region: Regions;
   status: UserStatus;
   createdAt: number;

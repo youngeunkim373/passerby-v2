@@ -2,14 +2,13 @@
 import { Meta, StoryFn } from '@storybook/react';
 import { useEffect, useState } from 'react';
 
-import { Post } from '@/app/_data/posts.interface';
-import { BoardFilterDTO, GetBoardResponseDTO } from '@/app/board/board.interface';
+import { Category, Post } from '@/app/_data/posts.interface';
+import { BoardFilterDTO, GetPostsResponseDTO } from '@/app/board/board.interface';
 import { Board } from '@/app/board/components/Board';
 import { BoardList } from '@/app/board/components/BoardList';
 import { BoardSearch } from '@/app/board/components/BoardSearch';
 import { Props } from '@/components/common/Notification';
 import { Pagination } from '@/components/common/Pagination';
-import { Category } from '@/constants/post';
 import { Pagination as PaginationProps } from '@/hooks/usePagination';
 
 export default {
@@ -40,7 +39,7 @@ const Template: StoryFn<Props> = () => {
     page, 
     size, 
     filter, 
-  }: PaginationProps<BoardFilterDTO>): Promise<GetBoardResponseDTO[] | void > => {
+  }: PaginationProps<BoardFilterDTO>): Promise<GetPostsResponseDTO[] | void > => {
     try {
       setLoading(true);
 
