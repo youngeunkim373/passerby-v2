@@ -1,5 +1,5 @@
 import { Category } from '@/app/_data/posts.interface';
-import { Ages, Regions } from '@/app/_data/users.interface';
+import { Ages, Regions, Sexes } from '@/app/_data/users.interface';
 
 export const CategoryLabelRecord: Record<Category, string> = {
   JOB: '직장/일',
@@ -19,6 +19,11 @@ export const AgeRange: Record<Ages, { name: string, from: number, to: number }> 
   FORTIES: { name: '40대', from: 40, to: 49 },
   FIFTIES: { name: '50대', from: 50, to: 59 },
   SIXTIES_OVER: { name: '60대 이상', from: 60, to: 200 },
+};
+
+export const SexLabelRecord: Record<Sexes, string> = {
+  FEMALE: '여성',
+  MALE: '남성',
 };
 
 export const RegionLabelRecord: Record<Regions, string> = {

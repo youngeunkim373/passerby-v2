@@ -7,7 +7,10 @@ export enum Ages {
   SIXTIES_OVER = 'SIXTIES_OVER',
 };
 
-export type Sexes = 'MALE' | 'FEMALE';
+export enum Sexes {
+  FEMALE = 'FEMALE',
+  MALE = 'MALE',
+};
 
 export enum Regions {
   SEOUL = 'SEOUL',
