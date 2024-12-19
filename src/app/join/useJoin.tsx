@@ -236,7 +236,7 @@ export const useJoin = () => {
     emailHelper,
     errors,
     formValidation,
-    formValues: { email, password, nickname, age, sex, region,passwordCheck },
+    formValues: { email, password, nickname, age, sex, region, passwordCheck },
     emailVerification,
     valueStates: {
       email: getValidState('email', email),

@@ -1,4 +1,13 @@
-import { Category } from '@/constants/post';
+export enum Category {
+  JOB = 'JOB',
+  LOVE = 'LOVE',
+  FAMILY = 'FAMILY',
+  PARENTING = 'PARENTING',
+  RELATIONSHIP = 'RELATIONSHIP',
+  SCHOOL = 'SCHOOL',
+  CULTURE = 'CULTURE',
+  ETC = 'ETC',
+};
 
 export interface Post {
   objectID: string;

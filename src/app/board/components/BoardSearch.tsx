@@ -2,13 +2,14 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { Category } from '@/app/_data/posts.interface';
 import { BoardFilterDTO } from '@/app/board/board.interface';
 import { SearchButton } from '@/components/buttons/SearchButton';
 import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
-import { FormSelect } from '@/components/form/select/FormSelect';
 import { Input } from '@/components/form/Input';
-import { Category, CategoryLabelRecord } from '@/constants/post';
+import { FormSelect } from '@/components/form/select/FormSelect';
+import { CategoryLabelRecord } from '@/constants/label';
 import { PaginationSet } from '@/hooks/usePagination';
 
 interface Props {

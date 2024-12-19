@@ -8,7 +8,7 @@ import { Heart } from '@/assets/icons/Heart';
 import { Viewer } from '@/components/common/editor/Viewer';
 import { EmptyState } from '@/components/common/EmptyState';
 import { CardSkeleton } from '@/components/skeletons/CardSkeleton';
-import { CategoryLabelRecord } from '@/constants/post';
+import { CategoryLabelRecord } from '@/constants/label';
 import { getTimeAgo } from '@/utils/time';
 
 /* ------------------ List ------------------ */

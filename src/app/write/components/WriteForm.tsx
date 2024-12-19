@@ -10,9 +10,10 @@ import { Input, InputState } from '@/components/form/Input';
 import { FormSelect } from '@/components/form/select/FormSelect';
 import { SelectState } from '@/components/form/select/Select';
 import { LoginModal } from '@/components/modals/LoginModal';
-import { Category, CategoryLabelRecord } from '@/constants/post';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { useModalContext } from '@/contexts/ModalContext';
+import { CategoryLabelRecord } from '@/constants/label';
+import { Category } from '@/app/_data/posts.interface';
 
 export function WriteForm() {
   const { isLoggedIn } = useAuthContext();

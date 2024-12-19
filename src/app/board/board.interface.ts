@@ -1,7 +1,6 @@
 import { Comment } from '@/app/_data/comments.interface';
 import { Encouragement } from '@/app/_data/encouragement_history.interface';
-import { Post } from '@/app/_data/posts.interface';
-import { Category } from '@/constants/post';
+import { Category, Post } from '@/app/_data/posts.interface';
 import { Pagination } from '@/hooks/usePagination';
 
 /* -------------------- 게시글 리스트 조회 -------------------- */

@@ -1,7 +1,7 @@
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
 import { Heart } from '@/assets/icons/Heart';
-import { CategoryLabelRecord } from '@/constants/post';
+import { CategoryLabelRecord } from '@/constants/label';
 import { getTimeAgo } from '@/utils/time';
 
 export function PostTitle(props: Omit<Post, 'objectID' | 'content'>) {
