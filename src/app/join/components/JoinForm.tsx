@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 
-import { Regions } from '@/app/_data/users.interface';
+import { Regions, Sexes } from '@/app/_data/users.interface';
 import { useJoin } from '@/app/join/useJoin';
 import { Locker } from '@/assets/icons/Locker';
 import { User } from '@/assets/icons/User';
@@ -10,7 +10,7 @@ import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
 import { Input } from '@/components/form/Input';
 import { FormSelect } from '@/components/form/select/FormSelect';
-import { AgeRange, RegionLabelRecord } from '@/constants/label';
+import { AgeRange, RegionLabelRecord, SexLabelRecord } from '@/constants/label';
 
 export function JoinForm() {
   const { 
@@ -115,10 +115,11 @@ export function JoinForm() {
           placeholder={'성별을 선택해주세요'}
           allowClear={true}
           state={valueStates.sex}
-          options={[
-            { id: 'female', title: '여성' },
-            { id: 'male', title: '남성' },
-          ]}
+          options={
+            Object
+              .entries(Sexes)
+              .map(([ key, value ]) => ({ id: key, title: SexLabelRecord[value] }))
+          }
           {...register.sex} />
       ),
     },
