@@ -7,3 +7,13 @@ export class CustomError extends Error {
     this.statusCode = statusCode;
   }
 }
+
+export const handleAPIError = (err: unknown) => {
+  console.error('An error occurs: ', err);
+
+  if(err instanceof CustomError) {
+    throw new CustomError(err.statusCode, err.message);
+  }
+
+  throw err; 
+};

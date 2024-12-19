@@ -2,8 +2,8 @@
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { BoardFilterDTO, BoardSortBy, GetBoardResponseDTO } from '@/app/board/board.interface';
-import { getPosts } from '@/app/board/board.service';
+import { BoardFilterDTO, BoardSortBy, GetPostsResponseDTO } from '@/app/board/board.interface';
+import { getPostsAPI } from '@/app/board/board.service';
 import { Pagination, usePagination } from '@/hooks/usePagination';
 import { changeQueryStringToFilter } from '@/utils/url';
 
@@ -13,7 +13,7 @@ interface Props {
 
 export const useBoard = ({ sortBy }: Props) => {
   const [ isLoading, setLoading ] = useState<boolean | null>(null);
-  const [ list, setList ] = useState<GetBoardResponseDTO['items']>([]);
+  const [ list, setList ] = useState<GetPostsResponseDTO['items']>([]);
   const [ totalCount, setTotaleCount ] = useState<number>(0);
 
   // 게시글 fetch
@@ -21,7 +21,7 @@ export const useBoard = ({ sortBy }: Props) => {
     try {
       setLoading(true);
 
-      const res = await getPosts({ pagination, sortBy }); 
+      const res = await getPostsAPI({ pagination, sortBy }); 
 
       setTotaleCount(res.totalCount);
       setList(res.items);  

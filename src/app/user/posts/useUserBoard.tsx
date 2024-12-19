@@ -4,8 +4,8 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { Post } from '@/app/_data/posts.interface';
-import { BoardFilterDTO, BoardSortBy, GetBoardResponseDTO } from '@/app/board/board.interface';
-import { getPosts } from '@/app/board/board.service';
+import { BoardFilterDTO, BoardSortBy, GetPostsResponseDTO } from '@/app/board/board.interface';
+import { getPostsAPI } from '@/app/board/board.service';
 import { removePost } from '@/app/write/write.service';
 import { ErrorModal } from '@/components/modals/ErrorModal';
 import { LoginModal } from '@/components/modals/LoginModal';
@@ -24,7 +24,7 @@ export const useUserBoard = ({ isLoggedIn, userEmail }: Props) => {
 
   const [ isDeleteLoading, setDeleteLoading ] = useState<boolean>(false);
   const [ isFetchLoading, setFetchLoading ] = useState<boolean>(false);
-  const [ list, setList ] = useState<GetBoardResponseDTO['items']>([]);
+  const [ list, setList ] = useState<GetPostsResponseDTO['items']>([]);
   const [ totalCount, setTotaleCount ] = useState<number>(0);
 
   // 게시글 fetch
@@ -32,7 +32,7 @@ export const useUserBoard = ({ isLoggedIn, userEmail }: Props) => {
     try {
       setFetchLoading(true);
 
-      const res = await getPosts({ 
+      const res = await getPostsAPI({ 
         pagination, 
         sortBy: BoardSortBy.POSTEDAT, 
         userEmail,
