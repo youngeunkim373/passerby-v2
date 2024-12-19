@@ -2,10 +2,10 @@
 import { SubmitHandler } from 'react-hook-form';
 
 import { JoinRequestDTO, SendVerificationEmailDTO } from '@/app/join/join.interface';
-import { CustomError } from '@/utils/error';
+import { CustomError, handleAPIError } from '@/utils/error';
 
 /* -------------------- 회원가입 -------------------- */ 
-export const join: SubmitHandler<JoinRequestDTO> = async (body) => { 
+export const joinAPI: SubmitHandler<JoinRequestDTO> = async (body): Promise<void> => { 
   try {
     const res = await fetch('/api/join', {
       method: 'POST',
@@ -21,18 +21,12 @@ export const join: SubmitHandler<JoinRequestDTO> = async (body) => {
 
     return response;
   } catch (err) {
-    console.error('An error occurs: ', err);
-
-    if(err instanceof CustomError) {
-      throw new CustomError(err.statusCode, err.message);
-    }
-
-    throw err; 
+    return handleAPIError(err);
   }
 };
 
 /* -------------------- 이메일 본인인증 메일 전송 -------------------- */ 
-export const sendVerificationEmail = async (body: SendVerificationEmailDTO) => {
+export const sendVerificationEmailAPI = async (body: SendVerificationEmailDTO): Promise<void> => {
   try {
     const res = await fetch('/api/join/verifyEmail', {
       method: 'POST',
@@ -48,13 +42,7 @@ export const sendVerificationEmail = async (body: SendVerificationEmailDTO) => {
 
     return response;
   } catch (err) {
-    console.error('An error occurs: ', err);
-
-    if(err instanceof CustomError) {
-      throw new CustomError(err.statusCode, err.message);
-    }
-
-    throw err; 
+    return handleAPIError(err);
   }
 };
 
