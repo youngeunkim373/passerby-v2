@@ -32,7 +32,7 @@ export enum Regions {
 type UserStatus = 'ACTIVE' | 'DELETED';
 
 export interface User {
-  id: string;
+  objectID: string;
   email: string;
   password: string;
   age: Ages; 

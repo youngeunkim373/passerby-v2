@@ -3,7 +3,7 @@ export enum EmailTemplateIds {
 }
 
 export interface SentEmailHistory {
-  id: string;
+  objectID: string;
   templateId: EmailTemplateIds;
   from: string;
   to: string;

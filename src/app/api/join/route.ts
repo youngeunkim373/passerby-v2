@@ -1,9 +1,8 @@
 import { addDoc, collection } from 'firebase/firestore';
 import firestore from 'firestore';
 import { NextResponse } from 'next/server';
-import { ulid } from 'ulid';
 
-import { User } from '@/app/_data/users.interface';
+import { User, UserStatus } from '@/app/_data/users.interface';
 import { getActiveUser } from '@/app/api/common/getActiveUser';
 import { CustomError } from '@/utils/error';
 
@@ -21,14 +20,13 @@ export async function POST(req: Request) {
     // 신규 유저 등록
     const now = new Date().valueOf();
 
-    const newData: User = {
-      id: ulid(),
+    const newData: Omit<User, 'objectID'> = {
       email,
       password,
       age,
       sex,
       region,
-      status: 'ACTIVE',
+      status: UserStatus.ACTIVE,
       createdAt: now,
       updatedAt: now,
     };
