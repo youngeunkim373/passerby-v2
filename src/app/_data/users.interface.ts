@@ -29,7 +29,10 @@ export enum Regions {
   CHUNGCHEONG = 'CHUNGCHEONG',
 };
 
-type UserStatus = 'ACTIVE' | 'DELETED';
+export enum UserStatus {
+  ACTIVE = 'ACTIVE',
+  DELETED = 'DELETED',
+};
 
 export interface User {
   objectID: string;
