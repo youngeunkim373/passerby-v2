@@ -2,7 +2,7 @@ import { doc, getDoc, increment, updateDoc } from 'firebase/firestore';
 import firestore from 'firestore';
 import { NextResponse } from 'next/server';
 
-import { CustomError } from '@/utils/error';
+import { CustomError, handleServerError } from '@/utils/error';
 
 export async function GET(req: Request) {
   try {
@@ -24,20 +24,10 @@ export async function GET(req: Request) {
       status: 200, 
       data: postSnapshot.data(),
     });
-  } catch (e: unknown) {
-    // TODO 에러 핸들링 처리 디테일하게 하기
-    console.log(e);
-
-    if(e instanceof CustomError) {
-      return NextResponse.json({
-        message: e.message, 
-        status: e.statusCode,
-      });
-    }
-
-    return NextResponse.json(
-      { message: '게시글 로드 중 오류가 발생했습니다.' }, 
-      { status: 500 },
+  } catch (err: unknown) {
+    return handleServerError(
+      err,
+      '게시글 로드 중 오류가 발생했습니다.',
     );
   }
 }
@@ -55,20 +45,10 @@ export async function PUT(req: Request) {
     updateDoc(postRef, { views: increment(1) });
   
     return NextResponse.json({ status: 200 });
-  } catch (e: unknown) {
-    // TODO 에러 핸들링 처리 디테일하게 하기
-    console.log(e);
-
-    if(e instanceof CustomError) {
-      return NextResponse.json({
-        message: e.message, 
-        status: e.statusCode,
-      });
-    }
-
-    return NextResponse.json(
-      { message: '게시글 조회수 업데이트 중 오류가 발생했습니다.' }, 
-      { status: 500 },
+  } catch (err: unknown) {
+    return handleServerError(
+      err,
+      '게시글 조회수 업데이트 중 오류가 발생했습니다.',
     );
   }
 }

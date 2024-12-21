@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 import { User, UserStatus } from '@/app/_data/users.interface';
 import { getActiveUser } from '@/app/api/common/getActiveUser';
-import { CustomError } from '@/utils/error';
+import { CustomError, handleServerError } from '@/utils/error';
 
 export async function POST(req: Request) {
   try {
@@ -31,31 +31,16 @@ export async function POST(req: Request) {
       updatedAt: now,
     };
 
-    try {
-      await addDoc(
-        collection(firestore, 'users'),
-        newData,
-      );
-    } catch (error) {
-      console.error('Firestore에 저장 중 오류가 발생했습니다:', error);
-      throw new CustomError(500, '회원가입 정보가 올바르지 않습니다.');
-    }
+    await addDoc(
+      collection(firestore, 'users'),
+      newData,
+    );
 
     return NextResponse.json({ status: 200 });
-  } catch (e: unknown) {
-    // TODO 에러 핸들링 처리 디테일하게 하기
-    console.log(e);
-
-    if(e instanceof CustomError) {
-      return NextResponse.json({
-        message: e.message, 
-        status: e.statusCode,
-      });
-    }
-
-    return NextResponse.json(
-      { message: '회원가입 중 오류가 발생했습니다.' }, 
-      { status: 500 },
+  } catch (err: unknown) {
+    return handleServerError(
+      err,
+      '회원가입 중 오류가 발생했습니다.',
     );
   }
 }

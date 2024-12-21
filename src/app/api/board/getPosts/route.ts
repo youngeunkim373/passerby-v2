@@ -2,7 +2,7 @@ import { searchClient } from 'algolia';
 import { NextResponse } from 'next/server';
 
 import { BoardSortBy } from '@/app/board/board.interface';
-import { CustomError } from '@/utils/error';
+import { CustomError, handleServerError } from '@/utils/error';
 
 export async function GET(req: Request) {
   try {
@@ -43,20 +43,10 @@ export async function GET(req: Request) {
       status: 200, 
       data: { items: results.hits, totalCount: results.nbHits }
     });
-  } catch (e: unknown) {
-    // TODO 에러 핸들링 처리 디테일하게 하기
-    console.log(e);
-
-    if(e instanceof CustomError) {
-      return NextResponse.json({
-        message: e.message, 
-        status: e.statusCode,
-      });
-    }
-
-    return NextResponse.json(
-      { message: '게시글 로드 중 오류가 발생했습니다.' }, 
-      { status: 500 },
+  } catch (err: unknown) {
+    return handleServerError(
+      err,
+      '게시글 목록 로드 중 오류가 발생했습니다.',
     );
   }
 }

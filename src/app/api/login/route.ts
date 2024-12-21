@@ -3,7 +3,7 @@ import firestore from 'firestore';
 import { NextResponse } from 'next/server';
 
 import { LoginHistory } from '@/app/_data/login_history.interface';
-import { CustomError } from '@/utils/error';
+import { CustomError, handleServerError } from '@/utils/error';
 import { generateAccessToken, generateRefreshToken } from '@/utils/token';
 
 export async function POST(req: Request) {
@@ -44,34 +44,19 @@ export async function POST(req: Request) {
       updatedAt: now,
     };
 
-    try {
-      await addDoc(
-        collection(firestore, 'login_history'),
-        newLoginHistory,
-      );
-    } catch (error) {
-      console.error('Firestore에 저장 중 오류가 발생했습니다:', error);
-      throw new CustomError(500, '로그인 이력 저장 중 오류가 발생했습니다.');
-    }
+    await addDoc(
+      collection(firestore, 'login_history'),
+      newLoginHistory,
+    );
 
     return NextResponse.json({ 
       status: 200,
       data: { accessToken, refreshToken },
     });
-  } catch (e: unknown) {
-    // TODO 에러 핸들링 처리 디테일하게 하기
-    console.log(e);
-
-    if(e instanceof CustomError) {
-      return NextResponse.json({
-        message: e.message, 
-        status: e.statusCode,
-      });
-    }
-
-    return NextResponse.json(
-      { message: '로그인 중 오류가 발생했습니다.' }, 
-      { status: 500 },
+  } catch (err: unknown) {
+    return handleServerError(
+      err,
+      '로그인 중 오류가 발생했습니다.',
     );
   }
 }
