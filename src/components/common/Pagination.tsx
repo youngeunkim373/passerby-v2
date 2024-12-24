@@ -5,6 +5,7 @@ import { PaginationSet } from '@/hooks/usePagination';
 interface Props<TFilter> {
   pagination: PaginationSet<TFilter>['pagination'];
   totalPage: number;
+  className?: string;
   onPagination: PaginationSet<TFilter>['onPagination'];
 }
 
@@ -14,14 +15,19 @@ const calculateStartPage = (currentPage: number, totalPage: number) => {
   return currentPage - 2;
 };
 
-export function Pagination<TFilter>({ pagination, totalPage, onPagination }: Props<TFilter>) {
+export function Pagination<TFilter>({ 
+  pagination, 
+  totalPage, 
+  className, 
+  onPagination,
+}: Props<TFilter>) {
   const startPage = calculateStartPage(pagination.page, totalPage);
   const pageCount = Math.min(5, totalPage);
 
   if(totalPage === 1) return <></>;
 
   return (
-    <nav className={style.wrapper}>
+    <nav className={`${style.wrapper} ${className}`}>
       {/* Previous Button */}
       {pagination.page > 1 && (
         <Button
