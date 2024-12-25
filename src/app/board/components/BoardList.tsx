@@ -63,7 +63,7 @@ export function BoardList({ items, isLoading = false }: Props) {
       <div 
         className={`
           ${listStyle.content.wrapper}
-          ${(isListLoaded && items.length === 0) ? 'visible h-auto' : 'invisible h-0'}
+          ${(isListLoaded && items.length === 0) ? 'block' : 'hidden'}
            my-auto
         `}>
         <EmptyState

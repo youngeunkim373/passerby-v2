@@ -4,12 +4,14 @@ import { NextResponse } from 'next/server';
 
 import { Post } from '@/app/_data/posts.interface';
 import { handleServerError } from '@/utils/error';
+import { formatDate } from '@/utils/time';
 
 export async function POST(req: Request) {
   try {
     const { title, category, content, userEmail, imageUrl } = await req.json();
 
-    const now = new Date().valueOf();
+    const date = new Date();
+    const now = date.valueOf();
 
     const newPost: Omit<Post, 'objectID'> = {
       title,
@@ -19,6 +21,7 @@ export async function POST(req: Request) {
       views: 0,
       hits: 0,
       postedAt: now,
+      postedDate: formatDate(date),
       updatedAt: now,
       userEmail,
     };

@@ -33,7 +33,8 @@ export function Board({
       <BoardList 
         isLoading={isLoading} 
         items={list} />
-      <Pagination 
+      <Pagination
+        className={isLoading ? 'hidden' : 'block'}
         pagination={pagination} 
         totalPage={totalPage}
         onPagination={onPagination} />

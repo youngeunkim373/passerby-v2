@@ -18,6 +18,7 @@ export interface Post {
   views: number;
   hits: number;
   postedAt: number;
+  postedDate: string;
   updatedAt: number;
   userEmail: string;
 }
