@@ -1,7 +1,7 @@
 import { Close } from '@/assets/icons/Close';
 import { ChangeEvent, forwardRef, InputHTMLAttributes, ReactNode, useState } from 'react';
 
-type InputSize = 'small' | 'default' | 'large';
+type InputSize = 'small' | 'default' | 'large' | 'extraLarge';
 export type InputState = 'normal' | 'error' | 'success';
 
 export interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix'| 'size'> {
@@ -93,6 +93,7 @@ const inputConfig = {
     small: 'h-[32px] text-sm',
     default: 'h-[44px] text-base',
     large: 'h-[56px] text-lg',
+    extraLarge: 'h-[64px] text-xl',
   },
   state: {
     normal: 'ring-gray-300 focus-within:ring-main focus-within:ring-1',
@@ -115,7 +116,7 @@ const style = {
     bg-transparent
     text-gray-900 truncate
     w-full 
-    placeholder:text-gray-400 
+    font-light placeholder:text-gray-400
     read-only:cursor-not-allowed
   `,
   fixCommon: `
