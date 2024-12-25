@@ -49,6 +49,7 @@ export function CategoryBoardSection() {
       <div className={style.tabs.wrapper}>
         {categoryWithAll.map((category) => (
           <Button 
+            key={category}
             className={`
               ${style.tabs.button}
               ${currentCategory === category 
