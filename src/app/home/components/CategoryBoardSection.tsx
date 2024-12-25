@@ -24,8 +24,17 @@ export function CategoryBoardSection() {
   const handleClickTab = (category: CategoryWithAll) => {
     setCurrentCategory(category);
 
-    if (category !== 'ALL') onPagination({ filter: { category } }, { scroll: false });
-    else onPagination({ filter: { category: null } });
+    if (category !== 'ALL') {
+      onPagination(
+        { filter: { category } }, 
+        { scroll: false },
+      );
+    } else {
+      onPagination(
+        { filter: { category: null } }, 
+        { scroll: false },
+      );
+    }
   };
 
   const handleNavigate = () => {
