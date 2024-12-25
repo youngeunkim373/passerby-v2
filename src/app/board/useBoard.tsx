@@ -9,9 +9,10 @@ import { changeQueryStringToFilter } from '@/utils/url';
 
 interface Props {
   sortBy: BoardSortBy;
+  initialPagination?: Pagination<BoardFilterDTO>;
 }
 
-export const useBoard = ({ sortBy }: Props) => {
+export const useBoard = ({ sortBy, initialPagination }: Props) => {
   const [ isLoading, setLoading ] = useState<boolean | null>(null);
   const [ list, setList ] = useState<GetPostsResponseDTO['items']>([]);
   const [ totalCount, setTotaleCount ] = useState<number>(0);
@@ -38,7 +39,7 @@ export const useBoard = ({ sortBy }: Props) => {
   const defaultPagination = changeQueryStringToFilter<BoardFilterDTO>(searchParams);
 
   const { pagination, onPagination } = usePagination<BoardFilterDTO>({
-    defaultPagination,
+    defaultPagination: initialPagination ?? defaultPagination,
     afterPagination: getBoardList,
   });
 
