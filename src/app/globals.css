@@ -58,13 +58,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: 'NanumGothic', sans-serif;
-}
-
 input:focus {
   outline: none;
 }
