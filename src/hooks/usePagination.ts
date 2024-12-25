@@ -1,3 +1,4 @@
+import { NavigateOptions } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -17,7 +18,10 @@ interface PaginationOptions<TFilter> {
 
 export interface PaginationSet<TFilter> {
   pagination: Pagination<TFilter>;
-  onPagination: (newPagination: Partial<Pagination<TFilter>>) => void;
+  onPagination: (
+    newPagination: Partial<Pagination<TFilter>>,
+    navigatoinOptions?: NavigateOptions,
+  ) => void;
   resetPagination: () => void;
 }
 
@@ -35,7 +39,10 @@ export const usePagination = <TFilter>({
 
   const [ pagination, setPagination ] = useState<Pagination<TFilter>>(defaultPagination);
 
-  const onPagination = async (newPagination: Partial<Pagination<TFilter>>) => {
+  const onPagination = async (
+    newPagination: Partial<Pagination<TFilter>>,
+    navigatoinOptions?: NavigateOptions,
+  ) => {
     const mergedPagination: Pagination<TFilter> = {
       page: newPagination.page ?? pagination.page,
       size: newPagination.size ?? pagination.size,
@@ -53,7 +60,10 @@ export const usePagination = <TFilter>({
         newQuery += '&' + changeFilterToQueryString(mergedPagination.filter);
       }
   
-      router.replace(`${pathname}?${newQuery}`, { scroll: true });
+      router.replace(
+        `${pathname}?${newQuery}`, 
+        { scroll: true, ...navigatoinOptions },
+      );
     }
 
     // pagination state 변경 및 data fetch

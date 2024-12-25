@@ -1,4 +1,6 @@
+'use client';
 import { BoardLinkSection } from '@/app/home/components/BoardLinkSection';
+import { CategoryBoardSection } from '@/app/home/components/CategoryBoardSection';
 import { MainBanner } from '@/app/home/components/MainBanner';
 import { SearchSection } from '@/app/home/components/SearchSection';
 
@@ -9,6 +11,7 @@ export function HomeDetail() {
       <MainBanner />
       <SearchSection />
       <BoardLinkSection />
+      <CategoryBoardSection />
     </div>
   );
 }
