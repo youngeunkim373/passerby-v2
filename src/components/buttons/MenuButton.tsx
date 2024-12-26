@@ -11,10 +11,10 @@ export function MenuButton({ title, onClick }: MenuButtonProps) {
     <Button 
       variant={'link'} 
       color={'black'}
-      className={'flex items-center font-semibold px-0'}
+      className={'w-fit flex items-center font-semibold'}
       onClick={onClick}>
       {title}
-      <ChevronDown className={'size-3.5 ml-1 mt-0.5'} />
+      <ChevronDown className={'!size-4 ml-1.5'} />
     </Button>
   );
 }
