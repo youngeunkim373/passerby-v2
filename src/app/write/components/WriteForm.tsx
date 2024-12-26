@@ -14,6 +14,7 @@ import { useAuthContext } from '@/contexts/AuthContext';
 import { useModalContext } from '@/contexts/ModalContext';
 import { CategoryLabelRecord } from '@/constants/label';
 import { Category } from '@/app/_data/posts.interface';
+import { FormInput } from '@/components/form/select/FormInput';
 
 export function WriteForm() {
   const { isLoggedIn } = useAuthContext();
@@ -36,7 +37,8 @@ export function WriteForm() {
       label: '제목',
       isRequired: true,
       children: (
-        <Input
+        <FormInput
+          control={control}
           placeholder={'제목을 입력해주세요'}
           allowClear={false}
           state={fieldState.title as InputState}
