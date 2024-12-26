@@ -24,3 +24,9 @@
   font-family: 'NanumGothic';
   font-size: 16px !important;
 }
+
+.toastui-editor {
+  max-height: 500px;
+  overflow-y: auto;
+  overscroll-behavior: none;
+}
