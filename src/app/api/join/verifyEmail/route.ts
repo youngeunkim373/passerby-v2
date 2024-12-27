@@ -38,7 +38,7 @@ export async function POST(req: Request) {
 
     // 본인인증 이메일 전송
     const emailTemplate = joinEmailVerificationTemplate({ verificationUrl });
-    await sendEmail({ to: [ email ],  ...emailTemplate });
+    await sendEmail({ to: [ email ], ...emailTemplate });
 
     // 메일 전송 성공 이력 데이터 저장
     await saveSendEmailHistory({
@@ -49,9 +49,9 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ status: 200 });
-  } catch (e: unknown) {
+  } catch (err: unknown) {
     // TODO 에러 핸들링 처리 디테일하게 하기
-    console.log(e);
+    console.log(err);
 
     // 메일 전송 실패 이력 데이터 저장
     await saveSendEmailHistory({
@@ -60,10 +60,17 @@ export async function POST(req: Request) {
       result: 'FAIL',
     });
 
-    if(e instanceof CustomError) {
+    if (err instanceof SyntaxError) {
       return NextResponse.json({
-        message: e.message, 
-        status: e.statusCode,
+        message: '잘못된 요청 형식입니다.',
+        status: 400,
+      });
+    }
+
+    if(err instanceof CustomError) {
+      return NextResponse.json({
+        message: err.message, 
+        status: err.statusCode,
       });
     }
 
