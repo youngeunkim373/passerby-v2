@@ -138,7 +138,9 @@ export const useJoin = () => {
       const values = getValues();
 
       setEmailVerification('isSending');
-      sendVerificationEmailAPI(values);
+
+      await sendVerificationEmailAPI(values);
+
       setEmailVerification('sent');
     } catch(err) {
       setEmailVerification('unsent');
