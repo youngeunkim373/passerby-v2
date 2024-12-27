@@ -88,6 +88,7 @@ export const Editor = ({ storageDirectory, content, onChange, ...props }: Props)
         ref={editorRef}
         onChange={handleChange}
         hooks={{ addImageBlobHook: handleUploadImage }}
+        height={'auto'}
         {...props} />
       
       {isImageUploading && (
