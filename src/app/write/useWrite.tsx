@@ -121,9 +121,13 @@ export const useWrite = () => {
 
       setLoading(true);
 
-      const res = await getPostAPI(postId);
+      const res = await getPostAPI(postId as string);
 
       setPost(res);
+      reset({
+        title: res.title,
+        category: res.category,
+      });
     } catch (err) {
       console.error(err);
     } finally {
@@ -132,18 +136,9 @@ export const useWrite = () => {
   };
 
   useEffect(() => {
-    if(postId) getPostDetail();
+    if(!postId) return;
+    getPostDetail();
   }, [ postId ]);
-
-  // post state 업데이트 타이밍 이슈로 인해 post가 바뀌어야 만 reset 처리함
-  useEffect(() => {
-    if (post && !isLoading) {
-      reset({
-        title: post.title,
-        category: post.category,
-      });
-    }
-  }, [ post, isLoading ]);
 
   return {
     control,
