@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
@@ -20,7 +20,7 @@ interface Props {
 export function BoardList({ items, isLoading = false }: Props) {
   const [ imageLoadedState, setImageLoadedState ] = useState<boolean[]>([]);
 
-  const postIds = useMemo(() => items.map((item) => item.objectID), [ items ]);
+  const postIds = items.map((item) => item.objectID);
   
   const allImagesLoaded = imageLoadedState.every(Boolean);
   const isListLoaded = isLoading === false && allImagesLoaded;
@@ -34,7 +34,7 @@ export function BoardList({ items, isLoading = false }: Props) {
   useEffect(() => {
     const newImageState = items.map((item) => !item.imageUrl);  
     setImageLoadedState(newImageState);
-  }, [ postIds ]);
+  }, [ postIds.toString() ]);
 
   return (
     <ul className={listStyle.wrapper}>
@@ -101,7 +101,8 @@ function Item({ item, onImageLoad }: ItemProps) {
           className={itemStyle.thumbnail} 
           src={item.imageUrl} 
           alt={item.title}
-          onLoadingComplete={onImageLoad} />
+          onLoadingComplete={onImageLoad}
+          onError={onImageLoad} />
       )}
 
       <div className={itemStyle.content.wrapper}>
