@@ -20,7 +20,7 @@ interface Props {
 export function BoardList({ items, isLoading = false }: Props) {
   const [ imageLoadedState, setImageLoadedState ] = useState<boolean[]>([]);
 
-  const postIds = items.map((item) => item.objectID);
+  const postIds = JSON.stringify(items.map((item) => item.objectID));
   
   const allImagesLoaded = imageLoadedState.every(Boolean);
   const isListLoaded = isLoading === false && allImagesLoaded;
@@ -32,9 +32,11 @@ export function BoardList({ items, isLoading = false }: Props) {
   };
 
   useEffect(() => {
-    const newImageState = items.map((item) => !item.imageUrl);  
-    setImageLoadedState(newImageState);
-  }, [ postIds.toString() ]);
+    if (imageLoadedState.length === 0) {
+      const newImageState = items.map((item) => !item.imageUrl); 
+      setImageLoadedState(newImageState);
+    }
+  }, [ postIds ]);
 
   return (
     <ul className={listStyle.wrapper}>
