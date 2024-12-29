@@ -1,5 +1,6 @@
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@/style/toast-ui.css';
+import '@/style/toast-ui-editor.css';
 
 import { Editor, EditorProps } from '@toast-ui/react-editor';
 import { ForwardedRef } from 'react';
