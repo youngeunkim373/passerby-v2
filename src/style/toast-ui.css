@@ -21,12 +21,14 @@
 }
 
 .toastui-editor-contents {
+  height: 100%;
+  min-height: 200px;
+  max-height: 500px;
   font-family: 'NanumGothic';
   font-size: 16px !important;
 }
 
 .toastui-editor {
-  max-height: 500px;
   overflow-y: auto;
   overscroll-behavior: none;
 }
