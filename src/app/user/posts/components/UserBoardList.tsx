@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Post } from '@/app/_data/posts.interface';
 import { Eye } from '@/assets/icons/Eye';
@@ -22,41 +22,61 @@ interface Props {
 }
 
 export function UserBoardList({ isLoading = false, items, deletePost }: Props) {
-  const [ imagesLoaded, setImagesLoaded ] = useState(0);
+  const [ imageLoadedState, setImageLoadedState ] = useState<boolean[]>([]);
 
-  const imageCount = items.filter((item) => item.imageUrl).length;
-  const allImagesLoaded = imagesLoaded === imageCount;
+  const postIds = JSON.stringify(items.map((item) => item.objectID));
+  
+  const allImagesLoaded = imageLoadedState.every(Boolean);
+  const isListLoaded = isLoading === false && allImagesLoaded;
 
-  const handleImageLoad = () => {
-    setImagesLoaded((prev) => prev + 1);
+  const handleImageLoad = (idx: number) => {
+    setImageLoadedState((prev) =>
+      prev.map((loaded, i) => (i === idx ? true : loaded))
+    );
   };
+
+  useEffect(() => {
+    if (imageLoadedState.length === 0) {
+      const newImageState = items.map((item) => !item.imageUrl); 
+      setImageLoadedState(newImageState);
+    }
+  }, [ postIds ]);
 
   return (
     <ul className={listStyle.wrapper}>
       {/* 로딩 화면 */}
-      {(isLoading || !allImagesLoaded) && (
+      {!isListLoaded && (
         [ ...Array(3) ].map((_, idx) => <CardSkeleton key={idx} />)
       )}
 
       {/* 데이터 있을 때 화면 */}
-      {(isLoading === false && items.length > 0) && (
-        items.map((item) => (
+      {/* onLoad 이벤트로 인해 조건부 렌더링 X */}
+      <div 
+        className={`
+          ${listStyle.content.wrapper}
+          ${(isListLoaded && items.length > 0) ? 'visible h-auto' : 'invisible h-0'}
+          divide-y divide-gray-100
+        `}>
+        {items.map((item, idx) => (
           <Item 
             key={item.objectID} 
             item={item} 
-            allImagesLoaded={allImagesLoaded}
             deletePost={deletePost}
-            onImageLoad={handleImageLoad} />
-        ))
-      )}
+            onImageLoad={() => handleImageLoad(idx)} />
+        ))}
+      </div>
+
       {/* 데이터 없을 때 화면 */}
-      {(isLoading === false && items.length === 0) && (
-        <div className={listStyle.content.wrapper}>
-          <EmptyState
-            title={'검색 결과가 없습니다'}
-            description={<>검색어가 바르게 입력되었는지<br />확인해 보세요</>} />
-        </div>
-      )}
+      <div 
+        className={`
+          ${listStyle.content.wrapper}
+          ${(isListLoaded && items.length === 0) ? 'block' : 'hidden'}
+           my-auto
+        `}>
+        <EmptyState
+          title={'검색 결과가 없습니다'}
+          description={<>검색어가 바르게 입력되었는지<br />확인해 보세요</>} />
+      </div>
     </ul>
   );
 }
@@ -70,13 +90,12 @@ const listStyle = {
 
 /* ------------------ Item ------------------ */
 interface ItemProps {
-  allImagesLoaded: boolean;
   item: Post;
   deletePost: (postId: Post['objectID']) => void;
   onImageLoad: () => void;
 }
 
-function Item({ allImagesLoaded, item, deletePost, onImageLoad }: ItemProps) {
+function Item({ item, deletePost, onImageLoad }: ItemProps) {
   const router = useRouter();
 
   const editPost = (postId: Post['objectID']) => {
@@ -86,12 +105,7 @@ function Item({ allImagesLoaded, item, deletePost, onImageLoad }: ItemProps) {
   const textContent = item.content.replace(/<img[^>]*>/g, '').replace(/<\/?[^>]+(>|$)/g, '');
 
   return (
-    <li 
-      key={item.objectID} 
-      className={`
-        ${itemStyle.wrapper}
-        ${allImagesLoaded ? 'visible' : 'invisible'}
-      `}>
+    <li className={itemStyle.wrapper}>
       <div className={itemStyle.content.wrapper}>
         {item.imageUrl && (
           <Image 
@@ -100,7 +114,8 @@ function Item({ allImagesLoaded, item, deletePost, onImageLoad }: ItemProps) {
             className={itemStyle.content.thumbnail} 
             src={item.imageUrl} 
             alt={item.title}
-            onLoadingComplete={onImageLoad} />
+            onLoadingComplete={onImageLoad}
+            onError={onImageLoad} />
         )}
 
         <div 
