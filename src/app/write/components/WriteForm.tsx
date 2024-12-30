@@ -7,7 +7,8 @@ import { Button } from '@/components/buttons/Button';
 import { Editor } from '@/components/common/editor/Editor';
 import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
-import { Input, InputState } from '@/components/form/input/Input';
+import { FormInput } from '@/components/form/input/FormInput';
+import { InputState } from '@/components/form/input/Input';
 import { FormSelect } from '@/components/form/select/FormSelect';
 import { SelectState } from '@/components/form/select/Select';
 import { LoginModal } from '@/components/modals/LoginModal';
@@ -36,7 +37,8 @@ export function WriteForm() {
       label: '제목',
       isRequired: true,
       children: (
-        <Input
+        <FormInput
+          control={control}
           placeholder={'제목을 입력해주세요'}
           allowClear={false}
           state={fieldState.title as InputState}
