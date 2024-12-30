@@ -111,12 +111,15 @@ function Item({ item, onImageLoad }: ItemProps) {
         <div 
           className={itemStyle.content.textArea.wrapper}
           onClick={() => router.push(`/board/${item.objectID}`)}>
-          <p className={itemStyle.content.textArea.title}>
-            <span className={itemStyle.content.textArea.category}>
+          <div className={itemStyle.content.textArea.titleArea.wrapper}>
+            <span className={itemStyle.content.textArea.titleArea.category}>
               [{item.category.map((ele) => CategoryLabelRecord[ele]).join(', ')}]
             </span>
-            {item.title}
-          </p>
+            <span className={itemStyle.content.textArea.titleArea.title}>
+              {item.title}
+            </span>
+          </div>
+
           <div className={itemStyle.content.textArea.description}>
             <Viewer 
               applyLoading={false}
@@ -151,8 +154,11 @@ const itemStyle = {
     wrapper: 'w-full flex flex-col justify-between gap-x-6 sm:flex-row cursor-pointer',
     textArea: {
       wrapper: 'flex-auto',
-      title: 'font-semibold text-gray-900 ellipsis-1',
-      category: 'font-normal text-gray-500 text-[12px] mr-2',
+      titleArea: {
+        wrapper: 'flex items-center gap-3',
+        title: 'font-semibold text-gray-900 ellipsis-1',
+        category: 'text-gray-500 text-[12px] text-nowrap',
+      },
       description: `
         text-xs/5 text-gray-500 break-all
         text-ellipsis overflow-hidden break-words line-clamp-1 sm:line-clamp-4
