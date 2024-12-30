@@ -35,6 +35,7 @@ export const useJoin = () => {
 
   const {
     clearErrors,
+    getValues,
     handleSubmit,
     register,
     reset,
@@ -97,7 +98,9 @@ export const useJoin = () => {
 
   const joinUser = async () => {
     try {
-      await joinAPI({ email, password, nickname, age, sex, region });
+      const { email, password, age, sex, region } = getValues();
+      
+      await joinAPI({ email, password, age, sex, region  });
       
       show(
         <SuccessModal 
@@ -131,8 +134,10 @@ export const useJoin = () => {
 
   const sendVerificationEmail = async () => {
     try {
+      const values = getValues();
+
       setEmailVerification('isSending');
-      await sendVerificationEmailAPI({ email, password, passwordCheck, nickname, age, sex, region });
+      sendVerificationEmailAPI(values);
       setEmailVerification('sent');
     } catch(err) {
       setEmailVerification('unsent');
