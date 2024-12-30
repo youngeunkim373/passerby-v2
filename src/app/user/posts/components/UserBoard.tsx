@@ -24,6 +24,10 @@ export function UserBoard() {
     onPagination,
   } = useUserBoard({ isLoggedIn, userEmail: loggedInUser });
 
+  const isLoaded = !!isLoggedIn 
+    && !isFetchLoading 
+    && !isDeleteLoading;
+
   return (
     <div className={style.wrapper}>
       <PageTitle 
@@ -35,7 +39,7 @@ export function UserBoard() {
         onPagination={onPagination}
         userEmail={loggedInUser} />
       <UserBoardList 
-        isLoading={!isLoggedIn || !!isFetchLoading || !!isDeleteLoading} 
+        isLoading={!isLoaded} 
         items={list}
         deletePost={deletePost} />
       <Pagination 
