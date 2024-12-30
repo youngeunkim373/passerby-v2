@@ -122,12 +122,15 @@ function Item({ item, deletePost, onImageLoad }: ItemProps) {
           className={itemStyle.content.text.wrapper}
           onClick={() => router.push(`/board/${item.objectID}`)}>
           <div>
-            <p className={itemStyle.content.text.body.title}>
-              <span className={itemStyle.content.text.body.category}>
-              [{item.category.map((ele) => CategoryLabelRecord[ele]).join(', ')}]
+            <div className={itemStyle.content.text.body.textArea.wrapper}>
+              <span className={itemStyle.content.text.body.textArea.category}>
+                [{item.category.map((ele) => CategoryLabelRecord[ele]).join(', ')}]
               </span>
-              {item.title}
-            </p>
+              <span className={itemStyle.content.text.body.textArea.title}>
+                {item.title}
+              </span>
+            </div>
+
             <div className={itemStyle.content.text.body.description}>
               <Viewer 
                 applyLoading={false}
@@ -182,8 +185,11 @@ const itemStyle = {
     text: {
       wrapper: 'w-full flex flex-col justify-between gap-x-6 sm:flex-row cursor-pointer',
       body: {
-        category: 'font-normal text-gray-500 text-[12px] mr-2',
-        title: 'font-semibold text-gray-900 ellipsis-1',
+        textArea: {
+          wrapper: 'flex items-center gap-3',
+          category: 'font-normal text-gray-500 text-[12px] text-nowrap',
+          title: 'font-semibold text-gray-900 ellipsis-1',
+        },
         description: `
           text-xs/5 text-gray-500 break-all
           text-ellipsis overflow-hidden break-words line-clamp-1 sm:line-clamp-4
