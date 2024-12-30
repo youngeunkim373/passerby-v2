@@ -3,10 +3,10 @@ import { FieldValues, useForm } from 'react-hook-form';
 
 import { Form } from '@/components/form/Form';
 import { FormItem } from '@/components/form/FormItem';
-import { Input } from '@/components/form/Input';
+import { Input } from '@/components/form/input/Input';
 import { FormSelect } from '@/components/form/select/FormSelect';
-import { options } from '@/stories/constants';
 import { TextArea } from '@/components/form/TextArea';
+import { options } from '@/stories/constants';
 
 export default {
   component: FormItem,

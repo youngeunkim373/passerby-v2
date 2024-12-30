@@ -7,7 +7,7 @@ import { joinAPI, sendVerificationEmailAPI } from '@/app/join/join.service';
 import { ExclamationMarkSolidCircle } from '@/assets/icons/ExclamationMark';
 import { GradationLoading } from '@/assets/icons/Loading';
 import { Button } from '@/components/buttons/Button';
-import { InputState } from '@/components/form/Input';
+import { InputState } from '@/components/form/input/Input';
 import { SelectState } from '@/components/form/select/Select';
 import { Modal } from '@/components/layout/Modal';
 import { ErrorModal } from '@/components/modals/ErrorModal';
