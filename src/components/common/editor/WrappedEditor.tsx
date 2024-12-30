@@ -1,6 +1,6 @@
 import '@toast-ui/editor/dist/toastui-editor.css';
-import '@/style/toast-ui.css';
-import '@/style/toast-ui-editor.css';
+import toastStyle from '@/style/toast-ui.module.css';
+import editorStyle from '@/style/toast-ui-editor.module.css';
 
 import { Editor, EditorProps } from '@toast-ui/react-editor';
 import { ForwardedRef } from 'react';
@@ -11,7 +11,7 @@ interface Props extends EditorProps {
 
 export default function WrappedEditor({ forwardedRef, ...props }: Props) {
   return (
-    <div className={'w-full'}>
+    <div className={`w-full ${toastStyle} ${editorStyle}`}>
       <Editor
         ref={forwardedRef}
         previewStyle={'tab'}
