@@ -16,12 +16,12 @@ import { getTimeAgo } from '@/utils/time';
 
 /* ------------------ List ------------------ */
 interface Props {
-  isLoading?: boolean | null;
   items: Post[];
+  isLoading?: boolean | null;
   deletePost: (postId: Post['objectID']) => void;
 }
 
-export function UserBoardList({ isLoading = false, items, deletePost }: Props) {
+export function UserBoardList({ items, isLoading = false, deletePost }: Props) {
   const [ imageLoadedState, setImageLoadedState ] = useState<boolean[]>([]);
 
   const postIds = JSON.stringify(items.map((item) => item.objectID));
@@ -84,7 +84,7 @@ export function UserBoardList({ isLoading = false, items, deletePost }: Props) {
 const listStyle = {
   wrapper: 'w-full flex flex-col justify-start items-center flex-grow divide-y divide-gray-100',
   content: { 
-    wrapper: 'w-full flex flex-col gap-2 justify-center items-center flex-grow',
+    wrapper: 'w-full flex flex-col gap-2 items-center flex-grow',
   },
 };
 
@@ -129,7 +129,9 @@ function Item({ item, deletePost, onImageLoad }: ItemProps) {
               {item.title}
             </p>
             <div className={itemStyle.content.text.body.description}>
-              <Viewer initialValue={textContent} />
+              <Viewer 
+                applyLoading={false}
+                initialValue={textContent} />
             </div>
           </div>
 
