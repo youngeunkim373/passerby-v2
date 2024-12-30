@@ -14,7 +14,7 @@ import { ErrorModal } from '@/components/modals/ErrorModal';
 import { SuccessModal } from '@/components/modals/SuccessModal';
 import { useModalContext } from '@/contexts/ModalContext';
 import { CustomError } from '@/utils/error';
-import { emailRegex, nicknameRegex, passwordRegex } from '@/utils/regex';
+import { emailRegex, passwordRegex } from '@/utils/regex';
 import { validateToken } from '@/utils/token';
 import { decryptUrlToObject } from '@/utils/url';
 
@@ -49,11 +49,10 @@ export const useJoin = () => {
     email, 
     password, 
     passwordCheck, 
-    nickname, 
     age, 
     sex, 
-    region 
-  ] = watch([ 'email','password', 'passwordCheck', 'nickname', 'age', 'sex', 'region' ]);
+    region,
+  ] = watch([ 'email','password', 'passwordCheck', 'age', 'sex', 'region' ]);
 
   const formValidation = {
     email: {
@@ -78,13 +77,14 @@ export const useJoin = () => {
         }
       }
     },
-    nickname: {
-      required: '닉네임을 입력해주세요',
-      pattern: {
-        value: nicknameRegex,
-        message: '닉네임은 한글, 영문 대소문자, 숫자, 특수문자(₩~!@#$%^&*-_=+)를 포함하여 2 ~ 20자로 작성해야 합니다',
-      },
-    },
+    // TODO 마이페이지 기능 개발할 때 활성화
+    // nickname: {
+    //   required: '닉네임을 입력해주세요',
+    //   pattern: {
+    //     value: nicknameRegex,
+    //     message: '닉네임은 한글, 영문 대소문자, 숫자, 특수문자(₩~!@#$%^&*-_=+)를 포함하여 2 ~ 20자로 작성해야 합니다',
+    //   },
+    // },
     age: { required: '연령을 선택해주세요' },
     sex: { required: '성별을 선택해주세요' },
     region: { required: '거주하는 시/도를 선택해주세요' },
@@ -240,13 +240,14 @@ export const useJoin = () => {
     emailHelper,
     errors,
     formValidation,
-    formValues: { email, password, nickname, age, sex, region, passwordCheck },
+    formValues: { email, password, age, sex, region, passwordCheck },
     emailVerification,
     valueStates: {
       email: getValidState('email', email),
       password: getValidState('password', password), 
       passwordCheck: getValidState('passwordCheck', passwordCheck),
-      nickname: getValidState('nickname', nickname), 
+      // TODO 마이페이지 기능 개발할 때 활성화
+      // nickname: getValidState('nickname', nickname), 
       age: getValidState('age', age),
       sex: getValidState('sex', sex),
       region: getValidState('region', region),
@@ -258,7 +259,8 @@ export const useJoin = () => {
         ...formValidation.password,
       }),
       passwordCheck: register('passwordCheck', formValidation.passwordCheck),
-      nickname: register('nickname', formValidation.nickname),
+      // TODO 마이페이지 기능 개발할 때 활성화
+      // nickname: register('nickname', formValidation.nickname),
       age: register('age', formValidation.age),
       sex: register('sex', formValidation.sex),
       region: register('region', formValidation.region),
