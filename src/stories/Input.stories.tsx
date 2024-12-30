@@ -2,7 +2,7 @@ import { Meta, StoryFn } from '@storybook/react';
 
 import { Mail } from '@/assets/icons/Mail';
 import { User } from '@/assets/icons/User';
-import { Input, Props as InputProps } from '@/components/form/Input';
+import { Input, Props as InputProps } from '@/components/form/input/Input';
 
 export default {
   component: Input,

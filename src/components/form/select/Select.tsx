@@ -1,60 +1,77 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 
 import { Close } from '@/assets/icons/Close';
 import { Tag } from '@/components/common/Tag';
 import { Dropdown } from '@/components/form/select/Dropdown';
 import { Props as OptionProps } from '@/components/form/select/Option';
+import { mergeRefs } from '@/utils/common';
 
 export type DropdownPosition = 'top' | 'bottom';
 export type ModeType = 'single' | 'multiple';
 export type SelectSize = 'small' | 'default' | 'large';
 export type SelectState = 'normal' | 'error' | 'success';
 
-export interface Props<Mode extends ModeType> {
+export interface Props {
   options: OptionProps[];
   allowClear?: boolean;
-  defaultValue?: Mode extends 'single' 
-    ? OptionProps['id'] 
-    : OptionProps['id'][];
-  mode?: Mode;
+  defaultValue?: OptionProps['id'] | OptionProps['id'][];
+  mode?: ModeType;
   placeholder?: string;
   size?: SelectSize;
   state?: SelectState;
-  value?: Mode extends 'single' 
-    ? OptionProps['id'] 
-    : OptionProps['id'][];
+  value?: OptionProps['id'] | OptionProps['id'][];
   width?: string;
-  onChange?: (
-    value: (OptionProps['id'] | null), 
-    list: OptionProps['id'][],
-  ) => void;
-  onClear?: () => void;
+  onChange?: (value: OptionProps['id'][]) => void;
+  onClear?: (value: OptionProps['id'][]) => void;
 }
 
-export function Select<Mode extends ModeType>({ 
-  options, 
-  allowClear = true,
-  defaultValue, 
-  mode = 'single' as Mode,
-  placeholder = '',
-  size = 'default', 
-  state = 'normal',
-  value,
-  width = '',
-  onChange,
-  onClear,
-}: Props<Mode>) {
-  // 개발 환경에서 미리 잘못 설정된 옵션을 거부
-  const singleInitialValue = mode === 'single' && !!defaultValue
-    ? defaultValue as OptionProps['id'] 
-    : null;
+const convertValueToArray = (value?: OptionProps['id'] | OptionProps['id'][]) => {
+  const array = !value 
+    ? [] 
+    : (Array.isArray(value)) ? value : [ value ];
 
-  const multipleInitialValue = (mode === 'multiple' && !!defaultValue) 
-    ? defaultValue as OptionProps['id'][]
-    : [];
+  return array;
+};
 
+export const Select = forwardRef((
+  { 
+    options, 
+    allowClear = true,
+    defaultValue, 
+    mode = 'single',
+    placeholder = '',
+    size = 'default', 
+    state = 'normal',
+    value,
+    width = '',
+    onChange,
+    onClear,
+  }: Props, 
+  ref: React.ForwardedRef<HTMLDivElement>,
+) => {
+  // 잘못 설정된 defaultValue, value 거부
   if (process.env.NODE_ENV === 'development') {
+    const isAllValueInOptions = convertValueToArray(value).length > 0
+      && !convertValueToArray(value)
+        .every((ele) => options.some((option) => option.id === ele));
+
+    const isAllDefaultValueInOptions = convertValueToArray(defaultValue).length > 0
+      && !convertValueToArray(defaultValue)
+        .every((ele) => options.some((option) => option.id === ele));
+
+    if(isAllValueInOptions || isAllDefaultValueInOptions) {
+      throw new Error('options에 없는 값을 value나 defaultValue로 설정할 수 없습니다.');
+    }
+
+    // single mode defaultValue, value 개수 관리
+    const singleModeLengthLimit = (convertValueToArray(value).length > 1) 
+      || (convertValueToArray(defaultValue).length > 1);
+
+    if(mode === 'single' && singleModeLengthLimit) {
+      throw new Error('single select에선 value나 defaultValue를 1개 초과로 설정할 수 없습니다.');
+    }
+
     // 옵션 id 중복 체크
     const idSet = new Set<string>();
   
@@ -70,17 +87,6 @@ export function Select<Mode extends ModeType>({
     if (duplicates.length > 0) {
       throw new Error(`옵션에 중복된 id가 존재합니다: ${duplicates.map((item) => item.id).join(', ')}`);
     }
-
-    // Select mode별 defaultValue 검사
-    const isSingleModeInvalid = mode === 'single' 
-      && defaultValue && !singleInitialValue;
-
-    const isMultipleModeInvalid = mode === 'multiple' 
-      && (defaultValue || []).length !== multipleInitialValue.length;
-
-    if (isSingleModeInvalid || isMultipleModeInvalid) {
-      throw new Error('선택지에 없는 id는 초기값으로 설정할 수 없습니다');
-    }
   }
 
   const selectRef = useRef<HTMLDivElement>(null);
@@ -88,46 +94,54 @@ export function Select<Mode extends ModeType>({
   const [ isDropdownOpen, setDropdownOpen ] = useState(false);
   const [ dropdownPosition, setDropdownPosition ] = useState<DropdownPosition>('bottom');
 
-  const [ singleSelectedId, setSingleSelectedId ] = useState<OptionProps['id'] | null>(singleInitialValue);
-  const [ multipleSelectedIds, setMultipleSelectedIds ] = useState<OptionProps['id'][]>(multipleInitialValue);
+  const valueArray = convertValueToArray(value);
+  const defaultValueArray = convertValueToArray(defaultValue);
 
-  const singleSelectedOption = options.find((option) => option.id === singleSelectedId);
-  const multipleSelectedOptions = options.filter((option) => (multipleSelectedIds || []).includes(option.id));
+  const initialSelectedIds = (valueArray?.length ?? 0) > 0 
+    ? valueArray 
+    : (defaultValueArray?.length ?? 0) > 0 
+      ? defaultValueArray 
+      : [];
 
-  const placeholderDisplayCondition = placeholder && (
-    (placeholder && mode === 'single' && !singleSelectedId)
-    || (placeholder && mode === 'multiple' && multipleSelectedIds.length === 0)
-  );
+  const [ selectedIds, setSelectedIds ] = useState<OptionProps['id'][]>(initialSelectedIds);
+  const selectedOptions = options.filter((option) => selectedIds.includes(option.id));
+
+  const placeholderDisplayCondition = placeholder && (selectedIds.length === 0);
 
   const handleClickOption = (optionId: OptionProps['id']) => {
     if (mode === 'single') {
-      setSingleSelectedId(optionId);
+      const newSelectedId = [ optionId ];
+      setSelectedIds(newSelectedId);
       setDropdownOpen(false);
-    }
 
-    if (mode === 'multiple') {
-      if(!multipleSelectedIds.includes(optionId)) {
-        const newSelectedIds = [ ...multipleSelectedIds, optionId ];
-        setMultipleSelectedIds(newSelectedIds);
-      } else {
-        const newSelectedIds = multipleSelectedIds.filter((id) => id !== optionId);
-        setMultipleSelectedIds(newSelectedIds);
+      if(onChange) {
+        onChange(newSelectedId);
       }
     }
 
-    if(onChange) {
-      onChange(optionId, multipleSelectedIds);
+    if (mode === 'multiple') {
+      let newSelectedIds;
+
+      if(!selectedIds.includes(optionId)) {
+        newSelectedIds = [ ...selectedIds, optionId ];
+        setSelectedIds(newSelectedIds);
+      } else {
+        newSelectedIds = selectedIds.filter((id) => id !== optionId);
+        setSelectedIds(newSelectedIds);
+      }
+
+      if(onChange) {
+        onChange(newSelectedIds);
+      }
     }
   };
 
   const handleClear = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    setSelectedIds([]);
 
-    if (mode === 'single') setSingleSelectedId(null);
-    else setMultipleSelectedIds([]);
-
-    if(onChange) onChange(null, multipleSelectedIds);
-    if(onClear) onClear();
+    if(onChange) onChange([]);
+    if(onClear) onClear([]);
   };
 
   const handleClickOutside = (e: MouseEvent) => {
@@ -138,9 +152,11 @@ export function Select<Mode extends ModeType>({
 
   const handleRemoveTag = (optionId: string) => {
     if(mode !== 'multiple') return;
-    setMultipleSelectedIds((prev) => prev.filter((id) => id !== optionId));
 
-    if(onChange) onChange(optionId, multipleSelectedIds);
+    const newSelectedIds = selectedIds.filter((id) => id !== optionId);
+    setSelectedIds(newSelectedIds);
+
+    if(onChange) onChange(newSelectedIds);
   };
 
   // 바깥 영역 클릭 이벤트 적용
@@ -172,16 +188,13 @@ export function Select<Mode extends ModeType>({
   useEffect(() => {
     if (!value) return;
 
-    if (mode === 'single') {
-      setSingleSelectedId(value as OptionProps['id']);
-    } else  {
-      setMultipleSelectedIds(value as OptionProps['id'][]);
-    }
+    const valueArray = convertValueToArray(value);
+    setSelectedIds(valueArray);
   }, [ value ]);
 
   return (
     <div 
-      ref={selectRef} 
+      ref={mergeRefs(selectRef, ref)} 
       style={{ width }}
       className={style.wrapper}>
       {/* ---------- Select area ----------- */}
@@ -197,21 +210,23 @@ export function Select<Mode extends ModeType>({
             <div className={style.select.placeholder}>{placeholder}</div>
           )}
 
-          {(mode === 'single' && singleSelectedOption) && (
+          {(mode === 'single') && (
             <div className={style.select.selectedOption}>
-              {singleSelectedOption.title}
+              {selectedOptions[0]?.title ?? ''}
             </div>
           )}
 
-          {(mode === 'multiple' && multipleSelectedOptions.length > 0) && (
-          multipleSelectedOptions as OptionProps[]).map((option) => (
-            <Tag 
-              key={option.id} 
-              color={'black'}
-              onClose={() => handleRemoveTag(option.id)}>
-              {option.title} 
-            </Tag>
-          ))}
+          {(mode === 'multiple') && (
+            selectedOptions.map((option) => (
+              <Tag 
+                key={option.id} 
+                color={'black'}
+                onClose={() => handleRemoveTag(option.id)}>
+                {option.title} 
+              </Tag>
+            ))
+          )}
+          
         </div>
 
         {allowClear && (
@@ -229,16 +244,14 @@ export function Select<Mode extends ModeType>({
         isDropdownOpen={isDropdownOpen}
         mode={mode}
         options={options}
-        selectedIds={
-          mode === 'single'
-            ? (singleSelectedId ? [ singleSelectedId ] : [])
-            : multipleSelectedIds
-        }
+        selectedIds={selectedIds}
         size={size}
         onChange={handleClickOption} />
     </div>
   );
-}
+});
+
+Select.displayName = 'Select';
 
 const selectConfig = {
   size: {

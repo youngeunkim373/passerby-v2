@@ -23,13 +23,21 @@ export const useUserBoard = ({ isLoggedIn, userEmail }: Props) => {
   const { show } = useModalContext();
 
   const [ isDeleteLoading, setDeleteLoading ] = useState<boolean>(false);
-  const [ isFetchLoading, setFetchLoading ] = useState<boolean>(false);
+  const [ isFetchLoading, setFetchLoading ] = useState<boolean>(true);
+
   const [ list, setList ] = useState<GetPostsResponseDTO['items']>([]);
   const [ totalCount, setTotaleCount ] = useState<number>(0);
 
   // 게시글 fetch
   const getBoardList = async (pagination?: Pagination<BoardFilterDTO>): Promise<void> => {
     try {
+      // 로그인 유저 체크
+      if(isLoggedIn === null) return;
+
+      if(isLoggedIn === false) {
+        return show(<LoginModal />);
+      }
+
       setFetchLoading(true);
 
       const res = await getPostsAPI({ 
@@ -43,7 +51,7 @@ export const useUserBoard = ({ isLoggedIn, userEmail }: Props) => {
     } catch (err) {
       console.error(err);
     } finally {
-      setFetchLoading(false);
+      setTimeout(() => setFetchLoading(false), 500);
     }
   };
 
@@ -100,13 +108,6 @@ export const useUserBoard = ({ isLoggedIn, userEmail }: Props) => {
   });
 
   useEffect(() => {
-    // 로그인 유저 체크
-    if(isLoggedIn === null) return;
-
-    if(isLoggedIn === false) {
-      return show(<LoginModal />);
-    }
-
     getBoardList(pagination);
   }, [ isLoggedIn ]);
 

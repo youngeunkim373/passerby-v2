@@ -8,7 +8,7 @@ import { User } from '@/assets/icons/User';
 import { Button } from '@/components/buttons/Button';
 import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
-import { Input } from '@/components/form/Input';
+import { FormInput } from '@/components/form/input/FormInput';
 import { FormSelect } from '@/components/form/select/FormSelect';
 import { AgeRange, RegionLabelRecord, SexLabelRecord } from '@/constants/label';
 
@@ -33,7 +33,8 @@ export function JoinForm() {
       helper: emailHelper,
       children: (
         <div className={style.item.email.wrapper}>
-          <Input
+          <FormInput 
+            control={control}
             prefix={<User />}
             placeholder={'이메일을 입력해주세요'} 
             state={valueStates.email}
@@ -54,7 +55,8 @@ export function JoinForm() {
       label: '비밀번호',
       isRequired: true,
       children: (
-        <Input
+        <FormInput 
+          control={control}
           type={'password'}
           prefix={<Locker />}
           placeholder={'비밀번호를 입력해주세요'}
@@ -67,26 +69,28 @@ export function JoinForm() {
       label: '비밀번호 확인',
       isRequired: true,
       children: (
-        <Input
+        <FormInput 
+          control={control}
           type={'password'}
           prefix={<Locker />}
           placeholder={'비밀번호를 한 번 더 입력해주세요'}
           state={valueStates.passwordCheck}
-          {...register.passwordCheck}
-        />
+          {...register.passwordCheck} />
       ),
     },
-    {
-      name: 'nickname',
-      label: '닉네임',
-      isRequired: true,
-      children: (
-        <Input
-          placeholder={'사용할 닉네임을 입력해주세요'}
-          state={valueStates.nickname}
-          {...register.nickname} />
-      ),
-    },
+    // TODO 나중에 nickname 기능 만들 때 추가
+    // {
+    //   name: 'nickname',
+    //   label: '닉네임',
+    //   isRequired: true,
+    //   children: (
+    //     <FormInput
+    //       control={control}
+    //       placeholder={'사용할 닉네임을 입력해주세요'}
+    //       state={valueStates.nickname}
+    //       {...register.nickname} />
+    //   ),
+    // },
     {
       name: 'age',
       label: '연령대',

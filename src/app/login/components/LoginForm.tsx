@@ -9,7 +9,7 @@ import { User } from '@/assets/icons/User';
 import { Button } from '@/components/buttons/Button';
 import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
-import { Input } from '@/components/form/Input';
+import { Input } from '@/components/form/input/Input';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { emailRegex } from '@/utils/regex';
 

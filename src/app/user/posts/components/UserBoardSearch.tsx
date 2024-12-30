@@ -7,7 +7,7 @@ import { BoardFilterDTO } from '@/app/board/board.interface';
 import { SearchButton } from '@/components/buttons/SearchButton';
 import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
-import { Input } from '@/components/form/Input';
+import { Input } from '@/components/form/input/Input';
 import { FormSelect } from '@/components/form/select/FormSelect';
 import { CategoryLabelRecord } from '@/constants/label';
 import { PaginationSet } from '@/hooks/usePagination';
@@ -62,7 +62,7 @@ export function UserBoardSearch({ userEmail, defaultFilter, onPagination }: Prop
       children: (
         <FormSelect
           control={control}
-          defaultValue={defaultFilter?.category}
+          defaultValue={defaultFilter?.category ?? undefined}
           width={'120px'}
           placeholder={'분류 선택'}
           allowClear={true}

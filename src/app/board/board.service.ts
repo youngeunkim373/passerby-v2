@@ -12,10 +12,10 @@ export const getPostsAPI = async ({
     const params = new URLSearchParams({ 
       page: (pagination?.page ?? '').toString(),
       size: (pagination?.size ?? '').toString(),
-      titleOrContent: pagination?.filter?.titleOrContent ?? '',
-      category: pagination?.filter?.category ?? '',
+      ...(pagination?.filter?.titleOrContent && { titleOrContent: pagination.filter.titleOrContent }),
+      ...(pagination?.filter?.category && { category: pagination.filter.category }),
+      ...(userEmail && { userEmail }),
       sortBy,
-      userEmail: userEmail ?? '',
     });
   
     const url = `/api/board/getPosts?${params.toString()}`;

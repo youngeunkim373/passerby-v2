@@ -1,4 +1,3 @@
-import '@toast-ui/editor/dist/toastui-editor.css';
 import { EditorProps, Editor as ToastEditor } from '@toast-ui/react-editor';
 import dynamic from 'next/dynamic';
 import { ForwardedRef, forwardRef, useCallback, useEffect, useRef, useState, } from 'react';
@@ -88,6 +87,7 @@ export const Editor = ({ storageDirectory, content, onChange, ...props }: Props)
         ref={editorRef}
         onChange={handleChange}
         hooks={{ addImageBlobHook: handleUploadImage }}
+        height={'auto'}
         {...props} />
       
       {isImageUploading && (
