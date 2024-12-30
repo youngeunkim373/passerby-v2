@@ -1,59 +1,40 @@
 import { forwardRef } from 'react';
 import { Control, FieldValues, useController, UseControllerProps } from 'react-hook-form';
 
-import { ModeType, Select, Props as SelectProps } from '@/components/form/select/Select';
+import { Select, Props as SelectProps } from '@/components/form/select/Select';
 
-interface FormSelectProps<T extends FieldValues, M extends ModeType>
-  extends Omit<SelectProps<M>, 'onChange' | 'value'>, Omit<UseControllerProps<T>, 'defaultValue'> {
+interface FormSelectProps<T extends FieldValues>
+  extends Omit<SelectProps, 'onChange' | 'value'>, Omit<UseControllerProps<T>, 'defaultValue'> {
   control: Control<T>;
 }
 
-function FormSelectComponent<T extends FieldValues, M extends ModeType>(
+function FormSelectComponent<T extends FieldValues>(
   {
     name,
     control,
     rules,
-    mode = 'single' as M,
+    mode = 'single',
     ...props
-  }: FormSelectProps<T, M>,
+  }: FormSelectProps<T>,
   ref: React.Ref<HTMLDivElement>,
 ) {
-  const { field: { value, onChange } } = useController({
+  const { field } = useController({
     name,
     control,
     rules,
   });
 
-  const handleChange = (currentValue: string | null, list: string[]) => {
-    if (mode === 'single') {
-      onChange(currentValue);
-    }
-    
-    if (mode === 'multiple') {
-      if(currentValue) {
-        if (!list.includes(currentValue)) {
-          onChange([ ...list, currentValue ]);
-        } else {
-          onChange(list.filter((ele) => ele !== currentValue));
-        }
-      } else {
-        onChange([]);
-      }
-    }
-  };
-
   return (
     <Select
       {...props}
+      {...field}
       mode={mode}
-      ref={ref}
-      value={value}
-      onChange={handleChange} />
+      ref={ref} />
   );
 }
 
 // 제네릭 타입 때문에 타입을 단언라기 위해 
 // forwardRef 컴포넌트 래핑 처리를 따로 함
-export const FormSelect = forwardRef(FormSelectComponent) as <T extends FieldValues, M extends ModeType>(
-  props: FormSelectProps<T, M> & { ref?: React.Ref<HTMLDivElement> },
+export const FormSelect = forwardRef(FormSelectComponent) as <T extends FieldValues>(
+  props: FormSelectProps<T> & { ref?: React.Ref<HTMLDivElement> },
 ) => ReturnType<typeof FormSelectComponent>;

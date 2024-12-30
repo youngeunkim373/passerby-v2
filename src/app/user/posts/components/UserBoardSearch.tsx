@@ -62,7 +62,7 @@ export function UserBoardSearch({ userEmail, defaultFilter, onPagination }: Prop
       children: (
         <FormSelect
           control={control}
-          defaultValue={defaultFilter?.category}
+          defaultValue={defaultFilter?.category ?? undefined}
           width={'120px'}
           placeholder={'분류 선택'}
           allowClear={true}
