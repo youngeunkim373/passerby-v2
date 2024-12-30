@@ -1,27 +1,28 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 
 import { Close } from '@/assets/icons/Close';
 import { Tag } from '@/components/common/Tag';
 import { Dropdown } from '@/components/form/select/Dropdown';
 import { Props as OptionProps } from '@/components/form/select/Option';
+import { mergeRefs } from '@/utils/common';
 
 export type DropdownPosition = 'top' | 'bottom';
 export type ModeType = 'single' | 'multiple';
 export type SelectSize = 'small' | 'default' | 'large';
 export type SelectState = 'normal' | 'error' | 'success';
 
-export interface Props<Mode extends ModeType> {
+export interface Props<TMode extends ModeType> {
   options: OptionProps[];
   allowClear?: boolean;
-  defaultValue?: Mode extends 'single' 
+  defaultValue?: TMode extends 'single' 
     ? OptionProps['id'] 
     : OptionProps['id'][];
-  mode?: Mode;
+  mode?: TMode;
   placeholder?: string;
   size?: SelectSize;
   state?: SelectState;
-  value?: Mode extends 'single' 
+  value?: TMode extends 'single' 
     ? OptionProps['id'] 
     : OptionProps['id'][];
   width?: string;
@@ -32,22 +33,25 @@ export interface Props<Mode extends ModeType> {
   onClear?: () => void;
 }
 
-export function Select<Mode extends ModeType>({ 
-  options, 
-  allowClear = true,
-  defaultValue, 
-  mode = 'single' as Mode,
-  placeholder = '',
-  size = 'default', 
-  state = 'normal',
-  value,
-  width = '',
-  onChange,
-  onClear,
-}: Props<Mode>) {
+export const Select = forwardRef(<TMode extends ModeType = ModeType>(
+  { 
+    options, 
+    allowClear = true,
+    defaultValue, 
+    mode = 'single' as TMode,
+    placeholder = '',
+    size = 'default', 
+    state = 'normal',
+    value,
+    width = '',
+    onChange,
+    onClear,
+  }: Props<TMode>, 
+  ref: React.ForwardedRef<HTMLDivElement>,
+) => {
   // 개발 환경에서 미리 잘못 설정된 옵션을 거부
-  const singleInitialValue = mode === 'single' && !!defaultValue
-    ? defaultValue as OptionProps['id'] 
+  const singleInitialValue = (mode === 'single' && !!defaultValue)
+    ? defaultValue as OptionProps['id']
     : null;
 
   const multipleInitialValue = (mode === 'multiple' && !!defaultValue) 
@@ -181,7 +185,7 @@ export function Select<Mode extends ModeType>({
 
   return (
     <div 
-      ref={selectRef} 
+      ref={mergeRefs(selectRef, ref)} 
       style={{ width }}
       className={style.wrapper}>
       {/* ---------- Select area ----------- */}
@@ -238,7 +242,9 @@ export function Select<Mode extends ModeType>({
         onChange={handleClickOption} />
     </div>
   );
-}
+});
+
+Select.displayName = 'Select';
 
 const selectConfig = {
   size: {
