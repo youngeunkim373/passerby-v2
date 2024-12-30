@@ -47,14 +47,14 @@ export function PostTitle(props: Omit<Post, 'objectID' | 'content'>) {
 const style = {
   titleArea: {
     wrapper: 'flex flex-col gap-4',
-    title: 'font-semibold text-2xl text-gray-900 mb-6',
+    title: 'font-semibold text-2xl text-gray-900 mb-6 break-words',
     category: 'font-normal text-gray-500 text-md mr-2',
     divide: 'w-full h-[1px] bg-gray-200 border-0 mt-8 mb-12',
   },
   info: {
-    wrapper: 'flex justify-between items-center gap-1',
+    wrapper: 'flex justify-between items-center gap-4 flex-wrap',
     user: {
-      wrapper: 'flex items-center gap-2', 
+      wrapper: 'flex items-center gap-2 mr-4', 
       textArea: 'flex flex-col',
       time: 'text-gray-400',
     },
