@@ -1,5 +1,5 @@
 import { Close } from '@/assets/icons/Close';
-import { ChangeEvent, forwardRef, InputHTMLAttributes, ReactNode, useState } from 'react';
+import { ChangeEvent, forwardRef, InputHTMLAttributes, ReactNode, useEffect, useState } from 'react';
 
 type InputSize = 'small' | 'default' | 'large' | 'extraLarge';
 export type InputState = 'normal' | 'error' | 'success';
@@ -23,11 +23,12 @@ export const Input = forwardRef<HTMLInputElement, Props>(({
   state = 'normal', 
   suffix, 
   type = 'text', 
+  value: externalValue,
   width,
   onClear,
   ...inputProps
 }, ref) => {
-  const [ value, setValue ] = useState(defaultValue ?? '');
+  const [ value, setValue ] = useState(externalValue ?? defaultValue ?? '');
 
   const optionWidth = typeof width === 'number' 
     ? `${width}px` 
@@ -42,6 +43,11 @@ export const Input = forwardRef<HTMLInputElement, Props>(({
     setValue(e.target.value);
     if(inputProps.onChange) inputProps.onChange(e);
   };
+
+  useEffect(() => {
+    if (!externalValue) return;
+    setValue(externalValue);
+  }, [ externalValue ]);
 
   return (
     <div 
