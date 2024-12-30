@@ -78,18 +78,19 @@ export function JoinForm() {
           {...register.passwordCheck} />
       ),
     },
-    {
-      name: 'nickname',
-      label: '닉네임',
-      isRequired: true,
-      children: (
-        <FormInput
-          control={control}
-          placeholder={'사용할 닉네임을 입력해주세요'}
-          state={valueStates.nickname}
-          {...register.nickname} />
-      ),
-    },
+    // TODO 나중에 nickname 기능 만들 때 추가
+    // {
+    //   name: 'nickname',
+    //   label: '닉네임',
+    //   isRequired: true,
+    //   children: (
+    //     <FormInput
+    //       control={control}
+    //       placeholder={'사용할 닉네임을 입력해주세요'}
+    //       state={valueStates.nickname}
+    //       {...register.nickname} />
+    //   ),
+    // },
     {
       name: 'age',
       label: '연령대',
