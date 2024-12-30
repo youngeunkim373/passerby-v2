@@ -2,7 +2,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { JoinRequestDTO } from '@/app/join/join.interface';
+import { JoinFormDTO } from '@/app/join/join.interface';
 import { joinAPI, sendVerificationEmailAPI } from '@/app/join/join.service';
 import { ExclamationMarkSolidCircle } from '@/assets/icons/ExclamationMark';
 import { GradationLoading } from '@/assets/icons/Loading';
@@ -18,7 +18,6 @@ import { emailRegex, nicknameRegex, passwordRegex } from '@/utils/regex';
 import { validateToken } from '@/utils/token';
 import { decryptUrlToObject } from '@/utils/url';
 
-type JoinFormDTO = JoinRequestDTO & { passwordCheck: string };
 type EmailVerificationState = 'unsent' | 'isSending' | 'sent' | 'confirmed';
 
 export const useJoin = () => {
