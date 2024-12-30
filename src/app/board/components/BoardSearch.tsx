@@ -28,9 +28,9 @@ export function BoardSearch({ defaultFilter, onPagination }: Props) {
 
   // pathname이 같은데 query params가 없을 때 새로운 검색조건으로 data fetch
   useEffect(() => {
-    const resetFields = async () => {
+    const resetFields = () => {
       const filter = { titleOrContent: '', category: null };
-      await onPagination({ filter });
+      onPagination({ filter });
       reset(filter);
     };
 
