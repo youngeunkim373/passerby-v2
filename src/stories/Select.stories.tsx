@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from '@storybook/react';
 
-import { ModeType, Select, Props as SelectProps } from '@/components/form/select/Select';
+import { Select, Props as SelectProps } from '@/components/form/select/Select';
 import { options } from '@/stories/constants';
 
 export default {
@@ -17,7 +17,7 @@ export default {
   },
 } as Meta<typeof Select>;
 
-const Template: StoryFn<SelectProps<ModeType>> = (args) => {
+const Template: StoryFn<SelectProps> = (args) => {
   return (
     <div className={'w-screen h-screen flex flex-col justify-between items-center ml-[-16px] mt-[-16px]'}>
       <div className={'pt-8'}>

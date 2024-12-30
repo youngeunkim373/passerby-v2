@@ -1,51 +1,40 @@
+import { forwardRef } from 'react';
 import { Control, FieldValues, useController, UseControllerProps } from 'react-hook-form';
 
-import { ModeType, Select, Props as SelectProps } from '@/components/form/select/Select';
+import { Select, Props as SelectProps } from '@/components/form/select/Select';
 
-interface FormSelectProps<T extends FieldValues, M extends ModeType>
-  extends Omit<SelectProps<M>, 'onChange' | 'defaultValue'>, UseControllerProps<T> {
+interface FormSelectProps<T extends FieldValues>
+  extends Omit<SelectProps, 'onChange' | 'value'>, Omit<UseControllerProps<T>, 'defaultValue'> {
   control: Control<T>;
 }
 
-export function FormSelect<T extends FieldValues, M extends ModeType>({
-  name,
-  control,
-  rules,
-  defaultValue,
-  mode = 'single' as M,
-  ...props
-}: FormSelectProps<T, M>) {
-  const { field: { value, onChange } } = useController({
+function FormSelectComponent<T extends FieldValues>(
+  {
     name,
     control,
     rules,
-    defaultValue,
+    mode = 'single',
+    ...props
+  }: FormSelectProps<T>,
+  ref: React.Ref<HTMLDivElement>,
+) {
+  const { field } = useController({
+    name,
+    control,
+    rules,
   });
-
-  const handleChange = (currentValue: string | null, list: string[]) => {
-    if (mode === 'single') {
-      onChange(currentValue);
-    }
-    
-    if (mode === 'multiple') {
-      if(currentValue) {
-        if (!list.includes(currentValue)) {
-          onChange([ ...list, currentValue ]);
-        } else {
-          onChange(list.filter((ele) => ele !== currentValue));
-        }
-      } else {
-        onChange([]);
-      }
-    }
-  };
 
   return (
     <Select
       {...props}
-      defaultValue={defaultValue}
+      {...field}
       mode={mode}
-      value={value} 
-      onChange={handleChange} />
+      ref={ref} />
   );
 }
+
+// 제네릭 타입 때문에 타입을 단언라기 위해 
+// forwardRef 컴포넌트 래핑 처리를 따로 함
+export const FormSelect = forwardRef(FormSelectComponent) as <T extends FieldValues>(
+  props: FormSelectProps<T> & { ref?: React.Ref<HTMLDivElement> },
+) => ReturnType<typeof FormSelectComponent>;

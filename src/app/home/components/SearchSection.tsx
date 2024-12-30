@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { Search } from '@/assets/icons/Search';
 import { Button } from '@/components/buttons/Button';
 import { Form } from '@/components/form/Form';
-import { Input } from '@/components/form/Input';
+import { Input } from '@/components/form/input/Input';
 
 export function SearchSection() {
   const router = useRouter();

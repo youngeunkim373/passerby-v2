@@ -5,7 +5,7 @@ import { SpinLoading } from '@/assets/icons/Loading';
 import { Button } from '@/components/buttons/Button';
 import { Form } from '@/components/form/Form';
 import { FormItemProps } from '@/components/form/FormItem';
-import { Input } from '@/components/form/Input';
+import { Input } from '@/components/form/input/Input';
 import { TextArea } from '@/components/form/TextArea';
 
 interface Props {
