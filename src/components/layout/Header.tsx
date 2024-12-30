@@ -1,5 +1,4 @@
 'use client';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -41,6 +40,8 @@ export function Header() {
   };
 
   const handleClickUserMenu = () => {
+    hide();
+
     showModal(
       <UserMenuModal 
         hideModal={hideModal}
@@ -65,13 +66,18 @@ export function Header() {
     );
   };
 
+  const handleLogout = () => {
+    hide();
+    logout();
+  };
+
   return (
     <header className={style.header}>
       <nav className={style.nav}>
         {/* ----------- Logo area ----------- */}
         <Button 
           variant={'link'} 
-          onClick={() => router.push('/')}
+          onClick={() => handleClickMenu('/')}
           className={style.logo.button}>
           <Image 
             src={'/images/bubble-logo.svg'}
@@ -94,9 +100,11 @@ export function Header() {
         {/* ----------- User area ----------- */}
         <div className={style.user}>
           {isLoggedIn === true
-            ? <LoggedInUserArea logout={logout} onClickUser={handleClickUserMenu} />
+            ? <LoggedInUserArea 
+              logout={handleLogout} 
+              onClickUser={handleClickUserMenu} />
             : isLoggedIn === false 
-              ? <LoggedOutUserArea router={router} /> 
+              ? <LoggedOutUserArea onClickMenu={handleClickMenu} /> 
               : <SpinLoading fill={'#64748b'} /> }
             
           {/* ----------- Mobile area ----------- */}
@@ -127,14 +135,18 @@ const style = {
 };
 
 /* ---------- UserArea ---------- */
-function LoggedOutUserArea({ router }: { router: AppRouterInstance }) {
+interface Props {
+  onClickMenu: (path: string) => void;
+}
+
+function LoggedOutUserArea({ onClickMenu }: Props) {
   return (
     <>
       <Button 
         variant={'link'}
         size={'small'}
         color={'black'}
-        onClick={() => router.push('/login')}>
+        onClick={() => onClickMenu('/login')}>
         로그인
       </Button>
       <Button 
@@ -142,7 +154,7 @@ function LoggedOutUserArea({ router }: { router: AppRouterInstance }) {
         size={'small'}
         color={'black'}
         className={'rounded-r-full rounded-s-full'}
-        onClick={() => router.push('/join')}>
+        onClick={() => onClickMenu('/join')}>
         회원가입
       </Button>
     </>
