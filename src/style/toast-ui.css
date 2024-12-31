@@ -26,7 +26,10 @@
 }
 
 .toastui-editor {
+  height: 100%;
   max-height: 500px;
+  /* toastui-editor-contents height 100%를 위해서 설정 */
+  display: grid;
   overflow-y: auto;
   overscroll-behavior: none;
 }
@@ -34,5 +37,5 @@
 .toastui-editor-contents {
   font-family: 'NanumGothic' !important;
   font-size: 16px !important;
-  max-height: 500px;
+  height: 100% !important;
 }
