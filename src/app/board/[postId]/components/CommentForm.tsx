@@ -30,7 +30,7 @@ export function CommentForm ({ errors, isLoading, register, className, submit }:
       name: 'comment',
       children: (
         <TextArea
-          rows={1}
+          rows={2}
           maxLength={3000}
           placeholder={'댓글을 작성하려면 로그인을 해주세요'} 
           {...register.comment} />
