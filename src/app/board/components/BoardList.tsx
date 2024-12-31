@@ -153,7 +153,7 @@ const itemStyle = {
   content: {
     wrapper: 'w-full min-w-0 flex flex-col justify-between gap-x-6 sm:flex-row',
     textArea: {
-      wrapper: ' min-w-0 flex-auto',
+      wrapper: ' min-w-0 flex-auto cursor-pointer',
       titleArea: {
         wrapper: 'flex items-center gap-2',
         title: 'font-semibold text-gray-900 ellipsis-1',
