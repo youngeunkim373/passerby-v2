@@ -30,7 +30,8 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>(({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter') {
+    // 한글 조합이 끝나야지만 처리
+    if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
       e.preventDefault();
       if (textareaRef.current) {
         const textarea = textareaRef.current;
