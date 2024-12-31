@@ -4,7 +4,8 @@ import { ChangeEvent, forwardRef, TextareaHTMLAttributes, useRef, useState } fro
 type TextareaSize = 'small' | 'default' | 'large';
 export type TextareaState = 'normal' | 'error' | 'success';
 
-export interface Props extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'maxLength'> {
+export interface Props extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'defaultValue' | 'maxLength'> {
+  defaultValue?: string;
   maxLength?: number;
   size?: TextareaSize;
   state?: TextareaState;
@@ -31,14 +32,24 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>(({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      setValue((prev) => prev + '\n');
+      if (textareaRef.current) {
+        const textarea = textareaRef.current;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
 
-      // 엔터 누를 시 textarea 높이 변경
-      setTimeout(() => {
-        if (textareaRef.current) {
-          textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
-        }
-      }, 0);
+        // 커서 위치를 기준으로 \n 추가
+        const newValue = value.substring(0, start) + '\n' + value.substring(end);
+        setValue(newValue);
+
+        setTimeout(() => {
+          // 커서 위치를 줄바꿈 위치로 변경
+          textarea.value = newValue;
+          textarea.selectionStart = textarea.selectionEnd = start + 1;
+  
+          // textarea 높이 변경
+          textarea.style.height = textarea.scrollHeight + 'px';
+        }, 0);
+      }
     }
   };
 
@@ -55,7 +66,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>(({
         className={style.textarea}
         disabled={disabled}
         maxLength={maxLength}
-        ref={mergeRefs(textareaRef, ref)} 
+        ref={mergeRefs(textareaRef, ref)}
         {...textareaProps}
         value={value}
         onChange={handleChange}
