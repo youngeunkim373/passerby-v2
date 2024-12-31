@@ -121,7 +121,7 @@ function Item({ item, deletePost, onImageLoad }: ItemProps) {
         <div 
           className={itemStyle.content.text.wrapper}
           onClick={() => router.push(`/board/${item.objectID}`)}>
-          <div>
+          <div className={itemStyle.content.text.body.wrapper}>
             <div className={itemStyle.content.text.body.textArea.wrapper}>
               <span className={itemStyle.content.text.body.textArea.category}>
                 [{item.category.map((ele) => CategoryLabelRecord[ele]).join(', ')}]
@@ -183,10 +183,11 @@ const itemStyle = {
       object-cover rounded-md
     `,
     text: {
-      wrapper: 'w-full flex flex-col justify-between gap-x-6 sm:flex-row cursor-pointer',
+      wrapper: 'w-full min-w-0 flex flex-col justify-between gap-x-6 sm:flex-row cursor-pointer',
       body: {
+        wrapper: 'min-w-0',
         textArea: {
-          wrapper: 'flex items-center gap-3',
+          wrapper: 'flex items-center gap-2',
           category: 'font-normal text-gray-500 text-[12px] text-nowrap',
           title: 'font-semibold text-gray-900 ellipsis-1',
         },

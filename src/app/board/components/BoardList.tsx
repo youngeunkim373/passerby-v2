@@ -151,11 +151,11 @@ const itemStyle = {
     object-cover rounded-md
   `,
   content: {
-    wrapper: 'w-full flex flex-col justify-between gap-x-6 sm:flex-row cursor-pointer',
+    wrapper: 'w-full min-w-0 flex flex-col justify-between gap-x-6 sm:flex-row',
     textArea: {
-      wrapper: 'flex-auto',
+      wrapper: ' min-w-0 flex-auto',
       titleArea: {
-        wrapper: 'flex items-center gap-3',
+        wrapper: 'flex items-center gap-2',
         title: 'font-semibold text-gray-900 ellipsis-1',
         category: 'text-gray-500 text-[12px] text-nowrap',
       },
