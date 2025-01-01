@@ -65,6 +65,11 @@ function Item({ item }: ItemProps) {
     submit 
   } = useNestedComment(item); 
 
+  const handleSubmitNestedComment = async () => {
+    await submit();
+    setOpen(false);
+  };
+
   return (
     <li 
       key={item.objectID} 
@@ -72,7 +77,7 @@ function Item({ item }: ItemProps) {
       {/* TODO 유저 대표 이미지 적용 */}
       {/* TODO 유저 이메일 -> 닉네임 변경 */}
       <p className={itemStyle.user}>{item.userEmail}</p>
-      <p>{item.comment}</p>
+      <p className={itemStyle.comment}>{item.comment}</p>
       <div className={itemStyle.reply}>
         <Button 
           color={'blue'}
@@ -92,7 +97,7 @@ function Item({ item }: ItemProps) {
             errors={errors}
             isLoading={isLoading}
             register={register}
-            submit={submit} />
+            submit={handleSubmitNestedComment} />
         </div>
       )}
 
@@ -124,6 +129,7 @@ function Item({ item }: ItemProps) {
 const itemStyle = {
   wrapper: 'w-full flex flex-col gap-4 py-4',
   user: 'font-semibold',
+  comment: 'whitespace-pre-wrap',
   time: 'text-sm text-gray-400',
   reply: 'flex items-center gap-2',
   list: {
