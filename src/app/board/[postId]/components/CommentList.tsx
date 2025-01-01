@@ -65,6 +65,11 @@ function Item({ item }: ItemProps) {
     submit 
   } = useNestedComment(item); 
 
+  const handleSubmitNestedComment = async () => {
+    await submit();
+    setOpen(false);
+  };
+
   return (
     <li 
       key={item.objectID} 
@@ -92,7 +97,7 @@ function Item({ item }: ItemProps) {
             errors={errors}
             isLoading={isLoading}
             register={register}
-            submit={submit} />
+            submit={handleSubmitNestedComment} />
         </div>
       )}
 
