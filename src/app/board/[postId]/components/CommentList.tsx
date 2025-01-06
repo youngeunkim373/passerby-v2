@@ -116,7 +116,7 @@ function Item({ item }: ItemProps) {
                 `}>
             <div className={'flex flex-col gap-4'}>
               <p className={itemStyle.user}>{nestedComment.userEmail}</p>
-              <p>{nestedComment.comment}</p>
+              <p className={itemStyle.comment}>{nestedComment.comment}</p>
               <time className={itemStyle.time}>{getTimeAgo(nestedComment.createdAt)}</time>
             </div>
           </li>
